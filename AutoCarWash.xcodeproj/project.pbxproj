@@ -9,13 +9,12 @@
 /* Begin PBXBuildFile section */
 		D0EAE7F72016115F36FAD206 /* Pods_AutoCarWash.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 565E74188CF5D2681E76C3D3 /* Pods_AutoCarWash.framework */; };
 		D600772522EF221F00B7CD50 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600772422EF221F00B7CD50 /* AppDelegate.swift */; };
-		D600772A22EF221F00B7CD50 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D600772822EF221F00B7CD50 /* Main.storyboard */; };
 		D600772C22EF222100B7CD50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D600772B22EF222100B7CD50 /* Assets.xcassets */; };
 		D600772F22EF222100B7CD50 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D600772D22EF222100B7CD50 /* LaunchScreen.storyboard */; };
-		D600773A22F139E200B7CD50 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D600773922F139E200B7CD50 /* PassKit.framework */; };
 		D600773F22F1A1F900B7CD50 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600773E22F1A1F900B7CD50 /* User.swift */; };
 		D600774122F1A3D800B7CD50 /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774022F1A3D800B7CD50 /* Car.swift */; };
 		D600774322F1A95D00B7CD50 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774222F1A95D00B7CD50 /* Message.swift */; };
+		FAAD128322F363E400A764AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAD128222F363E400A764AC /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,15 +23,14 @@
 		A720BBDD1740DC80DD8C1668 /* Pods-AutoCarWash.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoCarWash.release.xcconfig"; path = "Target Support Files/Pods-AutoCarWash/Pods-AutoCarWash.release.xcconfig"; sourceTree = "<group>"; };
 		D600772122EF221E00B7CD50 /* AutoCarWash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoCarWash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D600772422EF221F00B7CD50 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D600772922EF221F00B7CD50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D600772B22EF222100B7CD50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D600772E22EF222100B7CD50 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D600773022EF222100B7CD50 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D600773622F139A600B7CD50 /* AutoCarWash.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AutoCarWash.entitlements; sourceTree = "<group>"; };
-		D600773922F139E200B7CD50 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
 		D600773E22F1A1F900B7CD50 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D600774022F1A3D800B7CD50 /* Car.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Car.swift; sourceTree = "<group>"; };
 		D600774222F1A95D00B7CD50 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		FAAD128222F363E400A764AC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,7 +38,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D600773A22F139E200B7CD50 /* PassKit.framework in Frameworks */,
 				D0EAE7F72016115F36FAD206 /* Pods_AutoCarWash.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,7 +48,6 @@
 		7D42CECFB4B712D024FCC3A6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D600773922F139E200B7CD50 /* PassKit.framework */,
 				565E74188CF5D2681E76C3D3 /* Pods_AutoCarWash.framework */,
 			);
 			name = Frameworks;
@@ -81,8 +77,8 @@
 				D600773D22F1A1BD00B7CD50 /* Objects */,
 				D600773622F139A600B7CD50 /* AutoCarWash.entitlements */,
 				D600772422EF221F00B7CD50 /* AppDelegate.swift */,
-				D600772822EF221F00B7CD50 /* Main.storyboard */,
 				D600772B22EF222100B7CD50 /* Assets.xcassets */,
+				FAAD128222F363E400A764AC /* Main.storyboard */,
 				D600772D22EF222100B7CD50 /* LaunchScreen.storyboard */,
 				D600773022EF222100B7CD50 /* Info.plist */,
 			);
@@ -144,13 +140,13 @@
 						CreatedOnToolsVersion = 10.3;
 						SystemCapabilities = {
 							com.apple.ApplePay = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.Maps.iOS = {
 								enabled = 0;
 							};
 							com.apple.Wallet = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -179,9 +175,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAAD128322F363E400A764AC /* Main.storyboard in Resources */,
 				D600772F22EF222100B7CD50 /* LaunchScreen.storyboard in Resources */,
 				D600772C22EF222100B7CD50 /* Assets.xcassets in Resources */,
-				D600772A22EF221F00B7CD50 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,14 +253,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		D600772822EF221F00B7CD50 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D600772922EF221F00B7CD50 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		D600772D22EF222100B7CD50 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -397,20 +385,20 @@
 			baseConfigurationReference = 6EDC3634198E87B99DFF9566 /* Pods-AutoCarWash.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = AutoCarWash/AutoCarWash.entitlements;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = AUS3728B4K;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = FYLA2CN7V7;
 				INFOPLIST_FILE = AutoCarWash/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "Geek-Brains.AutoCarWash";
+				PRODUCT_BUNDLE_IDENTIFIER = "Geek-Brains.AutoCarWash-alex";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -419,20 +407,20 @@
 			baseConfigurationReference = A720BBDD1740DC80DD8C1668 /* Pods-AutoCarWash.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = AutoCarWash/AutoCarWash.entitlements;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = FYLA2CN7V7;
 				INFOPLIST_FILE = AutoCarWash/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "Geek-Brains.AutoCarWash";
+				PRODUCT_BUNDLE_IDENTIFIER = "Geek-Brains.AutoCarWash-alex";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
