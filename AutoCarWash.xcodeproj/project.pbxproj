@@ -14,6 +14,9 @@
 		D600773F22F1A1F900B7CD50 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600773E22F1A1F900B7CD50 /* User.swift */; };
 		D600774122F1A3D800B7CD50 /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774022F1A3D800B7CD50 /* Car.swift */; };
 		D600774322F1A95D00B7CD50 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774222F1A95D00B7CD50 /* Message.swift */; };
+		D600774522F42A9200B7CD50 /* RegistrationVewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774422F42A9200B7CD50 /* RegistrationVewController.swift */; };
+		D600774722F42C0100B7CD50 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774622F42C0100B7CD50 /* ProfileViewController.swift */; };
+		D600774922F42C3100B7CD50 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774822F42C3100B7CD50 /* LoginViewController.swift */; };
 		FAAD128322F363E400A764AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAD128222F363E400A764AC /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +33,9 @@
 		D600773E22F1A1F900B7CD50 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D600774022F1A3D800B7CD50 /* Car.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Car.swift; sourceTree = "<group>"; };
 		D600774222F1A95D00B7CD50 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		D600774422F42A9200B7CD50 /* RegistrationVewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVewController.swift; sourceTree = "<group>"; };
+		D600774622F42C0100B7CD50 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		D600774822F42C3100B7CD50 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		FAAD128222F363E400A764AC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,6 +87,9 @@
 				FAAD128222F363E400A764AC /* Main.storyboard */,
 				D600772D22EF222100B7CD50 /* LaunchScreen.storyboard */,
 				D600773022EF222100B7CD50 /* Info.plist */,
+				D600774422F42A9200B7CD50 /* RegistrationVewController.swift */,
+				D600774622F42C0100B7CD50 /* ProfileViewController.swift */,
+				D600774822F42C3100B7CD50 /* LoginViewController.swift */,
 			);
 			path = AutoCarWash;
 			sourceTree = "<group>";
@@ -243,6 +252,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D600774922F42C3100B7CD50 /* LoginViewController.swift in Sources */,
+				D600774722F42C0100B7CD50 /* ProfileViewController.swift in Sources */,
+				D600774522F42A9200B7CD50 /* RegistrationVewController.swift in Sources */,
 				D600773F22F1A1F900B7CD50 /* User.swift in Sources */,
 				D600774322F1A95D00B7CD50 /* Message.swift in Sources */,
 				D600774122F1A3D800B7CD50 /* Car.swift in Sources */,
