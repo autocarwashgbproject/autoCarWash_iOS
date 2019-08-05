@@ -510,7 +510,7 @@
                                         <rect key="frame" x="30" y="156" width="370" height="21"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                         <connections>
                                             <action selector="surnameTextField:" destination="PQ2-fh-kle" eventType="editingDidEnd" id="FA1-Qp-qBt"/>
                                         </connections>
@@ -525,7 +525,7 @@
                                         <rect key="frame" x="30" y="207" width="370" height="21"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                     </textField>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line" translatesAutoresizingMaskIntoConstraints="NO" id="7ng-ol-l82" userLabel="line2">
                                         <rect key="frame" x="14" y="233" width="386" height="10"/>
@@ -537,7 +537,7 @@
                                         <rect key="frame" x="30" y="258" width="370" height="21"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                     </textField>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line" translatesAutoresizingMaskIntoConstraints="NO" id="fjN-Uz-e8E" userLabel="line3">
                                         <rect key="frame" x="14" y="284" width="386" height="10"/>

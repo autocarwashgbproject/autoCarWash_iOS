@@ -24,4 +24,9 @@ class Service {
         }
     }
     
+    func dsateToUnixtime(date: Date) -> Int {
+        let timeInterval = date.timeIntervalSince1970
+        return Int(timeInterval)
+    }
+    
 }

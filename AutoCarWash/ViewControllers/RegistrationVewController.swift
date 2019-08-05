@@ -64,7 +64,9 @@ class RegistrationVewController: UIViewController {
         user.patronymic = patronymic
         user.telNum = telNum
         user.email = email
-        print("Created user with name: \(user.firstName), surname: \(user.surname), patronymic: \(user.patronymic), telephone: \(user.telNum), email: \(user.email)")
+        user.isActive = true
+        user.registrationDate = service.dsateToUnixtime(date: Date())
+        print("Created user with name: \(user.firstName), surname: \(user.surname), patronymic: \(user.patronymic), telephone: \(user.telNum), email: \(user.email)")        
         service.saveDataInRealmWithDeletingOld(object: user, objectType: User.self)
     }
  
