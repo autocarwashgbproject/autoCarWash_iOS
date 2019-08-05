@@ -19,11 +19,18 @@ class RegistrationVewController: UIViewController {
     @IBOutlet weak var password2TextField: UITextField!
     @IBOutlet weak var IReadPolicyImageView: UIImageView!
     @IBOutlet weak var IAgreeImageView: UIImageView!
+    @IBOutlet weak var enterSMSCodeTextField: UITextField!
+    @IBOutlet weak var line8ImageView: UIImageView!
+    @IBOutlet weak var enterButton: UIButton!
     let service = Service()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        enterButton.isHidden = true
+        enterSMSCodeTextField.isHidden = true
+        line8ImageView.isHidden = true
         
         let IReadPolicy = UITapGestureRecognizer(target: self, action: #selector(readTap(recognizer:)))
         IReadPolicyImageView.isUserInteractionEnabled = true
@@ -58,6 +65,10 @@ class RegistrationVewController: UIViewController {
         guard password1 == password2 else { sendAlert(title: "Пароль не совпадет", message: "Пожалуйста, проверьте правильность введённого пвроля"); return }
         guard IReadPolicyImageView.image == UIImage(named: "Rectangle 3_filled"),
               IAgreeImageView.image == UIImage(named: "Rectangle 3_filled")  else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, подтвердите Ваше согласие с условиями использования и политикой конфиденциальности"); return}
+        sendAlert(title: "Осталось совсем чуть-чуть", message: "На Ваш телефон отправлен код авторизации, введите его в поле ниже. Если код не доставлен, проверьте правильность введённого номера и снова нажмите 'Зарегистрироваться'.")
+        enterSMSCodeTextField.isHidden = false
+        line8ImageView.isHidden = false
+        enterButton.isHidden = false
         let user = User()
         user.firstName = name
         user.surname = surname
@@ -70,6 +81,12 @@ class RegistrationVewController: UIViewController {
         service.saveDataInRealmWithDeletingOld(object: user, objectType: User.self)
     }
  
+    @IBAction func enter(_ sender: Any) {
+        guard let code = enterSMSCodeTextField.text else { return }
+        
+    }
+    
+    
     func changeState(imageView: UIImageView){
         if imageView.image == UIImage(named: "Rectangle 3") {
             imageView.image = UIImage(named: "Rectangle 3_filled")
