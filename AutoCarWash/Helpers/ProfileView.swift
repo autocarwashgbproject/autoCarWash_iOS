@@ -19,5 +19,4 @@ class ProfileView: UIView {
         self.layer.shadowColor = #colorLiteral(red: 0.837210238, green: 0.8303549886, blue: 0.8998547196, alpha: 1)
         self.layer.shadowRadius = 10
     }
-
 }

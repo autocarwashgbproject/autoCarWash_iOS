@@ -19,6 +19,7 @@
 		D600774922F42C3100B7CD50 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774822F42C3100B7CD50 /* LoginViewController.swift */; };
 		D603457022F8053A001AAB2F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = D603456F22F8053A001AAB2F /* Service.swift */; };
 		D642D69422F94D96005D4F4D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642D69322F94D96005D4F4D /* ProfileView.swift */; };
+		D642D69622F988BD005D4F4D /* CarWashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642D69522F988BD005D4F4D /* CarWashViewController.swift */; };
 		FAAD128322F363E400A764AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAD128222F363E400A764AC /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		D600774822F42C3100B7CD50 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D603456F22F8053A001AAB2F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		D642D69322F94D96005D4F4D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		D642D69522F988BD005D4F4D /* CarWashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarWashViewController.swift; sourceTree = "<group>"; };
 		FAAD128222F363E400A764AC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 				D600774822F42C3100B7CD50 /* LoginViewController.swift */,
 				D600774422F42A9200B7CD50 /* RegistrationVewController.swift */,
 				D600774622F42C0100B7CD50 /* ProfileViewController.swift */,
+				D642D69522F988BD005D4F4D /* CarWashViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				D600773F22F1A1F900B7CD50 /* User.swift in Sources */,
 				D600774322F1A95D00B7CD50 /* Message.swift in Sources */,
 				D600774122F1A3D800B7CD50 /* Car.swift in Sources */,
+				D642D69622F988BD005D4F4D /* CarWashViewController.swift in Sources */,
 				D600772522EF221F00B7CD50 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

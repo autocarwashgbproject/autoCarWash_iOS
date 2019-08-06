@@ -11,6 +11,7 @@ import RealmSwift
 
 class Service {
     
+//    Сохранение данных в  Realm
     func saveDataInRealmWithDeletingOld(object: Object, objectType: Object.Type){
         do {
             let realm = try Realm()
@@ -24,6 +25,19 @@ class Service {
         }
     }
     
+    //    Загрузка данных пользователя из Realm
+    func loadUserFromRealm() -> User {
+        var user = User()
+        do {
+            let realm = try Realm()
+            user = realm.objects(User.self).first!
+        } catch {
+            print(error)
+        }
+        return user
+    }
+    
+//    Преобразование текущей даты в Int от UnixTime
     func dsateToUnixtime(date: Date) -> Int {
         let timeInterval = date.timeIntervalSince1970
         return Int(timeInterval)

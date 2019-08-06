@@ -1,24 +1,23 @@
 //
-//  ProfileViewController.swift
+//  CarWashViewController.swift
 //  AutoCarWash
 //
-//  Created by Olga Lidman on 02/08/2019.
+//  Created by Olga Lidman on 06/08/2019.
 //  Copyright © 2019 Home. All rights reserved.
 //
 
 import UIKit
-import RealmSwift
 
-class ProfileViewController: UIViewController {
-
+class CarWashViewController: UIViewController {
+    
     @IBOutlet weak var userPicImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userTelNumberLabel: UILabel!
     @IBOutlet weak var userEmailLabel: UILabel!
-    @IBOutlet weak var carPicImageView: UIImageView!
-    @IBOutlet weak var carNumberLabel: UILabel!
+    @IBOutlet weak var subscribeStatusLabel: UILabel!
+    @IBOutlet weak var extendButton: UIButton!
     let service = Service()
-    var user: User?
+    var user : User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +29,11 @@ class ProfileViewController: UIViewController {
         userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
         userTelNumberLabel.text = userToShow.telNum
         userEmailLabel.text = userToShow.email
+        
     }
 
+    @IBAction func extendButtonTapped(_ sender: Any) {
+    }
     
+
 }
