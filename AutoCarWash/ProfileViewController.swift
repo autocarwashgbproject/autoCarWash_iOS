@@ -24,12 +24,15 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         loadUserFromRealm()
+        
         guard let userToShow = user else { return }
+        
         userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
         userTelNumberLabel.text = userToShow.telNum
         userEmailLabel.text = userToShow.email
     }
     
+//    Загрузка данных пользователя из Realm
     func loadUserFromRealm(){
         do {
             let realm = try Realm()
