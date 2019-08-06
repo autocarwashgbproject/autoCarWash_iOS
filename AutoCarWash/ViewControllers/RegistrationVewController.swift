@@ -15,8 +15,6 @@ class RegistrationVewController: UIViewController {
     @IBOutlet weak var patronymicTextField: UITextField!
     @IBOutlet weak var telNumTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var password1TextField: UITextField!
-    @IBOutlet weak var password2TextField: UITextField!
     @IBOutlet weak var IReadPolicyImageView: UIImageView!
     @IBOutlet weak var IAgreeImageView: UIImageView!
     @IBOutlet weak var enterSMSCodeTextField: UITextField!
@@ -28,10 +26,12 @@ class RegistrationVewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        Прячем поля для ввода кода из СМС
         enterButton.isHidden = true
         enterSMSCodeTextField.isHidden = true
         line8ImageView.isHidden = true
         
+//        Распознавание тапа по вьюшкам "я согласем с условиями" "я прочитал политику"
         let IReadPolicy = UITapGestureRecognizer(target: self, action: #selector(readTap(recognizer:)))
         IReadPolicyImageView.isUserInteractionEnabled = true
         IReadPolicyImageView.addGestureRecognizer(IReadPolicy)
@@ -42,6 +42,7 @@ class RegistrationVewController: UIViewController {
         
     }
     
+//    Тап по картинкам "я согласем с условиями" "я прочитал политику"
     @objc func readTap(recognizer: UITapGestureRecognizer){
      changeState(imageView: IReadPolicyImageView)
     }
@@ -50,21 +51,16 @@ class RegistrationVewController: UIViewController {
         changeState(imageView: IAgreeImageView)
     }
     
-    
+//    Регистрация пользователя по нажатию кнопки "Регистрация"
     @IBAction func registration(_ sender: Any) {
         guard let surname = surnameTextField.text,
               let name = nameTextField.text,
               let patronymic = patronymicTextField.text,
               let telNum = telNumTextField.text,
-              let email = emailTextField.text,
-              let password1 = password1TextField.text,
-              let password2 = password2TextField.text else { return }
+              let email = emailTextField.text else { return }
         guard surname != "",
               name != "",
-              telNum != "",
-              password1 != "",
-              password2 != "" else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, заполните все поля, помеченные звёздочкой"); return }
-        guard password1 == password2 else { sendAlert(title: "Пароль не совпадет", message: "Пожалуйста, проверьте правильность введённого пвроля"); return }
+              telNum != "" else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, заполните все поля, помеченные звёздочкой"); return }
         guard IReadPolicyImageView.image == UIImage(named: "Rectangle 3_filled"),
               IAgreeImageView.image == UIImage(named: "Rectangle 3_filled")  else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, подтвердите Ваше согласие с условиями использования и политикой конфиденциальности"); return}
         sendAlert(title: "Осталось совсем чуть-чуть", message: "На Ваш телефон отправлен код авторизации, введите его в поле ниже. Если код не доставлен, проверьте правильность введённого номера и снова нажмите 'Зарегистрироваться'.")
@@ -83,12 +79,13 @@ class RegistrationVewController: UIViewController {
         service.saveDataInRealmWithDeletingOld(object: user, objectType: User.self)
     }
  
+//    Проверка кода из СМС (будет позже)
     @IBAction func enter(_ sender: Any) {
         guard let code = enterSMSCodeTextField.text else { return }
         
     }
     
-    
+//    Смена картинки с пустого квадрата на полный и наоборот
     func changeState(imageView: UIImageView){
         if imageView.image == UIImage(named: "Rectangle 3") {
             imageView.image = UIImage(named: "Rectangle 3_filled")
@@ -97,6 +94,7 @@ class RegistrationVewController: UIViewController {
         }
     }
     
+//    Алерт
     func sendAlert(title: String, message: String){
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
