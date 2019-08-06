@@ -61,7 +61,9 @@ class RegistrationVewController: UIViewController {
               let password2 = password2TextField.text else { return }
         guard surname != "",
               name != "",
-              telNum != "" else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, заполните все поля, помеченные звёздочкой"); return }
+              telNum != "",
+              password1 != "",
+              password2 != "" else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, заполните все поля, помеченные звёздочкой"); return }
         guard password1 == password2 else { sendAlert(title: "Пароль не совпадет", message: "Пожалуйста, проверьте правильность введённого пвроля"); return }
         guard IReadPolicyImageView.image == UIImage(named: "Rectangle 3_filled"),
               IAgreeImageView.image == UIImage(named: "Rectangle 3_filled")  else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, подтвердите Ваше согласие с условиями использования и политикой конфиденциальности"); return}
