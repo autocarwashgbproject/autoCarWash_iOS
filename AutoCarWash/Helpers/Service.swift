@@ -30,11 +30,23 @@ class Service {
         var user = User()
         do {
             let realm = try Realm()
-            user = realm.objects(User.self).first!
+            user = realm.objects(User.self).first ?? user
         } catch {
             print(error)
         }
         return user
+    }
+    
+//    Загрузка данных автомобиля из Realm
+    func loadCarFromRealm() -> Car {
+        var car = Car()
+        do {
+            let realm = try Realm()
+            car = realm.objects(Car.self).first ?? car
+        } catch {
+            print(error)
+        }
+        return car
     }
     
 //    Преобразование текущей даты в Int от UnixTime

@@ -42,7 +42,7 @@ class RegistrationVewController: UIViewController {
         
     }
     
-//    Тап по картинкам "я согласем с условиями" "я прочитал политику"
+//    Тап по картинкам "я согласем с условиями" и "я прочитал политику"
     @objc func readTap(recognizer: UITapGestureRecognizer){
      changeState(imageView: IReadPolicyImageView)
     }
@@ -51,7 +51,7 @@ class RegistrationVewController: UIViewController {
         changeState(imageView: IAgreeImageView)
     }
     
-//    Регистрация пользователя по нажатию кнопки "Регистрация"
+//    Регистрация пользователя по нажатию кнопки "Зарегистрироваться"
     @IBAction func registration(_ sender: Any) {
         guard let surname = surnameTextField.text,
               let name = nameTextField.text,
@@ -75,7 +75,6 @@ class RegistrationVewController: UIViewController {
         user.email = email
         user.isActive = true
         user.registrationDate = service.dsateToUnixtime(date: Date())
-        print("Created user with name: \(user.firstName), surname: \(user.surname), patronymic: \(user.patronymic), telephone: \(user.telNum), email: \(user.email)")        
         service.saveDataInRealmWithDeletingOld(object: user, objectType: User.self)
     }
  
@@ -85,7 +84,7 @@ class RegistrationVewController: UIViewController {
         
     }
     
-//    Смена картинки с пустого квадрата на полный и наоборот
+//    Смена картинки с пустого квадрата на заполненный и наоборот
     func changeState(imageView: UIImageView){
         if imageView.image == UIImage(named: "Rectangle 3") {
             imageView.image = UIImage(named: "Rectangle 3_filled")
@@ -94,12 +93,11 @@ class RegistrationVewController: UIViewController {
         }
     }
     
-//    Алерт
-    func sendAlert(title: String, message: String){
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    //    Алерт
+    func sendAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
-    
 }

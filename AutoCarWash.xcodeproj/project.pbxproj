@@ -20,6 +20,9 @@
 		D603457022F8053A001AAB2F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = D603456F22F8053A001AAB2F /* Service.swift */; };
 		D642D69422F94D96005D4F4D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642D69322F94D96005D4F4D /* ProfileView.swift */; };
 		D642D69622F988BD005D4F4D /* CarWashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642D69522F988BD005D4F4D /* CarWashViewController.swift */; };
+		D695C20C22FA895200D81A23 /* EditCarProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695C20B22FA895200D81A23 /* EditCarProfileViewController.swift */; };
+		D695C20E22FAB38C00D81A23 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695C20D22FAB38C00D81A23 /* UITextFieldExtension.swift */; };
+		D695C21022FACFBA00D81A23 /* EditUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695C20F22FACFBA00D81A23 /* EditUserProfileViewController.swift */; };
 		FAAD128322F363E400A764AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAAD128222F363E400A764AC /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +45,9 @@
 		D603456F22F8053A001AAB2F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		D642D69322F94D96005D4F4D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		D642D69522F988BD005D4F4D /* CarWashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarWashViewController.swift; sourceTree = "<group>"; };
+		D695C20B22FA895200D81A23 /* EditCarProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCarProfileViewController.swift; sourceTree = "<group>"; };
+		D695C20D22FAB38C00D81A23 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
+		D695C20F22FACFBA00D81A23 /* EditUserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileViewController.swift; sourceTree = "<group>"; };
 		FAAD128222F363E400A764AC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -114,8 +120,10 @@
 			children = (
 				D600774822F42C3100B7CD50 /* LoginViewController.swift */,
 				D600774422F42A9200B7CD50 /* RegistrationVewController.swift */,
-				D600774622F42C0100B7CD50 /* ProfileViewController.swift */,
 				D642D69522F988BD005D4F4D /* CarWashViewController.swift */,
+				D600774622F42C0100B7CD50 /* ProfileViewController.swift */,
+				D695C20B22FA895200D81A23 /* EditCarProfileViewController.swift */,
+				D695C20F22FACFBA00D81A23 /* EditUserProfileViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -125,6 +133,7 @@
 			children = (
 				D603456F22F8053A001AAB2F /* Service.swift */,
 				D642D69322F94D96005D4F4D /* ProfileView.swift */,
+				D695C20D22FAB38C00D81A23 /* UITextFieldExtension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -280,14 +289,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				D600774922F42C3100B7CD50 /* LoginViewController.swift in Sources */,
+				D695C20E22FAB38C00D81A23 /* UITextFieldExtension.swift in Sources */,
 				D642D69422F94D96005D4F4D /* ProfileView.swift in Sources */,
 				D603457022F8053A001AAB2F /* Service.swift in Sources */,
 				D600774722F42C0100B7CD50 /* ProfileViewController.swift in Sources */,
 				D600774522F42A9200B7CD50 /* RegistrationVewController.swift in Sources */,
 				D600773F22F1A1F900B7CD50 /* User.swift in Sources */,
+				D695C20C22FA895200D81A23 /* EditCarProfileViewController.swift in Sources */,
 				D600774322F1A95D00B7CD50 /* Message.swift in Sources */,
 				D600774122F1A3D800B7CD50 /* Car.swift in Sources */,
 				D642D69622F988BD005D4F4D /* CarWashViewController.swift in Sources */,
+				D695C21022FACFBA00D81A23 /* EditUserProfileViewController.swift in Sources */,
 				D600772522EF221F00B7CD50 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
