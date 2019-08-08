@@ -17,27 +17,37 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
                     Event(eventType: "Мойка", eventDate: "1.09.2019"),
                     Event(eventType: "Мойка", eventDate: "5.09.2019"),
                     Event(eventType: "Мойка", eventDate: "10.09.2019"),]
-    
+//    let eventsArr = [Event]()
     override func viewDidLoad() {
         super.viewDidLoad()
         
 //        Запрос на сервер, получаем список событий, отображаем в таблице
-        
-    }
+        }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return eventsArr.count
+        
+        if eventsArr.count >= 1 {
+            return eventsArr.count
+        } else {
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "HistoryCell", for: indexPath) as! HistoryCell
-        let event = eventsArr[indexPath.row]
-        cell.eventDateLabel.text = event.eventDate
-        cell.eventTypeLabel.text = event.eventType
-        if event.eventType == "Мойка" {
-            cell.eventImageView.image = #imageLiteral(resourceName: "bubbles")
+        if eventsArr.count >= 1 {
+            cell.infoLabel.isHidden = true
+            let event = eventsArr[indexPath.row]
+            cell.eventDateLabel.text = event.eventDate
+            cell.eventTypeLabel.text = event.eventType
+            if event.eventType == "Мойка" {
+                cell.eventImageView.image = #imageLiteral(resourceName: "bubbles")
+            } else {
+                cell.eventImageView.image = #imageLiteral(resourceName: "coin")
+            }
         } else {
-            cell.eventImageView.image = #imageLiteral(resourceName: "coin")
+            cell.infoLabel.isHidden = false
+            cell.eventImageView.image = #imageLiteral(resourceName: "bubbles")
         }
         return cell
     }

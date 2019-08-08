@@ -67,6 +67,14 @@ class EditCarProfileViewController: UIViewController {
         } catch {
             print(error)
         }
+        char1TextField.text = ""
+        char2TextField.text = ""
+        char3TextField.text = ""
+        char4TextField.text = ""
+        char5TextField.text = ""
+        char6TextField.text = ""
+        regionTextField.text = ""
+        sendAlert(title: "", message: "Данные автомобиля удалены. Введите новый номер")
 //        Отправляем на сервер текущее время в параметре deleteDate
     }
     

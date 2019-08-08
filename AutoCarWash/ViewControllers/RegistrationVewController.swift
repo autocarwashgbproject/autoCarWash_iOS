@@ -81,7 +81,10 @@ class RegistrationVewController: UIViewController {
  
 //    Проверка кода из СМС (будет позже)
     @IBAction func enter(_ sender: Any) {
-//        guard let code = enterSMSCodeTextField.text else { return }
+        guard let code = enterSMSCodeTextField.text else { return }
+        if code == "5555" {
+            performSegue(withIdentifier: "regSegue", sender: self)
+        }
         
     }
     
