@@ -37,9 +37,6 @@ class EditCarProfileViewController: UIViewController {
     
 //    Сохранение изменений номера машны
     @IBAction func saveChanges(_ sender: Any) {
-//        Проверить, есть ли оплаченный абонемент, если есть - номер машины менять нельзя
-//        Показать алерт, предупредить пользователя о невозможности внесения изменений
-        
         guard char1TextField.text != "",
               char2TextField.text != "",
               char3TextField.text != "",
@@ -47,36 +44,53 @@ class EditCarProfileViewController: UIViewController {
               char5TextField.text != "",
               char6TextField.text != "",
               regionTextField.text != "" else { return }
-        let carNum = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!) \(regionTextField.text!)"
-
+        let carNum = "\(char1TextField.text!)\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!)\(char6TextField.text!)\(regionTextField.text!)"
+        let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!) \(regionTextField.text!)"
         let car = Car()
         car.regNum = carNum
+        car.regNumSpaces = carNumSp
         car.isActive = true
         car.registrationDate = service.dsateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+        sendAlert(title: "", message: "Данные автомобиля обновлены")
+//        Отправляем на сервер новый номер машины
     }
     
 //    Удаление машины
     @IBAction func deleteCar(_ sender: Any) {
-//        Проверить, есть ли оплаченный абонемент, если есть - удалить машину нельзя
-//        Показать алерт
         do {
             let realm = try Realm()
-            let oldCar = realm.objects(Car.self)
+            let car = realm.objects(Car.self)
             realm.beginWrite()
-            realm.delete(oldCar)
+            realm.delete(car)
             try realm.commitWrite()
         } catch {
             print(error)
         }
+        char1TextField.text = ""
+        char2TextField.text = ""
+        char3TextField.text = ""
+        char4TextField.text = ""
+        char5TextField.text = ""
+        char6TextField.text = ""
+        regionTextField.text = ""
+        sendAlert(title: "", message: "Данные автомобиля удалены. Введите новый номер")
+//        Отправляем на сервер текущее время в параметре deleteDate
     }
     
-    // MARK : - отслеживание ввода текста
-    @objc func textFieldDidChange() {
-
-        if char1TextField.text?.count == 1 {
-                char2TextField.becomeFirstResponder()
-        }
+    func sendAlert(title: String, message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
+    
+    // MARK : - сделать перескакивающий курсор из одного окошка
+//    @objc func textFieldDidChange() {
+//
+//        if char1TextField.text?.count == 1 {
+//                char2TextField.becomeFirstResponder()
+//        }
+//    }
     
 }

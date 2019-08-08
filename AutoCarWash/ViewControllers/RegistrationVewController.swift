@@ -76,11 +76,15 @@ class RegistrationVewController: UIViewController {
         user.isActive = true
         user.registrationDate = service.dsateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: user, objectType: User.self)
+//        Отправить данные пользователя на удалённый сервер
     }
  
 //    Проверка кода из СМС (будет позже)
     @IBAction func enter(_ sender: Any) {
         guard let code = enterSMSCodeTextField.text else { return }
+        if code == "5555" {
+            performSegue(withIdentifier: "regSegue", sender: self)
+        }
         
     }
     

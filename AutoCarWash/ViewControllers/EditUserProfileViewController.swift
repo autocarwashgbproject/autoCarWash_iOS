@@ -43,38 +43,48 @@ class EditUserProfileViewController: UIViewController {
     @IBAction func deleteUserPic(_ sender: Any) {
     }
     
+//    Сохранение изменений данных пользователя
     @IBAction func saveChanges(_ sender: Any) {
         guard nameTextField.text != "",
               surnameTextField.text != "",
               telNumTextField.text != "",
-              telNumTextField.text?.count == 10 else { sendAlert(title: "", message: "Пожалуйста, укажите имя, фамилию и номер телефона") ; return }
+              telNumTextField.text?.count == 10 else { sendAlert(title: "", message: "Пожалуйста, обязательно укажите имя, фамилию и номер телефона") ; return }
         do {
             let realm = try Realm()
             let user = realm.objects(User.self).first!
             try realm.write {
-                user.setValue(nameTextField.text!, forKey: "firstName")
-                user.setValue(surnameTextField.text!, forKey: "surname")
+                user.setValue(nameTextField.text, forKey: "firstName")
+                user.setValue(surnameTextField.text, forKey: "surname")
                 user.setValue(patronymicTextField.text, forKey: "patronymic")
-                user.setValue(telNumTextField.text!, forKey: "telNum")
+                user.setValue(telNumTextField.text, forKey: "telNum")
                 user.setValue(emailTextField.text, forKey: "email")
                 user.setValue(birthdayTextField.text, forKey: "birthday")
             }
         } catch {
             print(error)
         }
+//        Отправить на сервер новые данные
     }
     
     @IBAction func logOut(_ sender: Any) {
-//        Отправить юзера на экран авторизации так, чтобы он не попал в Navigation
-        do {
-            let realm = try Realm()
-            realm.deleteAll()
-        } catch {
-            print(error)
-        }
+//        Отправить юзера на экран авторизации так, чтобы он (экран) не попал в Navigation
+//        do {
+//            let realm = try Realm()
+//            realm.deleteAll()
+//        } catch {
+//            print(error)
+//        }
     }
     
     @IBAction func deleteAccuont(_ sender: Any) {
+//        Отправить юзера на экран авторизации так, чтобы он (экран) не попал в Navigation
+//        do {
+//            let realm = try Realm()
+//            realm.deleteAll()
+//        } catch {
+//            print(error)
+//        }
+//        Отправить на удалённый сервер параметр is+active = false, текущее время как параметр delete_date
     }
     
     //    Алерт
