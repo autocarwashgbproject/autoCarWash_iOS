@@ -6,6 +6,7 @@
 //  Copyright © 2019 Home. All rights reserved.
 //
 
+import UIKit
 import Foundation
 import RealmSwift
 
@@ -54,5 +55,4 @@ class Service {
         let timeInterval = date.timeIntervalSince1970
         return Int(timeInterval)
     }
-    
 }

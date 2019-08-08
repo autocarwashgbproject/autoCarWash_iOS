@@ -21,9 +21,11 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func getSMSCode(_ sender: Any) {
+//        Запрос на сервер для получения смс-кода
     }
     
     @IBAction func login(_ sender: Any) {
+//        Сравнить введённый код с присланным в смс
 //        получить данные пользователя и автомобиля из удалённой базы данных, записать в Realm для отображения
     }
     

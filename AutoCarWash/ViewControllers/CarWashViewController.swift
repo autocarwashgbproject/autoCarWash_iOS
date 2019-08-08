@@ -15,13 +15,14 @@ class CarWashViewController: UIViewController {
     @IBOutlet weak var userTelNumberLabel: UILabel!
     @IBOutlet weak var userEmailLabel: UILabel!
     @IBOutlet weak var subscribeStatusLabel: UILabel!
-    @IBOutlet weak var extendButton: UIButton!
     let service = Service()
     var user : User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
+        
         user = service.loadUserFromRealm()
         
         guard let userToShow = user else { return }
@@ -31,9 +32,5 @@ class CarWashViewController: UIViewController {
         userEmailLabel.text = userToShow.email
         
     }
-
-    @IBAction func extendButtonTapped(_ sender: Any) {
-    }
-    
 
 }
