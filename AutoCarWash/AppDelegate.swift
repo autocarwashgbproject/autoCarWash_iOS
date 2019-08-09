@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         IQKeyboardManager.shared.enable = true
         let config = Realm.Configuration(
-            schemaVersion: 2,
+            schemaVersion: 4,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 1) {
                 }
@@ -39,13 +39,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if user.telNum != "" {
             self.window = UIWindow(frame: UIScreen.main.bounds)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let initialViewController = storyboard.instantiateViewController(withIdentifier: "TabBarControllerID")
+            let initialViewController = storyboard.instantiateViewController(withIdentifier: "SecondNavVC")
             self.window?.rootViewController = initialViewController
             self.window?.makeKeyAndVisible()
         } else {
             self.window = UIWindow(frame: UIScreen.main.bounds)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let initialViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewControllerID")
+            let initialViewController = storyboard.instantiateViewController(withIdentifier: "FirstNavVC")
             self.window?.rootViewController = initialViewController
             self.window?.makeKeyAndVisible()
         }

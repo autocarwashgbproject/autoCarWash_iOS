@@ -26,6 +26,8 @@ class RegistrationVewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setNavBarImage()
+        
 //        Прячем поля для ввода кода из СМС
         enterButton.isHidden = true
         enterSMSCodeTextField.isHidden = true
@@ -74,7 +76,7 @@ class RegistrationVewController: UIViewController {
         user.telNum = telNum
         user.email = email
         user.isActive = true
-        user.registrationDate = service.dsateToUnixtime(date: Date())
+        user.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: user, objectType: User.self)
 //        Отправить данные пользователя на удалённый сервер
     }
@@ -95,13 +97,5 @@ class RegistrationVewController: UIViewController {
         } else {
             imageView.image = UIImage(named: "Rectangle 3")
         }
-    }
-    
-    //    Алерт
-    func sendAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
     }
 }
