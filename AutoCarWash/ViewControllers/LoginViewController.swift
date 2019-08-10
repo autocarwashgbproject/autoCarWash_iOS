@@ -18,8 +18,10 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setNavBarImage()
     }
-
+    
     @IBAction func getSMSCode(_ sender: Any) {
 //        Запрос на сервер для получения смс-кода
 //        Запрос на сервер о зарегистрированном пользователе с данным номером телефона
@@ -32,4 +34,5 @@ class LoginViewController: UIViewController {
         guard codeTextField.text == "5555"  else { return }
             performSegue(withIdentifier: "logInSegue", sender: self)
     }
+    
 }

@@ -51,8 +51,24 @@ class Service {
     }
     
 //    Преобразование текущей даты в Int от UnixTime
-    func dsateToUnixtime(date: Date) -> Int {
+    func dateToUnixtime(date: Date) -> Int {
         let timeInterval = date.timeIntervalSince1970
         return Int(timeInterval)
+    }
+    
+    func getTimeFromUNIXTime(date: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(date))
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        dateFormatter.locale = NSLocale.current
+        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
+        return dateFormatter.string(from: date)
+    }
+    
+    func stringToDate(dateString: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        let date = dateFormatter.date(from: dateString)
+        return date!
     }
 }

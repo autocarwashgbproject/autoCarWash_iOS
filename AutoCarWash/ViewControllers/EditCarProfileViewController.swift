@@ -50,7 +50,7 @@ class EditCarProfileViewController: UIViewController {
         car.regNum = carNum
         car.regNumSpaces = carNumSp
         car.isActive = true
-        car.registrationDate = service.dsateToUnixtime(date: Date())
+        car.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
         sendAlert(title: "", message: "Данные автомобиля обновлены")
 //        Отправляем на сервер новый номер машины
@@ -76,13 +76,6 @@ class EditCarProfileViewController: UIViewController {
         regionTextField.text = ""
         sendAlert(title: "", message: "Данные автомобиля удалены. Введите новый номер")
 //        Отправляем на сервер текущее время в параметре deleteDate
-    }
-    
-    func sendAlert(title: String, message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
-        let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
     }
     
     // MARK : - сделать перескакивающий курсор из одного окошка

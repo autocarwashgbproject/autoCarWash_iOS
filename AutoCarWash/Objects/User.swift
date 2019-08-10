@@ -19,7 +19,8 @@ class User: Object {
     @objc dynamic var isActive = false
     @objc dynamic var registrationDate = 0
     @objc dynamic var deleteDate = 0
-    @objc dynamic var birthday = ""
+    @objc dynamic var birthday = 0
+    @objc dynamic var birthdayString = ""
     @objc dynamic var geolocation = ""
     
 }

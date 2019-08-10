@@ -24,6 +24,8 @@
 		D695C20E22FAB38C00D81A23 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695C20D22FAB38C00D81A23 /* UITextFieldExtension.swift */; };
 		D695C21022FACFBA00D81A23 /* EditUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695C20F22FACFBA00D81A23 /* EditUserProfileViewController.swift */; };
 		D695C21222FBE6EF00D81A23 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695C21122FBE6EF00D81A23 /* HistoryViewController.swift */; };
+		D6B282BF22FD5FC900A8C930 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282BE22FD5FC900A8C930 /* TabBarViewController.swift */; };
+		D6B282C322FE769500A8C930 /* ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282C222FE769500A8C930 /* ExtensionViewController.swift */; };
 		D6B7005322FBEC06008A25C9 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7005222FBEC06008A25C9 /* HistoryCell.swift */; };
 		D6B7005522FBF12C008A25C9 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7005422FBF12C008A25C9 /* Event.swift */; };
 		D6B7005722FC00A8008A25C9 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7005622FC00A8008A25C9 /* AvatarView.swift */; };
@@ -57,6 +59,8 @@
 		D695C20D22FAB38C00D81A23 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		D695C20F22FACFBA00D81A23 /* EditUserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileViewController.swift; sourceTree = "<group>"; };
 		D695C21122FBE6EF00D81A23 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		D6B282BE22FD5FC900A8C930 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		D6B282C222FE769500A8C930 /* ExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionViewController.swift; sourceTree = "<group>"; };
 		D6B7005222FBEC06008A25C9 /* HistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
 		D6B7005422FBF12C008A25C9 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		D6B7005622FC00A8008A25C9 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
@@ -139,14 +143,15 @@
 				D600774422F42A9200B7CD50 /* RegistrationVewController.swift */,
 				D642D69522F988BD005D4F4D /* CarWashViewController.swift */,
 				D600774622F42C0100B7CD50 /* ProfileViewController.swift */,
-				D695C20B22FA895200D81A23 /* EditCarProfileViewController.swift */,
 				D695C20F22FACFBA00D81A23 /* EditUserProfileViewController.swift */,
+				D695C20B22FA895200D81A23 /* EditCarProfileViewController.swift */,
 				D695C21122FBE6EF00D81A23 /* HistoryViewController.swift */,
 				D6B7005222FBEC06008A25C9 /* HistoryCell.swift */,
 				D6B7005822FC0A61008A25C9 /* MenuViewController.swift */,
 				D6B7005A22FC0B71008A25C9 /* PaymentViewController.swift */,
 				D6B7005C22FC0B9C008A25C9 /* SupportViewController.swift */,
 				D6B7005E22FC0BBE008A25C9 /* AboutAppViewController.swift */,
+				D6B282BE22FD5FC900A8C930 /* TabBarViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -158,6 +163,7 @@
 				D642D69322F94D96005D4F4D /* ProfileView.swift */,
 				D695C20D22FAB38C00D81A23 /* UITextFieldExtension.swift */,
 				D6B7005622FC00A8008A25C9 /* AvatarView.swift */,
+				D6B282C222FE769500A8C930 /* ExtensionViewController.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -314,6 +320,7 @@
 			files = (
 				D600774922F42C3100B7CD50 /* LoginViewController.swift in Sources */,
 				D695C20E22FAB38C00D81A23 /* UITextFieldExtension.swift in Sources */,
+				D6B282BF22FD5FC900A8C930 /* TabBarViewController.swift in Sources */,
 				D6B7005B22FC0B71008A25C9 /* PaymentViewController.swift in Sources */,
 				D642D69422F94D96005D4F4D /* ProfileView.swift in Sources */,
 				D603457022F8053A001AAB2F /* Service.swift in Sources */,
@@ -326,6 +333,7 @@
 				D6B7005322FBEC06008A25C9 /* HistoryCell.swift in Sources */,
 				D600774322F1A95D00B7CD50 /* Message.swift in Sources */,
 				D600774122F1A3D800B7CD50 /* Car.swift in Sources */,
+				D6B282C322FE769500A8C930 /* ExtensionViewController.swift in Sources */,
 				D6B7005F22FC0BBE008A25C9 /* AboutAppViewController.swift in Sources */,
 				D6B7005922FC0A61008A25C9 /* MenuViewController.swift in Sources */,
 				D642D69622F988BD005D4F4D /* CarWashViewController.swift in Sources */,

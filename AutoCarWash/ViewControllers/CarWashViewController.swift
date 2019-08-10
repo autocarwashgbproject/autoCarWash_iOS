@@ -22,7 +22,7 @@ class CarWashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
 //        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
         
 //        Загрузка данных пользователя из Realm
