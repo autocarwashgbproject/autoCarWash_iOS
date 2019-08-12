@@ -15,5 +15,7 @@ class TabBarViewController: UITabBarController {
 
         setNavBarImage()
         
+        tabBar.unselectedItemTintColor = #colorLiteral(red: 0.7540792823, green: 0.8779987097, blue: 0.8976370692, alpha: 1)
+        
     }
 }
