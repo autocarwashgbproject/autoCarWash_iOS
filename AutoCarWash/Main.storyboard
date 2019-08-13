@@ -366,6 +366,7 @@
                                     <constraint firstItem="hQm-0n-GCL" firstAttribute="centerX" secondItem="NJa-Lt-Q4r" secondAttribute="centerX" id="0Ky-TP-CvP"/>
                                     <constraint firstItem="6SE-UH-e1G" firstAttribute="top" secondItem="hQm-0n-GCL" secondAttribute="bottom" constant="4" id="4Ho-2g-AMn"/>
                                     <constraint firstItem="6SE-UH-e1G" firstAttribute="centerX" secondItem="OCt-59-bCt" secondAttribute="centerX" id="IHi-Vv-Dmq"/>
+                                    <constraint firstItem="6SE-UH-e1G" firstAttribute="top" secondItem="hQm-0n-GCL" secondAttribute="bottom" id="TiH-B8-RnO"/>
                                     <constraint firstItem="OCt-59-bCt" firstAttribute="centerX" secondItem="NJa-Lt-Q4r" secondAttribute="centerX" id="VoR-sz-goF"/>
                                     <constraint firstAttribute="bottom" secondItem="6SE-UH-e1G" secondAttribute="bottom" constant="10" id="Y7h-3J-wZc"/>
                                     <constraint firstAttribute="trailing" secondItem="OCt-59-bCt" secondAttribute="trailing" constant="5" id="aeT-jP-OHI"/>
@@ -1028,7 +1029,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BN2-w5-07V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3961" y="69"/>
+          <point key="canvasLocation" x="3961" y="69"/>
         </scene>
         <!--History-->
         <scene sceneID="m4Y-ZC-PgQ">
@@ -1073,12 +1074,14 @@
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="На этой старнице будет отображаться история оплат и пользований автомойкой" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TPU-Gf-4Kd">
                                                     <rect key="frame" x="70" y="11" width="300" height="38"/>
+
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sMB-uJ-ax9">
                                                     <rect key="frame" x="200" y="18.5" width="160" height="22.5"/>
+
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="19"/>
                                                     <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1681,7 +1684,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f61-hH-eJa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3249" y="69"/>
+          <point key="canvasLocation" x="3249" y="69"/>
         </scene>
         <!--RegistrationForm-->
         <scene sceneID="Jc7-BV-fIC">
