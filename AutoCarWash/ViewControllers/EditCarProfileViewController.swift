@@ -27,6 +27,12 @@ class EditCarProfileViewController: UIViewController {
         
         car = service.loadCarFromRealm()
         
+        char1TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        char2TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        char3TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        char4TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        char5TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        char6TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     }
     
     @IBAction func changeCarPic(_ sender: Any) {
@@ -78,12 +84,47 @@ class EditCarProfileViewController: UIViewController {
 //        Отправляем на сервер текущее время в параметре deleteDate
     }
     
-    // MARK : - сделать перескакивающий курсор из одного окошка
-//    @objc func textFieldDidChange() {
-//
-//        if char1TextField.text?.count == 1 {
-//                char2TextField.becomeFirstResponder()
-//        }
-//    }
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        if textField.text?.count == 1 {
+            let nextTextField = view.viewWithTag(textField.tag + 1) as! UITextField
+            nextTextField.becomeFirstResponder()
+        }
+    }
     
+//    Лютая дичь, надо переделать, не я хз как, полдня провозилась...
+    @objc func textField1DidChange(_ textField: UITextField) {
+        if textField.text?.count == 1 {
+            char2TextField.becomeFirstResponder()
+        }
+    }
+    
+    @objc func textField2DidChange(_ textField: UITextField) {
+        if textField.text?.count == 1 {
+            char3TextField.becomeFirstResponder()
+        }
+    }
+    
+    @objc func textField3DidChange(_ textField: UITextField) {
+        if textField.text?.count == 1 {
+            char4TextField.becomeFirstResponder()
+        }
+    }
+    
+    @objc func textField4DidChange(_ textField: UITextField) {
+        if textField.text?.count == 1 {
+            char5TextField.becomeFirstResponder()
+        }
+    }
+    
+    @objc func textField5DidChange(_ textField: UITextField) {
+        if textField.text?.count == 1 {
+            char6TextField.becomeFirstResponder()
+        }
+    }
+    
+    @objc func textField6DidChange(_ textField: UITextField) {
+        if textField.text?.count == 1 {
+            regionTextField.becomeFirstResponder()
+        }
+    }
 }

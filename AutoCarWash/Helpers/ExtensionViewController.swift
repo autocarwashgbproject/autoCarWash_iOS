@@ -32,4 +32,8 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+    func hideNavBarItem(){
+        navigationItem.hidesBackButton = true
+    }
+    
 }

@@ -14,7 +14,7 @@ class User: Object {
     @objc dynamic var firstName = ""
     @objc dynamic var surname = ""
     @objc dynamic var patronymic = ""
-    @objc dynamic var telNum = ""
+    @objc dynamic var telNum = 0
     @objc dynamic var email = ""
     @objc dynamic var isActive = false
     @objc dynamic var registrationDate = 0

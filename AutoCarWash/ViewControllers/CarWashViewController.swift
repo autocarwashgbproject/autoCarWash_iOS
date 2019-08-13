@@ -15,7 +15,9 @@ class CarWashViewController: UIViewController {
     @IBOutlet weak var userTelNumberLabel: UILabel!
     @IBOutlet weak var userEmailLabel: UILabel!
     @IBOutlet weak var subscribeStatusLabel: UILabel!
+    @IBOutlet weak var payButton: UIButton!
     @IBOutlet weak var carNumLabel: UILabel!
+    let paySegueID = "toPaymentVCSegue"
     let service = Service()
     var user : User?
     var car : Car?
@@ -24,6 +26,7 @@ class CarWashViewController: UIViewController {
         super.viewDidLoad()
         
 //        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
+//        Если есть активная подписка, payButton.isHidden = true
         
 //        Загрузка данных пользователя из Realm
         user = service.loadUserFromRealm()
@@ -31,7 +34,7 @@ class CarWashViewController: UIViewController {
         guard let userToShow = user else { return }
         
         userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
-        userTelNumberLabel.text = userToShow.telNum
+        userTelNumberLabel.text = "\(userToShow.telNum)"
         userEmailLabel.text = userToShow.email
         
     }
@@ -51,4 +54,9 @@ class CarWashViewController: UIViewController {
         }
     }
 
+    @IBAction func goToPayment(_ sender: Any) {
+        performSegue(withIdentifier: paySegueID, sender: self)
+    }
+    
+    
 }
