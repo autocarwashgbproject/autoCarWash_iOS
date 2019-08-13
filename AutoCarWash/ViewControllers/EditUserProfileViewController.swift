@@ -35,7 +35,7 @@ class EditUserProfileViewController: UIViewController {
         nameTextField.text = user.firstName
         surnameTextField.text = user.surname
         patronymicTextField.text = user.patronymic
-        telNumTextField.text = user.telNum
+        telNumTextField.text = "\(user.telNum)"
         emailTextField.text = user.email
         birthdayTextField.text = user.birthdayString
     }
@@ -65,11 +65,12 @@ class EditUserProfileViewController: UIViewController {
         guard nameTextField.text != "",
               surnameTextField.text != "",
               telNumTextField.text != "",
-            telNumTextField.text?.count == 10 else { sendAlert(title: "", message: "Пожалуйста, обязательно укажите имя, фамилию и номер телефона") ; return }
+              telNumTextField.text?.count == 10 else { sendAlert(title: "", message: "Пожалуйста, обязательно укажите имя, фамилию и номер телефона") ; return }
         if birthdayTextField.text != "" {
             let dateOfBirth = service.stringToDate(dateString: birthdayTextField.text!)
             birthDayUNIX = service.dateToUnixtime(date: dateOfBirth)
         }
+        let userTelNum = Int(telNumTextField.text!)
         do {
             let realm = try Realm()
             let user = realm.objects(User.self).first!
@@ -77,7 +78,7 @@ class EditUserProfileViewController: UIViewController {
                 user.setValue(nameTextField.text, forKey: "firstName")
                 user.setValue(surnameTextField.text, forKey: "surname")
                 user.setValue(patronymicTextField.text, forKey: "patronymic")
-                user.setValue(telNumTextField.text, forKey: "telNum")
+                user.setValue(userTelNum, forKey: "telNum")
                 user.setValue(emailTextField.text, forKey: "email")
                 user.setValue(birthDayUNIX, forKey: "birthday")
                 user.setValue(birthdayTextField.text, forKey: "birthdayString")
@@ -90,28 +91,20 @@ class EditUserProfileViewController: UIViewController {
     }
     
     @IBAction func logOut(_ sender: Any) {
-        do {
-            let realm = try Realm()
-            realm.beginWrite()
-            realm.deleteAll()
-            try realm.commitWrite()
-        } catch {
-            print(error)
-        }
+        deleteDataFromRealm()
         performSegue(withIdentifier: "logOutSegue", sender: self)
     }
     
     @IBAction func deleteAccuont(_ sender: Any) {
         deleteAlert(title: "Удалить аккаунт?", message: "Вы уверены, что хотите удалить аккаунт? Данные будут удалены безвозвратно")
-//        Отправить на удалённый сервер параметр is+active = false, текущее время как параметр delete_date
-        
     }
     
     func deleteAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         let actionYes = UIAlertAction(title: "Да", style: .default, handler: { (actionYes) in
-            self.deleteAccount()
+            self.deleteDataFromRealm()
+            self.deleteDataFromServer()
             self.performSegue(withIdentifier: "logOutSegue", sender: self)
         })
         alert.addAction(actionNo)
@@ -119,10 +112,7 @@ class EditUserProfileViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func deleteAccount() {
-        let deleteDate = Date()
-        service.dateToUnixtime(date: deleteDate)
-//        Отправить на сервер дату удаления
+    func deleteDataFromRealm() {
         do {
             let realm = try Realm()
             realm.beginWrite()
@@ -131,5 +121,10 @@ class EditUserProfileViewController: UIViewController {
         } catch {
             print(error)
         }
+    }
+    
+//    Отпрака данных на сервер об удалении аккаунта
+    func deleteDataFromServer(){
+//        Запрос на сервер об удаленеии даных
     }
 }

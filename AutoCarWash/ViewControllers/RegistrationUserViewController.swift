@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RegistrationVewController: UIViewController {
+class RegistrationUserViewController: UIViewController {
     
     @IBOutlet weak var surnameTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
@@ -17,10 +17,9 @@ class RegistrationVewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var IReadPolicyImageView: UIImageView!
     @IBOutlet weak var IAgreeImageView: UIImageView!
-    @IBOutlet weak var enterSMSCodeTextField: UITextField!
-    @IBOutlet weak var line8ImageView: UIImageView!
-    @IBOutlet weak var enterButton: UIButton!
     let service = Service()
+    let userDefaults = UserDefaults.standard
+    let regCarSegueID = "toCarRegistr"
     
     
     override func viewDidLoad() {
@@ -28,10 +27,9 @@ class RegistrationVewController: UIViewController {
         
         setNavBarImage()
         
-//        Прячем поля для ввода кода из СМС
-        enterButton.isHidden = true
-        enterSMSCodeTextField.isHidden = true
-        line8ImageView.isHidden = true
+        hideNavBarItem()
+        
+        telNumTextField.text = userDefaults.string(forKey: "telNum")
         
 //        Распознавание тапа по вьюшкам "я согласем с условиями" "я прочитал политику"
         let IReadPolicy = UITapGestureRecognizer(target: self, action: #selector(readTap(recognizer:)))
@@ -58,17 +56,13 @@ class RegistrationVewController: UIViewController {
         guard let surname = surnameTextField.text,
               let name = nameTextField.text,
               let patronymic = patronymicTextField.text,
-              let telNum = telNumTextField.text,
+              let telNum = Int(telNumTextField.text!),
               let email = emailTextField.text else { return }
         guard surname != "",
               name != "",
-              telNum != "" else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, заполните все поля, помеченные звёздочкой"); return }
+              telNum != 0 else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, заполните все поля, помеченные звёздочкой"); return }
         guard IReadPolicyImageView.image == UIImage(named: "Rectangle 3_filled"),
-              IAgreeImageView.image == UIImage(named: "Rectangle 3_filled")  else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, подтвердите Ваше согласие с условиями использования и политикой конфиденциальности"); return}
-        sendAlert(title: "Осталось совсем чуть-чуть", message: "На Ваш телефон отправлен код авторизации, введите его в поле ниже. Если код не доставлен, проверьте правильность введённого номера и снова нажмите 'Зарегистрироваться'.")
-        enterSMSCodeTextField.isHidden = false
-        line8ImageView.isHidden = false
-        enterButton.isHidden = false
+              IAgreeImageView.image == UIImage(named: "Rectangle 3_filled")  else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, подтвердите Ваше согласие с условиями пользования и политикой конфиденциальности"); return}
         let user = User()
         user.firstName = name
         user.surname = surname
@@ -78,16 +72,8 @@ class RegistrationVewController: UIViewController {
         user.isActive = true
         user.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: user, objectType: User.self)
-//        Отправить данные пользователя на удалённый сервер
-    }
- 
-//    Проверка кода из СМС (будет позже)
-    @IBAction func enter(_ sender: Any) {
-        guard let code = enterSMSCodeTextField.text else { return }
-        if code == "5555" {
-            performSegue(withIdentifier: "regSegue", sender: self)
-        }
-        
+        performSegue(withIdentifier: regCarSegueID, sender: self)
+//        Отправить данные пользователя на сервер
     }
     
 //    Смена картинки с пустого квадрата на заполненный и наоборот

@@ -14,7 +14,7 @@
 		D600773F22F1A1F900B7CD50 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600773E22F1A1F900B7CD50 /* User.swift */; };
 		D600774122F1A3D800B7CD50 /* Car.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774022F1A3D800B7CD50 /* Car.swift */; };
 		D600774322F1A95D00B7CD50 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774222F1A95D00B7CD50 /* Message.swift */; };
-		D600774522F42A9200B7CD50 /* RegistrationVewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774422F42A9200B7CD50 /* RegistrationVewController.swift */; };
+		D600774522F42A9200B7CD50 /* RegistrationUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774422F42A9200B7CD50 /* RegistrationUserViewController.swift */; };
 		D600774722F42C0100B7CD50 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774622F42C0100B7CD50 /* ProfileViewController.swift */; };
 		D600774922F42C3100B7CD50 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774822F42C3100B7CD50 /* LoginViewController.swift */; };
 		D603457022F8053A001AAB2F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = D603456F22F8053A001AAB2F /* Service.swift */; };
@@ -26,6 +26,7 @@
 		D695C21222FBE6EF00D81A23 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695C21122FBE6EF00D81A23 /* HistoryViewController.swift */; };
 		D6B282BF22FD5FC900A8C930 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282BE22FD5FC900A8C930 /* TabBarViewController.swift */; };
 		D6B282C322FE769500A8C930 /* ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282C222FE769500A8C930 /* ExtensionViewController.swift */; };
+		D6B282C52302639B00A8C930 /* RegistrationCarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282C42302639B00A8C930 /* RegistrationCarViewController.swift */; };
 		D6B7005322FBEC06008A25C9 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7005222FBEC06008A25C9 /* HistoryCell.swift */; };
 		D6B7005522FBF12C008A25C9 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7005422FBF12C008A25C9 /* Event.swift */; };
 		D6B7005722FC00A8008A25C9 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7005622FC00A8008A25C9 /* AvatarView.swift */; };
@@ -49,7 +50,7 @@
 		D600773E22F1A1F900B7CD50 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		D600774022F1A3D800B7CD50 /* Car.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Car.swift; sourceTree = "<group>"; };
 		D600774222F1A95D00B7CD50 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
-		D600774422F42A9200B7CD50 /* RegistrationVewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationVewController.swift; sourceTree = "<group>"; };
+		D600774422F42A9200B7CD50 /* RegistrationUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationUserViewController.swift; sourceTree = "<group>"; };
 		D600774622F42C0100B7CD50 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = ../ProfileViewController.swift; sourceTree = "<group>"; };
 		D600774822F42C3100B7CD50 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		D603456F22F8053A001AAB2F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
@@ -61,6 +62,7 @@
 		D695C21122FBE6EF00D81A23 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		D6B282BE22FD5FC900A8C930 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		D6B282C222FE769500A8C930 /* ExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionViewController.swift; sourceTree = "<group>"; };
+		D6B282C42302639B00A8C930 /* RegistrationCarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCarViewController.swift; sourceTree = "<group>"; };
 		D6B7005222FBEC06008A25C9 /* HistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
 		D6B7005422FBF12C008A25C9 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		D6B7005622FC00A8008A25C9 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
@@ -140,7 +142,8 @@
 			isa = PBXGroup;
 			children = (
 				D600774822F42C3100B7CD50 /* LoginViewController.swift */,
-				D600774422F42A9200B7CD50 /* RegistrationVewController.swift */,
+				D600774422F42A9200B7CD50 /* RegistrationUserViewController.swift */,
+				D6B282C42302639B00A8C930 /* RegistrationCarViewController.swift */,
 				D642D69522F988BD005D4F4D /* CarWashViewController.swift */,
 				D600774622F42C0100B7CD50 /* ProfileViewController.swift */,
 				D695C20F22FACFBA00D81A23 /* EditUserProfileViewController.swift */,
@@ -320,13 +323,14 @@
 			files = (
 				D600774922F42C3100B7CD50 /* LoginViewController.swift in Sources */,
 				D695C20E22FAB38C00D81A23 /* UITextFieldExtension.swift in Sources */,
+				D6B282C52302639B00A8C930 /* RegistrationCarViewController.swift in Sources */,
 				D6B282BF22FD5FC900A8C930 /* TabBarViewController.swift in Sources */,
 				D6B7005B22FC0B71008A25C9 /* PaymentViewController.swift in Sources */,
 				D642D69422F94D96005D4F4D /* ProfileView.swift in Sources */,
 				D603457022F8053A001AAB2F /* Service.swift in Sources */,
 				D600774722F42C0100B7CD50 /* ProfileViewController.swift in Sources */,
 				D695C21222FBE6EF00D81A23 /* HistoryViewController.swift in Sources */,
-				D600774522F42A9200B7CD50 /* RegistrationVewController.swift in Sources */,
+				D600774522F42A9200B7CD50 /* RegistrationUserViewController.swift in Sources */,
 				D600773F22F1A1F900B7CD50 /* User.swift in Sources */,
 				D6B7005522FBF12C008A25C9 /* Event.swift in Sources */,
 				D695C20C22FA895200D81A23 /* EditCarProfileViewController.swift in Sources */,
@@ -416,6 +420,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -470,6 +475,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
