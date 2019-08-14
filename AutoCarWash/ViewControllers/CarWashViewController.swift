@@ -17,6 +17,7 @@ class CarWashViewController: UIViewController {
     @IBOutlet weak var subscribeStatusLabel: UILabel!
     @IBOutlet weak var payButton: UIButton!
     @IBOutlet weak var carNumLabel: UILabel!
+    @IBOutlet weak var regionLabel: UILabel!
     let paySegueID = "toPaymentVCSegue"
     let service = Service()
     var user : User?
@@ -28,7 +29,7 @@ class CarWashViewController: UIViewController {
 //        Запрос на сервер для полученя имеющихся данных пользователя, сохранение в Realm
 //        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
 //        Если есть активная подписка, payButton.isHidden = true
-        
+        subscribeStatusLabel.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,7 +49,8 @@ class CarWashViewController: UIViewController {
         guard let carToShow = car else { return }
         if carToShow.regNumSpaces != "" {
             carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-            carNumLabel.text = "\(carToShow.regNumSpaces) rus"
+            carNumLabel.text = carToShow.regNumSpaces
+            regionLabel.text = carToShow.region
         } else {
             carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
             carNumLabel.text = "x000xx00"

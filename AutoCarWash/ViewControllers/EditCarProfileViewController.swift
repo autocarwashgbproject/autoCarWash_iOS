@@ -51,10 +51,12 @@ class EditCarProfileViewController: UIViewController {
               char6TextField.text != "",
               regionTextField.text != "" else { return }
         let carNum = "\(char1TextField.text!)\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!)\(char6TextField.text!)\(regionTextField.text!)"
-        let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!) \(regionTextField.text!)"
+        let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!)"
+        let reg = regionTextField.text!
         let car = Car()
         car.regNum = carNum
         car.regNumSpaces = carNumSp
+        car.region = reg
         car.isActive = true
         car.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)

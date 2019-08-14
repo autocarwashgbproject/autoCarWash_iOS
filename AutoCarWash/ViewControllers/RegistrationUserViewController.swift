@@ -76,15 +76,25 @@ class RegistrationUserViewController: UIViewController {
         user.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: user, objectType: User.self)
         performSegue(withIdentifier: regCarSegueID, sender: self)
-        let requestParams = ["first_name" : "Евгений",
-                             "surname" : "Иванов",
-                             "patronymic" : "Викторович",
-                             "tel_num" : 8888888888,
-                             "email" : "mail@mail.ru",
-                             "birthday" : 302547600] as [String : Any]
-        request("http://185.17.121.228/api/v1/clients/register/", method: .post, parameters: requestParams, encoding: URLEncoding.default, headers: nil).responseJSON { response in
-            print(response)
-        }
+//        let requestParams : [String : Any] = ["first_name" : name,
+//                                              "surname" : surname,
+//                                              "patronymic" : patronymic,
+//                                              "tel_num" : userTelNum,
+//                                              "email" : email,
+//                                              "birthday" : 0]
+//        request("http://185.17.121.228/api/v1/clients/register/", method: .post, parameters: requestParams).validate().responseJSON { response in
+//            switch response.result {
+//            case .success(let value):
+//                guard
+//                    let jsonObject = value as? [String: Any],
+//                    let user = User?(json: jsonObject)
+//                    else { return }
+//                print(user)
+//
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
 //        Отправить данные пользователя на сервер
     }
     

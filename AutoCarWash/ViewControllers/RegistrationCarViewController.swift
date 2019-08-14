@@ -43,25 +43,16 @@ class RegistrationCarViewController: UIViewController {
             char6TextField.text != "",
             regionTextField.text != "" else { sendAlert(title: "", message: "Пожалуйста, введите номер автомобиля полностью"); return }
         let carNum = "\(char1TextField.text!)\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!)\(char6TextField.text!)\(regionTextField.text!)"
-        let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!) \(regionTextField.text!)"
+        let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!)"
+        let reg = "\(regionTextField.text!)"
         let car = Car()
         car.regNum = carNum
         car.regNumSpaces = carNumSp
+        car.region = reg
         car.isActive = true
         car.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
         performSegue(withIdentifier: segueID, sender: self)
-    }
-    
-    func jumpToNextTextField(_ textFieldArr: [UITextField]) {
-        var i = 0
-        for a in 0...textFieldArr.count-1 {
-            if textFieldArr[a].text!.count == textFieldArr[a].maxLength {
-                i += 1
-                textFieldArr[i].becomeFirstResponder()
-                print("SOMETHING HAPPEND")
-            }
-        }
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
