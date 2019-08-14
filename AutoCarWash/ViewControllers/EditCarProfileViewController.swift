@@ -81,50 +81,13 @@ class EditCarProfileViewController: UIViewController {
         char6TextField.text = ""
         regionTextField.text = ""
         sendAlert(title: "", message: "Данные автомобиля удалены. Введите новый номер")
-//        Отправляем на сервер текущее время в параметре deleteDate
+//        Отправляем на сервер тзапрос об удалении машины
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         if textField.text?.count == 1 {
             let nextTextField = view.viewWithTag(textField.tag + 1) as! UITextField
             nextTextField.becomeFirstResponder()
-        }
-    }
-    
-//    Лютая дичь, надо переделать, не я хз как, полдня провозилась...
-    @objc func textField1DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            char2TextField.becomeFirstResponder()
-        }
-    }
-    
-    @objc func textField2DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            char3TextField.becomeFirstResponder()
-        }
-    }
-    
-    @objc func textField3DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            char4TextField.becomeFirstResponder()
-        }
-    }
-    
-    @objc func textField4DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            char5TextField.becomeFirstResponder()
-        }
-    }
-    
-    @objc func textField5DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            char6TextField.becomeFirstResponder()
-        }
-    }
-    
-    @objc func textField6DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            regionTextField.becomeFirstResponder()
         }
     }
 }

@@ -38,12 +38,13 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func login(_ sender: Any) {
+//        Отправить на сервер введённый код, получить ответ, если ок - идём дальше, если нет - алерт
 //        Отправить на сервер запрос о существовании пользователя с таким номером
 //        Если такой пользователь уже существует -
 //        guard codeTextField.text == "5555"  else { return } - сравниваем с  кодом из смс
 //            performSegue(withIdentifier: loginSegue, sender: self)
 //        Если пользователя нет -
-        guard codeTextField.text == "5555"  else { return } // - сравниваем с  кодом из смс
+        guard codeTextField.text == "5555"  else { return }
             performSegue(withIdentifier: regSegueID, sender: self)
     }
     
@@ -58,7 +59,7 @@ class LoginViewController: UIViewController {
     }
     
     func saveTelNumber() {
-        guard let telNum = telephoneNumberTextField.text else { return }
+        guard let telNum = Int(telephoneNumberTextField.text!) else { return }
         let userDefaults = UserDefaults.standard
         userDefaults.set(telNum, forKey: "telNum")
     }

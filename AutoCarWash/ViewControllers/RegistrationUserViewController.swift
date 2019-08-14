@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class RegistrationUserViewController: UIViewController {
     
@@ -20,6 +21,7 @@ class RegistrationUserViewController: UIViewController {
     let service = Service()
     let userDefaults = UserDefaults.standard
     let regCarSegueID = "toCarRegistr"
+    var userTelNum = 0
     
     
     override func viewDidLoad() {
@@ -29,7 +31,8 @@ class RegistrationUserViewController: UIViewController {
         
         hideNavBarItem()
         
-        telNumTextField.text = userDefaults.string(forKey: "telNum")
+        userTelNum = userDefaults.integer(forKey: "telNum")
+        telNumTextField.text = "\(userTelNum)"
         
 //        Распознавание тапа по вьюшкам "я согласем с условиями" "я прочитал политику"
         let IReadPolicy = UITapGestureRecognizer(target: self, action: #selector(readTap(recognizer:)))
@@ -67,12 +70,21 @@ class RegistrationUserViewController: UIViewController {
         user.firstName = name
         user.surname = surname
         user.patronymic = patronymic
-        user.telNum = telNum
+        user.telNum = userTelNum
         user.email = email
         user.isActive = true
         user.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: user, objectType: User.self)
         performSegue(withIdentifier: regCarSegueID, sender: self)
+        let requestParams = ["first_name" : "Евгений",
+                             "surname" : "Иванов",
+                             "patronymic" : "Викторович",
+                             "tel_num" : 8888888888,
+                             "email" : "mail@mail.ru",
+                             "birthday" : 302547600] as [String : Any]
+        request("http://185.17.121.228/api/v1/clients/register/", method: .post, parameters: requestParams, encoding: URLEncoding.default, headers: nil).responseJSON { response in
+            print(response)
+        }
 //        Отправить данные пользователя на сервер
     }
     

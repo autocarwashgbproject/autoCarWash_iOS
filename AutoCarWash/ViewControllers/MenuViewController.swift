@@ -19,6 +19,11 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
 //        Загрузка данных пользователя для отображения
         userRLM = service.loadUserFromRealm()
         guard let user = userRLM else { return }

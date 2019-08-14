@@ -25,8 +25,14 @@ class CarWashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        Запрос на сервер для полученя имеющихся данных пользователя, сохранение в Realm
 //        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
 //        Если есть активная подписка, payButton.isHidden = true
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
 //        Загрузка данных пользователя из Realm
         user = service.loadUserFromRealm()
@@ -36,11 +42,6 @@ class CarWashViewController: UIViewController {
         userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
         userTelNumberLabel.text = "\(userToShow.telNum)"
         userEmailLabel.text = userToShow.email
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
         
 //        Загрузка даных авто из Realm
         car = service.loadCarFromRealm()
