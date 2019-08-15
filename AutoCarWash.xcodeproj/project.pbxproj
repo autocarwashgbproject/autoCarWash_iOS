@@ -24,7 +24,7 @@
 		D695C21022FACFBA00D81A23 /* EditUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695C20F22FACFBA00D81A23 /* EditUserProfileViewController.swift */; };
 		D695C21222FBE6EF00D81A23 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D695C21122FBE6EF00D81A23 /* HistoryViewController.swift */; };
 		D6B282BF22FD5FC900A8C930 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282BE22FD5FC900A8C930 /* TabBarViewController.swift */; };
-		D6B282C322FE769500A8C930 /* ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282C222FE769500A8C930 /* ExtensionViewController.swift */; };
+		D6B282C322FE769500A8C930 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282C222FE769500A8C930 /* ViewControllerExtension.swift */; };
 		D6B282C52302639B00A8C930 /* RegistrationCarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282C42302639B00A8C930 /* RegistrationCarViewController.swift */; };
 		D6B3BA022302EF6C0084B4F5 /* AlamofireRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B3BA012302EF6C0084B4F5 /* AlamofireRequests.swift */; };
 		D6B3BA04230437AB0084B4F5 /* CarNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B3BA03230437AB0084B4F5 /* CarNumberView.swift */; };
@@ -61,7 +61,7 @@
 		D695C20F22FACFBA00D81A23 /* EditUserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileViewController.swift; sourceTree = "<group>"; };
 		D695C21122FBE6EF00D81A23 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		D6B282BE22FD5FC900A8C930 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
-		D6B282C222FE769500A8C930 /* ExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionViewController.swift; sourceTree = "<group>"; };
+		D6B282C222FE769500A8C930 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		D6B282C42302639B00A8C930 /* RegistrationCarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCarViewController.swift; sourceTree = "<group>"; };
 		D6B3BA012302EF6C0084B4F5 /* AlamofireRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireRequests.swift; sourceTree = "<group>"; };
 		D6B3BA03230437AB0084B4F5 /* CarNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarNumberView.swift; sourceTree = "<group>"; };
@@ -164,12 +164,12 @@
 			isa = PBXGroup;
 			children = (
 				D603456F22F8053A001AAB2F /* Service.swift */,
-				D642D69322F94D96005D4F4D /* ProfileView.swift */,
+				D6B3BA012302EF6C0084B4F5 /* AlamofireRequests.swift */,
+				D6B282C222FE769500A8C930 /* ViewControllerExtension.swift */,
 				D695C20D22FAB38C00D81A23 /* UITextFieldExtension.swift */,
 				D6B7005622FC00A8008A25C9 /* AvatarView.swift */,
-				D6B282C222FE769500A8C930 /* ExtensionViewController.swift */,
-				D6B3BA012302EF6C0084B4F5 /* AlamofireRequests.swift */,
 				D6B3BA03230437AB0084B4F5 /* CarNumberView.swift */,
+				D642D69322F94D96005D4F4D /* ProfileView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -341,7 +341,7 @@
 				D695C20C22FA895200D81A23 /* EditCarProfileViewController.swift in Sources */,
 				D6B7005322FBEC06008A25C9 /* HistoryCell.swift in Sources */,
 				D600774122F1A3D800B7CD50 /* Car.swift in Sources */,
-				D6B282C322FE769500A8C930 /* ExtensionViewController.swift in Sources */,
+				D6B282C322FE769500A8C930 /* ViewControllerExtension.swift in Sources */,
 				D6B7005F22FC0BBE008A25C9 /* AboutAppViewController.swift in Sources */,
 				D6B7005922FC0A61008A25C9 /* MenuViewController.swift in Sources */,
 				D642D69622F988BD005D4F4D /* CarWashViewController.swift in Sources */,

@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class EditCarProfileViewController: UIViewController {
+class EditCarProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var carPicImageView: UIImageView!
     @IBOutlet weak var char1TextField: UITextField!
@@ -19,13 +19,19 @@ class EditCarProfileViewController: UIViewController {
     @IBOutlet weak var char5TextField: UITextField!
     @IBOutlet weak var char6TextField: UITextField!
     @IBOutlet weak var regionTextField: UITextField!
+    let carPicPicker = UIImagePickerController()
+    var carPic = UIImage()
     let service = Service()
     var car: Car?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        carPicPicker.delegate = self
+        
         car = service.loadCarFromRealm()
+        
+        carPicImageView.image = service.loadImageFromDiskWith(fileName: "carPic")
         
         char1TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         char2TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -36,9 +42,14 @@ class EditCarProfileViewController: UIViewController {
     }
     
     @IBAction func changeCarPic(_ sender: Any) {
+        carPicPicker.allowsEditing = true
+        carPicPicker.sourceType = .photoLibrary
+        present(carPicPicker, animated: true, completion: nil)
     }
     
     @IBAction func deleteCarPic(_ sender: Any) {
+        service.deleteImage(imageName: "carPic", image: carPic)
+        carPicImageView.image = #imageLiteral(resourceName: "circle_car")
     }
     
 //    Сохранение изменений номера машны
@@ -49,7 +60,7 @@ class EditCarProfileViewController: UIViewController {
               char4TextField.text != "",
               char5TextField.text != "",
               char6TextField.text != "",
-              regionTextField.text != "" else { return }
+            regionTextField.text != "" else { service.saveImage(imageName: "carPic", image: carPic); sendAlert(title: "", message: "Фото автомобиля обновлено"); return }
         let carNum = "\(char1TextField.text!)\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!)\(char6TextField.text!)\(regionTextField.text!)"
         let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!)"
         let reg = regionTextField.text!
@@ -60,6 +71,7 @@ class EditCarProfileViewController: UIViewController {
         car.isActive = true
         car.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+        service.saveImage(imageName: "carPic", image: carPic)
         sendAlert(title: "", message: "Данные автомобиля обновлены")
 //        Отправляем на сервер новый номер машины
     }
@@ -91,5 +103,19 @@ class EditCarProfileViewController: UIViewController {
             let nextTextField = view.viewWithTag(textField.tag + 1) as! UITextField
             nextTextField.becomeFirstResponder()
         }
+    }
+    
+//    Функции выбора карпика
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            carPicImageView.contentMode = .scaleAspectFill
+            carPic = pickedImage
+            carPicImageView.image = carPic
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
 }

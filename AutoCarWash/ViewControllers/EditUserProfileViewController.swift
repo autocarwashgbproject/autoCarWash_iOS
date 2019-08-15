@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class EditUserProfileViewController: UIViewController {
+class EditUserProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var userPicImageView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -19,7 +19,10 @@ class EditUserProfileViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var birthdayTextField: UITextField!
     let birthdayPicker = UIDatePicker()
+    let userPicPicker = UIImagePickerController()
+    var userPic = UIImage()
     let service = Service()
+    let alamofireRequest = AlamofireRequests()
     var userRLM: User?
     
 
@@ -27,6 +30,8 @@ class EditUserProfileViewController: UIViewController {
         super.viewDidLoad()
         
         addDatePicker()
+        
+        userPicPicker.delegate = self
         
         userRLM = service.loadUserFromRealm()
         
@@ -38,8 +43,11 @@ class EditUserProfileViewController: UIViewController {
         telNumTextField.text = "\(user.telNum)"
         emailTextField.text = user.email
         birthdayTextField.text = user.birthdayString
+        
+       userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
     }
     
+//    Установка датапикера
     func addDatePicker(){
         birthdayPicker.datePickerMode = .date
         birthdayPicker.locale = Locale(identifier: "RU")
@@ -47,16 +55,24 @@ class EditUserProfileViewController: UIViewController {
         birthdayPicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
     }
     
+//    Обработка изменения даты
     @objc func dateChanged(){
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         birthdayTextField.text = formatter.string(from: birthdayPicker.date)
     }
     
+//    Изменение юзерпика
     @IBAction func changeUserPic(_ sender: Any) {
+        userPicPicker.allowsEditing = true
+        userPicPicker.sourceType = .photoLibrary
+        present(userPicPicker, animated: true, completion: nil)
     }
     
+//    Удаление юзерпика
     @IBAction func deleteUserPic(_ sender: Any) {
+        service.deleteImage(imageName: "userPic", image: userPic)
+        userPicImageView.image = #imageLiteral(resourceName: "circle_user")
     }
     
 //    Сохранение изменений данных пользователя
@@ -88,25 +104,29 @@ class EditUserProfileViewController: UIViewController {
         } catch {
             print(error)
         }
+        service.saveImage(imageName: "userPic", image: userPic)
         sendAlert(title: "", message: "Ваши данные обновлены")
 //        Отправить на сервер новые данные
     }
     
+//    Выход
     @IBAction func logOut(_ sender: Any) {
-        deleteDataFromRealm()
+        service.deleteDataFromRealm()
         performSegue(withIdentifier: "logOutSegue", sender: self)
     }
     
+//    Удаление аккаунта
     @IBAction func deleteAccuont(_ sender: Any) {
-        deleteAlert(title: "Удалить аккаунт?", message: "Вы уверены, что хотите удалить аккаунт? Данные будут удалены безвозвратно")
+        deleteAlert()
     }
     
-    func deleteAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//    Алерт с предупреждением об удалении аккаунта
+    func deleteAlert() {
+        let alert = UIAlertController(title: "Удалить аккаунт?", message: "Вы уверены, что хотите удалить аккаунт? Данные будут удалены безвозвратно", preferredStyle: .alert)
         let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
-        let actionYes = UIAlertAction(title: "Да", style: .default, handler: { (actionYes) in
-            self.deleteDataFromRealm()
-            self.deleteDataFromServer()
+        let actionYes = UIAlertAction(title: "Да", style: .default, handler: { actionYes in
+            self.service.deleteDataFromRealm()
+            self.alamofireRequest.deleteDataFromServer()
             self.performSegue(withIdentifier: "logOutSegue", sender: self)
         })
         alert.addAction(actionNo)
@@ -114,19 +134,16 @@ class EditUserProfileViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func deleteDataFromRealm() {
-        do {
-            let realm = try Realm()
-            realm.beginWrite()
-            realm.deleteAll()
-            try realm.commitWrite()
-        } catch {
-            print(error)
-        }
+//    Функции выбора юзерпика
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            userPic = pickedImage
+            userPicImageView.image = userPic
+            }
+        dismiss(animated: true, completion: nil)
     }
-    
-//    Отпрака данных на сервер об удалении аккаунта
-    func deleteDataFromServer(){
-//        Запрос на сервер об удаленеии даных
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
 }

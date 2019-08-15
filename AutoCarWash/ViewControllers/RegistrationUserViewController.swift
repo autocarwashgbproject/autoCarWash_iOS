@@ -14,7 +14,7 @@ class RegistrationUserViewController: UIViewController {
     @IBOutlet weak var surnameTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var patronymicTextField: UITextField!
-    @IBOutlet weak var telNumTextField: UITextField!
+    @IBOutlet weak var telNumLabel: UILabel!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var IAgreeImageView: UIImageView!
     let service = Service()
@@ -33,7 +33,7 @@ class RegistrationUserViewController: UIViewController {
         
         userTelNum = userDefaults.integer(forKey: "telNum")
         userTelNumSp = userDefaults.string(forKey: "telNumSpaces")!
-        telNumTextField.text = "\(userTelNumSp)"
+        telNumLabel.text = userTelNumSp
         
 //        Распознавание тапа по вьюшке "я согласем с условиями"
         let IAgreeTap = UITapGestureRecognizer(target: self, action: #selector(agreeTap(recognizer:)))
@@ -52,7 +52,7 @@ class RegistrationUserViewController: UIViewController {
         guard let surname = surnameTextField.text,
               let name = nameTextField.text,
               let patronymic = patronymicTextField.text,
-              let telNum = telNumTextField.text,
+              let telNum = telNumLabel.text,
               let email = emailTextField.text else { return }
         guard surname != "",
               name != "",
@@ -69,25 +69,7 @@ class RegistrationUserViewController: UIViewController {
         user.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: user, objectType: User.self)
         performSegue(withIdentifier: regCarSegueID, sender: self)
-//        let requestParams : [String : Any] = ["first_name" : name,
-//                                              "surname" : surname,
-//                                              "patronymic" : patronymic,
-//                                              "tel_num" : userTelNum,
-//                                              "email" : email,
-//                                              "birthday" : 0]
-//        request("http://185.17.121.228/api/v1/clients/register/", method: .post, parameters: requestParams).validate().responseJSON { response in
-//            switch response.result {
-//            case .success(let value):
-//                guard
-//                    let jsonObject = value as? [String: Any],
-//                    let user = User?(json: jsonObject)
-//                    else { return }
-//                print(user)
-//
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
+
 //        Отправить данные пользователя на сервер
     }
     

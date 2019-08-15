@@ -20,6 +20,7 @@ class CarWashViewController: UIViewController {
     @IBOutlet weak var regionLabel: UILabel!
     let paySegueID = "toPaymentVCSegue"
     let service = Service()
+    let reguest = AlamofireRequests()
     var user : User?
     var car : Car?
     
@@ -30,6 +31,7 @@ class CarWashViewController: UIViewController {
 //        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
 //        Если есть активная подписка, payButton.isHidden = true
         subscribeStatusLabel.isHidden = true
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,6 +57,8 @@ class CarWashViewController: UIViewController {
             carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
             carNumLabel.text = "x000xx00"
         }
+        
+        userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
     }
 
     @IBAction func goToPayment(_ sender: Any) {

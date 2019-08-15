@@ -69,7 +69,7 @@
                                         <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Номер телефона (10 цифр)" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="kIV-Ti-uZT">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Номер телефона (10 цифр)" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kIV-Ti-uZT">
                                         <rect key="frame" x="109.66666666666669" y="175" width="221" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="Pgm-kf-WcE"/>
@@ -101,7 +101,7 @@
                                             <action selector="getSMSCode:" destination="BYZ-38-t0r" eventType="touchUpInside" id="McL-Kf-ewQ"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Код подтверждения" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hjH-3I-vlJ">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Код подтверждения" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hjH-3I-vlJ">
                                         <rect key="frame" x="124.66666666666669" y="326" width="165" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="uFw-6F-1xG"/>
@@ -256,7 +256,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KP4-2F-Vw0" userLabel="User Profile View" customClass="ProfileView" customModule="AutoCarWash" customModuleProvider="target">
                                 <rect key="frame" x="10" y="30" width="394" height="130"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_user" translatesAutoresizingMaskIntoConstraints="NO" id="RSg-f6-UyQ" userLabel="User Image" customClass="AvatarView" customModule="AutoCarWash" customModuleProvider="target">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_user" translatesAutoresizingMaskIntoConstraints="NO" id="RSg-f6-UyQ" userLabel="User Image" customClass="AvatarView" customModule="AutoCarWash" customModuleProvider="target">
                                         <rect key="frame" x="5" y="10" width="109" height="109"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="109" id="Ftg-40-vfz"/>
@@ -823,7 +823,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="yIf-vn-dkN">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="672"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_car" translatesAutoresizingMaskIntoConstraints="NO" id="a3g-dY-Y0W" customClass="AvatarView" customModule="AutoCarWash" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_car" translatesAutoresizingMaskIntoConstraints="NO" id="a3g-dY-Y0W" customClass="AvatarView" customModule="AutoCarWash" customModuleProvider="target">
                                 <rect key="frame" x="152.66666666666666" y="40" width="108.99999999999997" height="109"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="109" id="4ud-vg-IbR"/>
@@ -1195,7 +1195,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rcp-Me-Mmg" userLabel="User Profile View" customClass="ProfileView" customModule="AutoCarWash" customModuleProvider="target">
                                 <rect key="frame" x="10" y="30" width="394" height="130"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_user" translatesAutoresizingMaskIntoConstraints="NO" id="ltj-q6-jaH" userLabel="User Image" customClass="AvatarView" customModule="AutoCarWash" customModuleProvider="target">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_user" translatesAutoresizingMaskIntoConstraints="NO" id="ltj-q6-jaH" userLabel="User Image" customClass="AvatarView" customModule="AutoCarWash" customModuleProvider="target">
                                         <rect key="frame" x="5" y="10" width="109" height="109"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="109" id="15Y-2j-Lz8"/>
@@ -1273,7 +1273,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9fg-Ya-1fW" userLabel="Car Profile View" customClass="ProfileView" customModule="AutoCarWash" customModuleProvider="target">
                                 <rect key="frame" x="10" y="245" width="394" height="130"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_car" translatesAutoresizingMaskIntoConstraints="NO" id="pDG-vo-Eii" userLabel="Car Image" customClass="AvatarView" customModule="AutoCarWash" customModuleProvider="target">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_car" translatesAutoresizingMaskIntoConstraints="NO" id="pDG-vo-Eii" userLabel="Car Image" customClass="AvatarView" customModule="AutoCarWash" customModuleProvider="target">
                                         <rect key="frame" x="5" y="10" width="109" height="109"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="109" id="XUF-Oi-Kgj"/>
@@ -1408,7 +1408,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8Y-g6-g1d">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="750"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_user" translatesAutoresizingMaskIntoConstraints="NO" id="qrv-9E-wPr" customClass="AvatarView" customModule="AutoCarWash" customModuleProvider="target">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle_user" translatesAutoresizingMaskIntoConstraints="NO" id="qrv-9E-wPr" customClass="AvatarView" customModule="AutoCarWash" customModuleProvider="target">
                                         <rect key="frame" x="152.66666666666666" y="40" width="108.99999999999997" height="109"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="109" id="Zg8-FW-TZp"/>
@@ -1836,25 +1836,21 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+7-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V5g-yV-zJd">
-                                        <rect key="frame" x="30" y="255.66666666666669" width="28" height="21"/>
+                                        <rect key="frame" x="30" y="255.66666666666669" width="30" height="21"/>
                                         <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="QRN-np-ynE"/>
                                             <constraint firstAttribute="height" constant="21" id="j4F-nR-BpQ"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Номер телефона(10 цифр)*" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AMu-Nk-wnY">
-                                        <rect key="frame" x="63" y="255.66666666666669" width="337" height="21"/>
-                                        <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sqc-Vk-4s4">
+                                        <rect key="frame" x="65" y="255.66666666666669" width="335" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="maxLength">
-                                                <integer key="value" value="10"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </textField>
+                                        <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line" translatesAutoresizingMaskIntoConstraints="NO" id="WZc-HU-jZp" userLabel="line4">
                                         <rect key="frame" x="14" y="281.66666666666669" width="386" height="10"/>
                                         <constraints>
@@ -1912,8 +1908,8 @@
                                     <constraint firstItem="VVO-JC-RSa" firstAttribute="top" secondItem="fPv-wS-PDd" secondAttribute="bottom" constant="40" id="2mX-0e-ipL"/>
                                     <constraint firstAttribute="trailing" secondItem="fPv-wS-PDd" secondAttribute="trailing" id="3OW-CP-sub"/>
                                     <constraint firstItem="fjN-Uz-e8E" firstAttribute="trailing" secondItem="j39-u4-Z4Z" secondAttribute="trailing" id="4iD-CT-zaV"/>
+                                    <constraint firstItem="Sqc-Vk-4s4" firstAttribute="centerY" secondItem="V5g-yV-zJd" secondAttribute="centerY" id="5F4-Nh-Cwq"/>
                                     <constraint firstItem="IPX-8i-gbU" firstAttribute="top" secondItem="njY-tY-Rin" secondAttribute="bottom" constant="30" id="5Zh-cf-GBg"/>
-                                    <constraint firstItem="AMu-Nk-wnY" firstAttribute="trailing" secondItem="dt2-aT-Ftg" secondAttribute="trailing" id="5f7-Op-bDS"/>
                                     <constraint firstItem="j39-u4-Z4Z" firstAttribute="top" secondItem="dt2-aT-Ftg" secondAttribute="bottom" constant="5" id="6TE-te-Niw"/>
                                     <constraint firstItem="VVO-JC-RSa" firstAttribute="centerX" secondItem="fPv-wS-PDd" secondAttribute="centerX" id="6nI-jk-cwS"/>
                                     <constraint firstItem="j39-u4-Z4Z" firstAttribute="trailing" secondItem="fPv-wS-PDd" secondAttribute="trailing" constant="-14" id="7mN-61-RXt"/>
@@ -1927,8 +1923,10 @@
                                     <constraint firstItem="njY-tY-Rin" firstAttribute="top" secondItem="NMS-SQ-wr0" secondAttribute="bottom" constant="5" id="Lda-QK-m08"/>
                                     <constraint firstItem="UcM-y1-LiP" firstAttribute="top" secondItem="fPv-wS-PDd" secondAttribute="bottom" constant="420" id="M9B-br-O3U"/>
                                     <constraint firstItem="7ng-ol-l82" firstAttribute="top" secondItem="j39-u4-Z4Z" secondAttribute="bottom" constant="40" id="NTe-qu-QQH"/>
+                                    <constraint firstItem="WZc-HU-jZp" firstAttribute="trailing" secondItem="Sqc-Vk-4s4" secondAttribute="trailing" id="R9b-Up-ofn"/>
                                     <constraint firstItem="njY-tY-Rin" firstAttribute="leading" secondItem="j39-u4-Z4Z" secondAttribute="leading" id="S7i-sU-K8x"/>
                                     <constraint firstItem="njY-tY-Rin" firstAttribute="trailing" secondItem="j39-u4-Z4Z" secondAttribute="trailing" id="SGd-y1-w5B"/>
+                                    <constraint firstItem="Sqc-Vk-4s4" firstAttribute="leading" secondItem="V5g-yV-zJd" secondAttribute="trailing" constant="5" id="WuD-zg-lKX"/>
                                     <constraint firstItem="WZc-HU-jZp" firstAttribute="top" secondItem="V5g-yV-zJd" secondAttribute="bottom" constant="5" id="XxL-R2-zhd"/>
                                     <constraint firstItem="WZc-HU-jZp" firstAttribute="top" secondItem="fjN-Uz-e8E" secondAttribute="bottom" constant="40" id="aFr-wv-sFn"/>
                                     <constraint firstItem="fPv-wS-PDd" firstAttribute="top" secondItem="YTu-Ly-E6Y" secondAttribute="top" id="afo-XC-UY4"/>
@@ -1938,7 +1936,6 @@
                                     <constraint firstItem="WZc-HU-jZp" firstAttribute="trailing" secondItem="j39-u4-Z4Z" secondAttribute="trailing" id="eOa-37-Gey"/>
                                     <constraint firstItem="zhi-AS-3FI" firstAttribute="trailing" secondItem="dt2-aT-Ftg" secondAttribute="trailing" id="fdn-5f-2hz"/>
                                     <constraint firstItem="j39-u4-Z4Z" firstAttribute="leading" secondItem="fPv-wS-PDd" secondAttribute="leading" constant="14" id="gJm-oh-PUQ"/>
-                                    <constraint firstItem="V5g-yV-zJd" firstAttribute="centerY" secondItem="AMu-Nk-wnY" secondAttribute="centerY" id="h6B-ir-0DO"/>
                                     <constraint firstItem="fjN-Uz-e8E" firstAttribute="top" secondItem="dzW-2y-4J9" secondAttribute="bottom" constant="5" id="hDH-my-xrU"/>
                                     <constraint firstItem="dt2-aT-Ftg" firstAttribute="leading" secondItem="fPv-wS-PDd" secondAttribute="leading" constant="30" id="hhb-gE-bl6"/>
                                     <constraint firstItem="IPX-8i-gbU" firstAttribute="centerY" secondItem="usR-bn-gdB" secondAttribute="centerY" id="jfS-ah-3jQ"/>
@@ -1950,7 +1947,6 @@
                                     <constraint firstItem="dzW-2y-4J9" firstAttribute="trailing" secondItem="dt2-aT-Ftg" secondAttribute="trailing" id="oYd-jg-olA"/>
                                     <constraint firstItem="h9M-ot-DGC" firstAttribute="top" secondItem="UcM-y1-LiP" secondAttribute="bottom" constant="50" id="ptV-ub-zFi"/>
                                     <constraint firstItem="dzW-2y-4J9" firstAttribute="leading" secondItem="dt2-aT-Ftg" secondAttribute="leading" id="qie-2S-1sT"/>
-                                    <constraint firstItem="AMu-Nk-wnY" firstAttribute="leading" secondItem="V5g-yV-zJd" secondAttribute="trailing" constant="5" id="sfu-NY-vvz"/>
                                     <constraint firstItem="V5g-yV-zJd" firstAttribute="leading" secondItem="dt2-aT-Ftg" secondAttribute="leading" id="t3A-ZD-qmB"/>
                                     <constraint firstItem="NMS-SQ-wr0" firstAttribute="leading" secondItem="dt2-aT-Ftg" secondAttribute="leading" id="x5n-ux-D4c"/>
                                     <constraint firstItem="usR-bn-gdB" firstAttribute="leading" secondItem="IPX-8i-gbU" secondAttribute="trailing" constant="5" id="xfn-Qi-sjT"/>
@@ -1987,7 +1983,7 @@
                         <outlet property="nameTextField" destination="zhi-AS-3FI" id="hru-aA-qqs"/>
                         <outlet property="patronymicTextField" destination="dzW-2y-4J9" id="FhK-0V-hBc"/>
                         <outlet property="surnameTextField" destination="dt2-aT-Ftg" id="Vv2-g4-da5"/>
-                        <outlet property="telNumTextField" destination="AMu-Nk-wnY" id="XML-ek-HTM"/>
+                        <outlet property="telNumLabel" destination="Sqc-Vk-4s4" id="zg9-UN-nna"/>
                         <segue destination="4Z5-Nc-tcR" kind="show" identifier="toCarRegistr" id="dDY-TL-RYV"/>
                     </connections>
                 </viewController>
@@ -2224,6 +2220,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="tg4-RC-Jhe"/>
-        <segue reference="EXc-yW-eOe"/>
+        <segue reference="NE6-ip-aiX"/>
     </inferredMetricsTieBreakers>
 </document>

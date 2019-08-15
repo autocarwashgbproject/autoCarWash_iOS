@@ -58,5 +58,9 @@ class ProfileViewController: UIViewController {
             carNumberLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
             carNumberLabel.text = "Вы не добавили информацию об автомобиле"
         }
+        
+        userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
+
+        carPicImageView.image = service.loadImageFromDiskWith(fileName: "carPic")
     }
 }
