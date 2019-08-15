@@ -16,12 +16,12 @@ class RegistrationUserViewController: UIViewController {
     @IBOutlet weak var patronymicTextField: UITextField!
     @IBOutlet weak var telNumTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var IReadPolicyImageView: UIImageView!
     @IBOutlet weak var IAgreeImageView: UIImageView!
     let service = Service()
     let userDefaults = UserDefaults.standard
     let regCarSegueID = "toCarRegistr"
     var userTelNum = 0
+    var userTelNumSp = ""
     
     
     override func viewDidLoad() {
@@ -32,24 +32,17 @@ class RegistrationUserViewController: UIViewController {
         hideNavBarItem()
         
         userTelNum = userDefaults.integer(forKey: "telNum")
-        telNumTextField.text = "\(userTelNum)"
+        userTelNumSp = userDefaults.string(forKey: "telNumSpaces")!
+        telNumTextField.text = "\(userTelNumSp)"
         
-//        Распознавание тапа по вьюшкам "я согласем с условиями" "я прочитал политику"
-        let IReadPolicy = UITapGestureRecognizer(target: self, action: #selector(readTap(recognizer:)))
-        IReadPolicyImageView.isUserInteractionEnabled = true
-        IReadPolicyImageView.addGestureRecognizer(IReadPolicy)
-        
+//        Распознавание тапа по вьюшке "я согласем с условиями"
         let IAgreeTap = UITapGestureRecognizer(target: self, action: #selector(agreeTap(recognizer:)))
         IAgreeImageView.isUserInteractionEnabled = true
         IAgreeImageView.addGestureRecognizer(IAgreeTap)
         
     }
     
-//    Тап по картинкам "я согласем с условиями" и "я прочитал политику"
-    @objc func readTap(recognizer: UITapGestureRecognizer){
-     changeState(imageView: IReadPolicyImageView)
-    }
-    
+//    Тап по картинкам "я согласем с условиями"
     @objc func agreeTap(recognizer: UITapGestureRecognizer){
         changeState(imageView: IAgreeImageView)
     }
@@ -59,18 +52,18 @@ class RegistrationUserViewController: UIViewController {
         guard let surname = surnameTextField.text,
               let name = nameTextField.text,
               let patronymic = patronymicTextField.text,
-              let telNum = Int(telNumTextField.text!),
+              let telNum = telNumTextField.text,
               let email = emailTextField.text else { return }
         guard surname != "",
               name != "",
-              telNum != 0 else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, заполните все поля, помеченные звёздочкой"); return }
-        guard IReadPolicyImageView.image == UIImage(named: "Rectangle 3_filled"),
-              IAgreeImageView.image == UIImage(named: "Rectangle 3_filled")  else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, подтвердите Ваше согласие с условиями пользования и политикой конфиденциальности"); return}
+              telNum != "" else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, заполните все поля, помеченные звёздочкой"); return }
+        guard IAgreeImageView.image == UIImage(named: "Rectangle 3_filled")  else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, подтвердите Ваше согласие с условиями пользования"); return}
         let user = User()
         user.firstName = name
         user.surname = surname
         user.patronymic = patronymic
         user.telNum = userTelNum
+        user.telNumString = userTelNumSp
         user.email = email
         user.isActive = true
         user.registrationDate = service.dateToUnixtime(date: Date())

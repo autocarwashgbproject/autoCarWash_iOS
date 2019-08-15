@@ -17,6 +17,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var repeatCodeLabel: UILabel!
     @IBOutlet weak var counterLabel: UILabel!
+    let service = Service()
     let loginSegueID = "logInSegue"
     let regSegueID = "registrationSegue"
     
@@ -59,8 +60,11 @@ class LoginViewController: UIViewController {
     }
     
     func saveTelNumber() {
-        guard let telNum = Int(telephoneNumberTextField.text!) else { return }
+        guard let telNumText = telephoneNumberTextField.text else { return }
         let userDefaults = UserDefaults.standard
+        let telNum = Int(telNumText)
+        let telNumSpaces = service.createTelNumString(telNumText)
         userDefaults.set(telNum, forKey: "telNum")
+        userDefaults.set(telNumSpaces, forKey: "telNumSpaces")
     }
 }

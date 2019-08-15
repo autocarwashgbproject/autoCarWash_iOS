@@ -71,4 +71,11 @@ class Service {
         let date = dateFormatter.date(from: dateString)
         return date!
     }
+    
+    func createTelNumString(_ telnum: String) -> String {
+        let telNumArr = Array(telnum)
+        let telNumSp = [telNumArr[0], telNumArr[1], telNumArr[2], "-",telNumArr[3], telNumArr[4],  telNumArr[5], "-", telNumArr[6], telNumArr[7], telNumArr[8], telNumArr[9]]
+        let telNumSpaces = String(telNumSp)
+        return telNumSpaces
+    }
 }

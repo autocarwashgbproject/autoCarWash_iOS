@@ -28,6 +28,6 @@ class MenuViewController: UIViewController {
         userRLM = service.loadUserFromRealm()
         guard let user = userRLM else { return }
         userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
-        userTelNumLabel.text = "\(user.telNum)"
+        userTelNumLabel.text = "\(user.telNumString)"
     }
 }

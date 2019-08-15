@@ -41,7 +41,7 @@ class CarWashViewController: UIViewController {
         guard let userToShow = user else { return }
         
         userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
-        userTelNumberLabel.text = "\(userToShow.telNum)"
+        userTelNumberLabel.text = "\(userToShow.telNumString)"
         userEmailLabel.text = userToShow.email
         
 //        Загрузка даных авто из Realm

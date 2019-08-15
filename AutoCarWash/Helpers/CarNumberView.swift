@@ -15,7 +15,7 @@ class CarNumberView: UIView {
         
         self.layer.cornerRadius = 7
         self.layer.borderWidth = 1
-        self.layer.borderColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+        self.layer.borderColor = #colorLiteral(red: 0.5704585314, green: 0.5704723597, blue: 0.5704649091, alpha: 1)
         
     }
 

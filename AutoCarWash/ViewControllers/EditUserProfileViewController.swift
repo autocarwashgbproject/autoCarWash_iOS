@@ -71,6 +71,7 @@ class EditUserProfileViewController: UIViewController {
             birthDayUNIX = service.dateToUnixtime(date: dateOfBirth)
         }
         let userTelNum = Int(telNumTextField.text!)
+        let userTelNumSp = service.createTelNumString(telNumTextField.text!)
         do {
             let realm = try Realm()
             let user = realm.objects(User.self).first!
@@ -79,6 +80,7 @@ class EditUserProfileViewController: UIViewController {
                 user.setValue(surnameTextField.text, forKey: "surname")
                 user.setValue(patronymicTextField.text, forKey: "patronymic")
                 user.setValue(userTelNum, forKey: "telNum")
+                user.setValue(userTelNumSp, forKey: "telNumString")
                 user.setValue(emailTextField.text, forKey: "email")
                 user.setValue(birthDayUNIX, forKey: "birthday")
                 user.setValue(birthdayTextField.text, forKey: "birthdayString")

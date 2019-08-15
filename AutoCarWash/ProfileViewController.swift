@@ -44,7 +44,7 @@ class ProfileViewController: UIViewController {
         
 //        Отображение данных пользователя в соответствующих лэйблах
         userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
-        userTelNumberLabel.text = "\(userToShow.telNum)"
+        userTelNumberLabel.text = "\(userToShow.telNumString)"
         userEmailLabel.text = userToShow.email
         
         guard let carToShow = car else { return }
@@ -59,5 +59,4 @@ class ProfileViewController: UIViewController {
             carNumberLabel.text = "Вы не добавили информацию об автомобиле"
         }
     }
-
 }
