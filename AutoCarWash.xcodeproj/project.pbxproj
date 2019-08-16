@@ -16,6 +16,7 @@
 		D600774522F42A9200B7CD50 /* RegistrationUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774422F42A9200B7CD50 /* RegistrationUserViewController.swift */; };
 		D600774722F42C0100B7CD50 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774622F42C0100B7CD50 /* ProfileViewController.swift */; };
 		D600774922F42C3100B7CD50 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D600774822F42C3100B7CD50 /* LoginViewController.swift */; };
+		D602C396230671410047CE31 /* WebKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D602C395230671410047CE31 /* WebKitViewController.swift */; };
 		D603457022F8053A001AAB2F /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = D603456F22F8053A001AAB2F /* Service.swift */; };
 		D642D69422F94D96005D4F4D /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642D69322F94D96005D4F4D /* ProfileView.swift */; };
 		D642D69622F988BD005D4F4D /* CarWashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D642D69522F988BD005D4F4D /* CarWashViewController.swift */; };
@@ -53,6 +54,7 @@
 		D600774422F42A9200B7CD50 /* RegistrationUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationUserViewController.swift; sourceTree = "<group>"; };
 		D600774622F42C0100B7CD50 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = ../ProfileViewController.swift; sourceTree = "<group>"; };
 		D600774822F42C3100B7CD50 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		D602C395230671410047CE31 /* WebKitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitViewController.swift; sourceTree = "<group>"; };
 		D603456F22F8053A001AAB2F /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		D642D69322F94D96005D4F4D /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		D642D69522F988BD005D4F4D /* CarWashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarWashViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				D6B7005C22FC0B9C008A25C9 /* SupportViewController.swift */,
 				D6B7005E22FC0BBE008A25C9 /* AboutAppViewController.swift */,
 				D6B282BE22FD5FC900A8C930 /* TabBarViewController.swift */,
+				D602C395230671410047CE31 /* WebKitViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -332,6 +335,7 @@
 				D6B7005B22FC0B71008A25C9 /* PaymentViewController.swift in Sources */,
 				D642D69422F94D96005D4F4D /* ProfileView.swift in Sources */,
 				D6B3BA022302EF6C0084B4F5 /* AlamofireRequests.swift in Sources */,
+				D602C396230671410047CE31 /* WebKitViewController.swift in Sources */,
 				D603457022F8053A001AAB2F /* Service.swift in Sources */,
 				D600774722F42C0100B7CD50 /* ProfileViewController.swift in Sources */,
 				D695C21222FBE6EF00D81A23 /* HistoryViewController.swift in Sources */,

@@ -12,7 +12,7 @@ import UIKit
 extension UIViewController {
     
 //    Установка логотипа в НавБар
-    func setNavBarImage(){
+    func setNavBarImage() {
         if let navVC = navigationController {
             let logoImage = #imageLiteral(resourceName: "carWash_logo")
             let width = navVC.navigationBar.frame.width
@@ -32,7 +32,7 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func hideNavBarItem(){
+    func hideNavBarItem() {
         navigationItem.hidesBackButton = true
     }
     
