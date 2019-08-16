@@ -39,20 +39,30 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         char4TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         char5TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         char6TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+        let carPicTap = UITapGestureRecognizer(target: self, action: #selector(changeCarPic(recognizer:)))
+        carPicImageView.isUserInteractionEnabled = true
+        carPicImageView.addGestureRecognizer(carPicTap)
     }
     
-    @IBAction func changeCarPic(_ sender: Any) {
-        carPicPicker.allowsEditing = true
-        carPicPicker.sourceType = .photoLibrary
-        present(carPicPicker, animated: true, completion: nil)
+//    Изменение фото машины
+//    - по нажатию на аватарку
+    @objc func changeCarPic(recognizer: UITapGestureRecognizer) {
+        pickPhotoFromLibrary(imagePicker: carPicPicker)
     }
     
+//    - по нажатию на кнопу "Изменить фото"
+    @IBAction func changeCarPic(_ sender: UIButton) {
+        pickPhotoFromLibrary(imagePicker: carPicPicker)
+    }
+    
+//    Удаление фото машины
     @IBAction func deleteCarPic(_ sender: Any) {
-        service.deleteImage(imageName: "carPic", image: carPic)
+        service.saveImage(imageName: "carPic", image: #imageLiteral(resourceName: "circle_car"))
         carPicImageView.image = #imageLiteral(resourceName: "circle_car")
     }
     
-//    Сохранение изменений номера машны
+//    Сохранение изменений данных машны
     @IBAction func saveChanges(_ sender: Any) {
         guard char1TextField.text != "",
               char2TextField.text != "",

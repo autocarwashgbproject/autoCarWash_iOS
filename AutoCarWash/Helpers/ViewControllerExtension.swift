@@ -32,8 +32,16 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
+//    Скрытие кнопки "назад" в НавБар
     func hideNavBarItem() {
         navigationItem.hidesBackButton = true
+    }
+    
+//    Выбор фото из фотогалереи
+    func pickPhotoFromLibrary(imagePicker: UIImagePickerController) {
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
     }
     
 }

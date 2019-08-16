@@ -44,7 +44,11 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         emailTextField.text = user.email
         birthdayTextField.text = user.birthdayString
         
-       userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
+        userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
+        
+        let userPicTap = UITapGestureRecognizer(target: self, action: #selector(changeUserPic(recognizer:)))
+        userPicImageView.isUserInteractionEnabled = true
+        userPicImageView.addGestureRecognizer(userPicTap)
     }
     
 //    Установка датапикера
@@ -56,22 +60,26 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     }
     
 //    Обработка изменения даты
-    @objc func dateChanged(){
+    @objc func dateChanged() {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd.MM.yyyy"
         birthdayTextField.text = formatter.string(from: birthdayPicker.date)
     }
     
 //    Изменение юзерпика
-    @IBAction func changeUserPic(_ sender: Any) {
-        userPicPicker.allowsEditing = true
-        userPicPicker.sourceType = .photoLibrary
-        present(userPicPicker, animated: true, completion: nil)
+//    - по нажатию на аватар
+    @objc func changeUserPic(recognizer: UITapGestureRecognizer) {
+        pickPhotoFromLibrary(imagePicker: userPicPicker)
+    }
+    
+//    - по нажатию на кнопку "Изменить фото"
+    @IBAction func changeUserPic(_ sender: UIButton) {
+        pickPhotoFromLibrary(imagePicker: userPicPicker)
     }
     
 //    Удаление юзерпика
     @IBAction func deleteUserPic(_ sender: Any) {
-        service.deleteImage(imageName: "userPic", image: userPic)
+        service.saveImage(imageName: "userPic", image: #imageLiteral(resourceName: "circle_user"))
         userPicImageView.image = #imageLiteral(resourceName: "circle_user")
     }
     
