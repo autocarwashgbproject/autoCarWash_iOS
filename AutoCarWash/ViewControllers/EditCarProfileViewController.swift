@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class EditCarProfileViewController: UIViewController {
+class EditCarProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var carPicImageView: UIImageView!
     @IBOutlet weak var char1TextField: UITextField!
@@ -19,13 +19,19 @@ class EditCarProfileViewController: UIViewController {
     @IBOutlet weak var char5TextField: UITextField!
     @IBOutlet weak var char6TextField: UITextField!
     @IBOutlet weak var regionTextField: UITextField!
+    let carPicPicker = UIImagePickerController()
+    var carPic = UIImage()
     let service = Service()
     var car: Car?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        carPicPicker.delegate = self
+        
         car = service.loadCarFromRealm()
+        
+        carPicImageView.image = service.loadImageFromDiskWith(fileName: "carPic")
         
         char1TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         char2TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -36,9 +42,14 @@ class EditCarProfileViewController: UIViewController {
     }
     
     @IBAction func changeCarPic(_ sender: Any) {
+        carPicPicker.allowsEditing = true
+        carPicPicker.sourceType = .photoLibrary
+        present(carPicPicker, animated: true, completion: nil)
     }
     
     @IBAction func deleteCarPic(_ sender: Any) {
+        service.deleteImage(imageName: "carPic", image: carPic)
+        carPicImageView.image = #imageLiteral(resourceName: "circle_car")
     }
     
 //    Сохранение изменений номера машны
@@ -49,15 +60,18 @@ class EditCarProfileViewController: UIViewController {
               char4TextField.text != "",
               char5TextField.text != "",
               char6TextField.text != "",
-              regionTextField.text != "" else { return }
+            regionTextField.text != "" else { service.saveImage(imageName: "carPic", image: carPic); sendAlert(title: "", message: "Фото автомобиля обновлено"); return }
         let carNum = "\(char1TextField.text!)\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!)\(char6TextField.text!)\(regionTextField.text!)"
-        let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!) \(regionTextField.text!)"
+        let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!)"
+        let reg = regionTextField.text!
         let car = Car()
         car.regNum = carNum
         car.regNumSpaces = carNumSp
+        car.region = reg
         car.isActive = true
         car.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+        service.saveImage(imageName: "carPic", image: carPic)
         sendAlert(title: "", message: "Данные автомобиля обновлены")
 //        Отправляем на сервер новый номер машины
     }
@@ -81,7 +95,7 @@ class EditCarProfileViewController: UIViewController {
         char6TextField.text = ""
         regionTextField.text = ""
         sendAlert(title: "", message: "Данные автомобиля удалены. Введите новый номер")
-//        Отправляем на сервер текущее время в параметре deleteDate
+//        Отправляем на сервер тзапрос об удалении машины
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
@@ -91,40 +105,17 @@ class EditCarProfileViewController: UIViewController {
         }
     }
     
-//    Лютая дичь, надо переделать, не я хз как, полдня провозилась...
-    @objc func textField1DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            char2TextField.becomeFirstResponder()
+//    Функции выбора карпика
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            carPicImageView.contentMode = .scaleAspectFill
+            carPic = pickedImage
+            carPicImageView.image = carPic
         }
+        dismiss(animated: true, completion: nil)
     }
     
-    @objc func textField2DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            char3TextField.becomeFirstResponder()
-        }
-    }
-    
-    @objc func textField3DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            char4TextField.becomeFirstResponder()
-        }
-    }
-    
-    @objc func textField4DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            char5TextField.becomeFirstResponder()
-        }
-    }
-    
-    @objc func textField5DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            char6TextField.becomeFirstResponder()
-        }
-    }
-    
-    @objc func textField6DidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
-            regionTextField.becomeFirstResponder()
-        }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
 }

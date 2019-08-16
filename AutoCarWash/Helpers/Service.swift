@@ -50,12 +50,25 @@ class Service {
         return car
     }
     
+//    Удаление данных из Realm
+    func deleteDataFromRealm() {
+        do {
+            let realm = try Realm()
+            realm.beginWrite()
+            realm.deleteAll()
+            try realm.commitWrite()
+        } catch {
+            print(error)
+        }
+    }
+    
 //    Преобразование текущей даты в Int от UnixTime
     func dateToUnixtime(date: Date) -> Int {
         let timeInterval = date.timeIntervalSince1970
         return Int(timeInterval)
     }
     
+//    Получение даты из формата UNIXTime
     func getTimeFromUNIXTime(date: Int) -> String {
         let date = Date(timeIntervalSince1970: TimeInterval(date))
         let dateFormatter = DateFormatter()
@@ -65,10 +78,78 @@ class Service {
         return dateFormatter.string(from: date)
     }
     
+//    Преобразование строки с датой в формат Date
     func stringToDate(dateString: String) -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
         let date = dateFormatter.date(from: dateString)
         return date!
     }
+    
+//    Получение "красивого" номера телефона для отображения на экранах
+    func createTelNumString(_ telnum: String) -> String {
+        let telNumArr = Array(telnum)
+        let telNumSp = [telNumArr[0], telNumArr[1], telNumArr[2], "-",telNumArr[3], telNumArr[4],  telNumArr[5], "-", telNumArr[6], telNumArr[7], telNumArr[8], telNumArr[9]]
+        let telNumSpaces = String(telNumSp)
+        return telNumSpaces
+    }
+    
+//    Cохранение изображения
+    func saveImage(imageName: String, image: UIImage) {
+        
+        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        
+        let fileName = imageName
+        let fileURL = documentsDirectory.appendingPathComponent(fileName)
+        guard let data = image.jpegData(compressionQuality: 1) else { return }
+        
+        //Checks if file exists, removes it if so.
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                try FileManager.default.removeItem(atPath: fileURL.path)
+                print("Removed old image")
+            } catch let removeError {
+                print("couldn't remove file at path", removeError)
+            }
+        }
+        do {
+            try data.write(to: fileURL)
+        } catch let error {
+            print("error saving file with error", error)
+        }
+    }
+    
+//    Удаление изображения
+    func deleteImage(imageName: String, image: UIImage){
+        
+        guard let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+        
+        let fileName = imageName
+        let fileURL = documentsDirectory.appendingPathComponent(fileName)
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            do {
+                try FileManager.default.removeItem(atPath: fileURL.path)
+                print("Removed old image")
+            } catch let removeError {
+                print("couldn't remove file at path", removeError)
+            }
+        }
+    }
+    
+//    Загрузка изображения
+    func loadImageFromDiskWith(fileName: String) -> UIImage? {
+        
+        let documentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        
+        let userDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+        let paths = NSSearchPathForDirectoriesInDomains(documentDirectory, userDomainMask, true)
+        
+        if let dirPath = paths.first {
+            let imageUrl = URL(fileURLWithPath: dirPath).appendingPathComponent(fileName)
+            let image = UIImage(contentsOfFile: imageUrl.path)
+            return image
+        }
+        return nil
+    }
 }
+

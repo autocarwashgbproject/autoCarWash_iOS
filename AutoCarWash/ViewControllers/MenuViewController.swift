@@ -19,10 +19,15 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
 //        Загрузка данных пользователя для отображения
         userRLM = service.loadUserFromRealm()
         guard let user = userRLM else { return }
         userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
-        userTelNumLabel.text = "\(user.telNum)"
+        userTelNumLabel.text = "\(user.telNumString)"
     }
 }

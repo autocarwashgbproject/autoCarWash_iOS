@@ -17,6 +17,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var userEmailLabel: UILabel!
     @IBOutlet weak var carPicImageView: UIImageView!
     @IBOutlet weak var carNumberLabel: UILabel!
+    @IBOutlet weak var regionLabel: UILabel!
     @IBOutlet weak var editCarProfileButton: UIButton!
     let service = Service()
     var user: User?
@@ -25,7 +26,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        Проверка наличия оплаченного абонемента, если есть, прячем кнопку редактирования машины
+//        Проверка наличия оплаченного абонемента, если есть
 //        editCarProfileButton.isHidden = true
         
     }
@@ -43,7 +44,7 @@ class ProfileViewController: UIViewController {
         
 //        Отображение данных пользователя в соответствующих лэйблах
         userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
-        userTelNumberLabel.text = "\(userToShow.telNum)"
+        userTelNumberLabel.text = "\(userToShow.telNumString)"
         userEmailLabel.text = userToShow.email
         
         guard let carToShow = car else { return }
@@ -51,11 +52,15 @@ class ProfileViewController: UIViewController {
 //        Отображение данных авто в соответствующих лэйблах
         if carToShow.regNum != "" {
             carNumberLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-            carNumberLabel.text = "\(carToShow.regNumSpaces) rus"
+            carNumberLabel.text = carToShow.regNumSpaces
+            regionLabel.text = carToShow.region
         } else {
             carNumberLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
             carNumberLabel.text = "Вы не добавили информацию об автомобиле"
         }
-    }
+        
+        userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
 
+        carPicImageView.image = service.loadImageFromDiskWith(fileName: "carPic")
+    }
 }

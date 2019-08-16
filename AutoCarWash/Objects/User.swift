@@ -8,6 +8,8 @@
 
 import Foundation
 import RealmSwift
+import Alamofire
+import AlamofireObjectMapper
 
 class User: Object {
 
@@ -15,6 +17,7 @@ class User: Object {
     @objc dynamic var surname = ""
     @objc dynamic var patronymic = ""
     @objc dynamic var telNum = 0
+    @objc dynamic var telNumString = ""
     @objc dynamic var email = ""
     @objc dynamic var isActive = false
     @objc dynamic var registrationDate = 0
@@ -22,5 +25,5 @@ class User: Object {
     @objc dynamic var birthday = 0
     @objc dynamic var birthdayString = ""
     @objc dynamic var geolocation = ""
-    
+  
 }

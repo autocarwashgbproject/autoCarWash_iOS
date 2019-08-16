@@ -17,6 +17,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var repeatCodeLabel: UILabel!
     @IBOutlet weak var counterLabel: UILabel!
+    let service = Service()
     let loginSegueID = "logInSegue"
     let regSegueID = "registrationSegue"
     
@@ -27,8 +28,12 @@ class LoginViewController: UIViewController {
         counterLabel.isHidden = true
         
         setNavBarImage()
+        
+        service.saveImage(imageName: "userPic", image: #imageLiteral(resourceName: "circle_user"))
+        service.saveImage(imageName: "carPic", image: #imageLiteral(resourceName: "circle_car"))
     }
     
+//    Отправка пользователю смс с кодом
     @IBAction func getSMSCode(_ sender: Any) {
         repeatCodeLabel.isHidden = false
         counterLabel.isHidden = false
@@ -38,15 +43,17 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func login(_ sender: Any) {
+//        Отправить на сервер введённый код, получить ответ, если ок - идём дальше, если нет - алерт
 //        Отправить на сервер запрос о существовании пользователя с таким номером
 //        Если такой пользователь уже существует -
 //        guard codeTextField.text == "5555"  else { return } - сравниваем с  кодом из смс
 //            performSegue(withIdentifier: loginSegue, sender: self)
 //        Если пользователя нет -
-        guard codeTextField.text == "5555"  else { return } // - сравниваем с  кодом из смс
+        guard codeTextField.text == "5555"  else { return }
             performSegue(withIdentifier: regSegueID, sender: self)
     }
     
+//    Счётчик 60 секунд до возможности отправки повторного смс
     func countSec() {
         var sec = 60
         counterLabel.text = "\(sec) с"
@@ -56,10 +63,13 @@ class LoginViewController: UIViewController {
             self.counterLabel.text = "\(sec) с"
         }
     }
-    
+//    Сохрванение номера телефона в UserDefaults
     func saveTelNumber() {
-        guard let telNum = telephoneNumberTextField.text else { return }
+        guard let telNumText = telephoneNumberTextField.text else { return }
         let userDefaults = UserDefaults.standard
+        let telNum = Int(telNumText)
+        let telNumSpaces = service.createTelNumString(telNumText)
         userDefaults.set(telNum, forKey: "telNum")
+        userDefaults.set(telNumSpaces, forKey: "telNumSpaces")
     }
 }
