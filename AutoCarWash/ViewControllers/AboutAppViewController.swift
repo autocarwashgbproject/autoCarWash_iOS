@@ -14,4 +14,14 @@ class AboutAppViewController: UIViewController {
         super.viewDidLoad()
         
     }
+    
+    @IBAction func useConditionsPressed(_ sender: UIButton) {
+        WebViewURL.webViewURL.url = "https://github.com/"
+    }
+    
+    @IBAction func confPolicyPressed(_ sender: UIButton) {
+        WebViewURL.webViewURL.url = "https://apple.com/"
+    }
+    
+    
 }

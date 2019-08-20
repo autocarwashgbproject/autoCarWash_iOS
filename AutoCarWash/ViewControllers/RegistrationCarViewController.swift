@@ -49,8 +49,6 @@ class RegistrationCarViewController: UIViewController {
         car.regNum = carNum
         car.regNumSpaces = carNumSp
         car.region = reg
-        car.isActive = true
-        car.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
         performSegue(withIdentifier: segueID, sender: self)
     }

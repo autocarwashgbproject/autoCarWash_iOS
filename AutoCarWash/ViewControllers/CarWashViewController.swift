@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class CarWashViewController: UIViewController {
     
@@ -30,10 +31,9 @@ class CarWashViewController: UIViewController {
 //        Запрос на сервер для полученя имеющихся данных пользователя, сохранение в Realm
 //        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
 //        Если есть активная подписка, payButton.isHidden = true
-        subscribeStatusLabel.isHidden = true
-
+        subscribeStatusLabel.isHidden = true        
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         

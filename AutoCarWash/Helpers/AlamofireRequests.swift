@@ -8,22 +8,36 @@
 
 import Foundation
 import Alamofire
+import AlamofireObjectMapper
+import ObjectMapper
 
 class AlamofireRequests {
     
-    func getRequest(url: String) {
-        
-        Alamofire.request(url).responseJSON { response in
-            print (response)
+//    Запрос на получение данных пользователя
+    func getUserRequest(completion: @escaping (User) -> Void) {
+
+        let url = "http://185.17.121.228/api/v1/clients/\(Session.session.userID)/"
+        Alamofire.request(url).responseObject { (response: DataResponse<User>) in
+            guard let user = response.result.value else { return }
+            completion(user)
         }
     }
     
-//    Пример запроса, данные от балды)
-    func postRequest(url: String, parameters: Parameters) {
+//    Запрос "Авторизация клиента"
+    func clientAuthRequest(telNum: Int, smsCode: Int, completion: @escaping (ClientAuthResponse) -> Void) {
 
-        Alamofire.request(url, method: .post, parameters: parameters).responseJSON { response in
-            print(response)
+        let url = "http://185.17.121.228/api/v1/clients/register/"
+        let parameters = ["tel_num": "\(telNum)", "sms_code": "\(smsCode)"]
+        Alamofire.request(url, method: .post, parameters: parameters).responseObject { (response: DataResponse<ClientAuthResponse>) in
+            guard let authResponse = response.result.value else { return }
+            completion(authResponse)
         }
+    }
+    
+    func clientRegistrRequest(parameters: Parameters) {
+        
+        let url = "http://185.17.121.228/api/v1/clients/\(Session.session.userID)/"
+        Alamofire.request(url, method: .put, parameters: parameters)
     }
     
     func deleteDataFromServer(){

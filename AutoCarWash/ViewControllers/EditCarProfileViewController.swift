@@ -78,8 +78,6 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         car.regNum = carNum
         car.regNumSpaces = carNumSp
         car.region = reg
-        car.isActive = true
-        car.registrationDate = service.dateToUnixtime(date: Date())
         service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
         service.saveImage(imageName: "carPic", image: carPic)
         sendAlert(title: "", message: "Данные автомобиля обновлены")
