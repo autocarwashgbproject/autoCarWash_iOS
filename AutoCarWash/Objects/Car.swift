@@ -11,11 +11,9 @@ import RealmSwift
 
 class Car: Object {
     
+    @objc dynamic var carID = 0
     @objc dynamic var regNum = ""
     @objc dynamic var regNumSpaces = ""
     @objc dynamic var region = ""
-    @objc dynamic var isActive = false
-    @objc dynamic var registrationDate = 0
-    @objc dynamic var deleteDate = 0
     
 }

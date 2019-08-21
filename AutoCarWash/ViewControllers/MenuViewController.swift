@@ -16,11 +16,6 @@ class MenuViewController: UIViewController {
     let service = Service()
     var userRLM: User?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -30,4 +25,13 @@ class MenuViewController: UIViewController {
         userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
         userTelNumLabel.text = "\(user.telNumString)"
     }
+    
+    @IBAction func supportButtonPressed(_ sender: UIButton) {
+        WebViewURL.webViewURL.url = "https://google.com/"
+    }
+    
+    @IBAction func abuotAppButtonPressed(_ sender: UIButton) {
+        WebViewURL.webViewURL.url = "https://twitter.com/"
+    }
+    
 }

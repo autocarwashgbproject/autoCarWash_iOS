@@ -9,19 +9,25 @@
 import UIKit
 import WebKit
 
-class WebKitViewController: UIViewController {
+class WebKitViewController: UIViewController, WKUIDelegate {
 
-    @IBOutlet weak var webView: WKWebView!
-    let url = "https://google.com/"
+    var webView: WKWebView!
+    
+    override func loadView() {
+        let webConfiguration = WKWebViewConfiguration()
+        webView = WKWebView(frame: .zero, configuration: webConfiguration)
+        webView.uiDelegate = self
+        view = webView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setNavBarImage()
         
-        let urlRequest = URL(string: url)
-        let URL = URLRequest(url: urlRequest!)
-        webView.load(URL)
+        let url = URL(string: WebViewURL.webViewURL.url)
+        let request = URLRequest(url: url!)
+        webView.load(request)
         
     }
 }
