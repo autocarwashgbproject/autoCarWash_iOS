@@ -20,9 +20,9 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var counterLabel: UILabel!
     let request = AlamofireRequests()
     let service = Service()
-    let currentSession = Session.session
     let userDefaults = UserDefaults.standard
     var phoneNumber = 0
+    var code = 0
     let loginSegueID = "logInSegue"
     let regSegueID = "registrationSegue"
     
@@ -49,26 +49,34 @@ class LoginViewController: UIViewController {
         } else {
             return
         }
-//        Запрос на сервер для получения смс-кода "Регистрация номера телефона", если в ответе ок = false, алерт
+        request.getSMS(telNum: phoneNumber){ [weak self] smsResponse in
+            print(smsResponse.toJSON())
+            if smsResponse.ok == true {
+                self?.sendAlert(title: "Проверочный код", message: "\(smsResponse.code)")
+                self?.codeTextField.text = "\(smsResponse.code)"
+                self?.code = smsResponse.code
+            } else {
+                self?.sendAlert(title: "Не удалось отправить код", message: "Проверьте правильность указанного номера телефона и повторите попытку")
+            }
+        }
     }
     
     @IBAction func login(_ sender: Any) {
-//        guard let smsCodeStr = codeTextField.text else { return }
-//        let smsCode = Int(smsCodeStr)!
-//        request.clientAuthRequest(telNum: phoneNumber, smsCode: smsCode) { [weak self] authResponse in
-//            if authResponse.ok == true {
-//                self?.currentSession.token = authResponse.token
-//                self?.currentSession.userID = authResponse.userID
+        guard code != 0 else { return }
+        request.clientAuthRequest(telNum: phoneNumber, code: code) { [weak self] authResponse in
+            if authResponse.ok == true {
+                Session.session.token = authResponse.token
+                Session.session.userID = authResponse.userID
 //                if authResponse.isRegistr == true {
 //                    self?.performSegue(withIdentifier: self!.loginSegueID, sender: self)
+//                } else {
+                    self?.performSegue(withIdentifier: self!.regSegueID, sender: self)
 //                }
-//                self?.performSegue(withIdentifier: self!.regSegueID, sender: self)
-//            } else {
-//                self?.sendAlert(title: "Что-то пошло не так", message: "Не получается авторизоваться")
-//            }
-//        }
-        performSegue(withIdentifier: regSegueID, sender: self)
-    
+            } else {
+                self?.sendAlert(title: "Что-то пошло не так", message: "Не получается авторизоваться")
+            }
+            print(authResponse.toJSON())
+        }
     }
     
 //    Счётчик 60 секунд до возможности отправки повторного смс

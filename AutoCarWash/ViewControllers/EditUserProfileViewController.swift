@@ -24,14 +24,11 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     let service = Service()
     let alamofireRequest = AlamofireRequests()
     var userRLM: User?
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         addDatePicker()
-        
-        userPicPicker.delegate = self
         
         userRLM = service.loadUserFromRealm()
         
@@ -45,6 +42,12 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         birthdayTextField.text = user.birthdayString
         
         userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super .viewDidAppear(true)
+        
+        userPicPicker.delegate = self
         
         let userPicTap = UITapGestureRecognizer(target: self, action: #selector(changeUserPic(recognizer:)))
         userPicImageView.isUserInteractionEnabled = true

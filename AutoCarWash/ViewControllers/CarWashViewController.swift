@@ -27,7 +27,7 @@ class CarWashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
 //        Запрос на сервер для полученя имеющихся данных пользователя, сохранение в Realm
 //        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
 //        Если есть активная подписка, payButton.isHidden = true
