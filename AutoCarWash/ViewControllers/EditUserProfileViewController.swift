@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import Alamofire
 
 class EditUserProfileViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -16,6 +17,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     @IBOutlet weak var surnameTextField: UITextField!
     @IBOutlet weak var patronymicTextField: UITextField!
     @IBOutlet weak var telNumTextField: UITextField!
+    @IBOutlet weak var telNumLabel: UILabel!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var birthdayTextField: UITextField!
     let birthdayPicker = UIDatePicker()
@@ -24,9 +26,11 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     let service = Service()
     let alamofireRequest = AlamofireRequests()
     var userRLM: User?
+    var userTelNum = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        telNumTextField.isHidden = true
         
         addDatePicker()
         
@@ -34,10 +38,11 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         
         guard let user = userRLM else { return }
         
+        userTelNum = user.telNum
         nameTextField.text = user.firstName
         surnameTextField.text = user.surname
         patronymicTextField.text = user.patronymic
-        telNumTextField.text = "\(user.telNum)"
+        telNumLabel.text = "\(user.telNumString)"
         emailTextField.text = user.email
         birthdayTextField.text = user.birthdayString
         
@@ -88,35 +93,47 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     
 //    Сохранение изменений данных пользователя
     @IBAction func saveChanges(_ sender: Any) {
-        var birthDayUNIX = 0
+        var birthDayUNIX = 1
         guard nameTextField.text != "",
-              surnameTextField.text != "",
-              telNumTextField.text != "",
-              telNumTextField.text?.count == 10 else { sendAlert(title: "", message: "Пожалуйста, обязательно укажите имя, фамилию и номер телефона") ; return }
+              surnameTextField.text != "" else { sendAlert(title: "Заполнены не все поля", message: "Поля 'Имя' и 'Фамилия' не могут быть пустыми") ; return }
         if birthdayTextField.text != "" {
             let dateOfBirth = service.stringToDate(dateString: birthdayTextField.text!)
             birthDayUNIX = service.dateToUnixtime(date: dateOfBirth)
         }
-        let userTelNum = Int(telNumTextField.text!)
-        let userTelNumSp = service.createTelNumString(telNumTextField.text!)
-        do {
-            let realm = try Realm()
-            let user = realm.objects(User.self).first!
-            try realm.write {
-                user.setValue(nameTextField.text, forKey: "firstName")
-                user.setValue(surnameTextField.text, forKey: "surname")
-                user.setValue(patronymicTextField.text, forKey: "patronymic")
-                user.setValue(userTelNum, forKey: "telNum")
-                user.setValue(userTelNumSp, forKey: "telNumString")
-                user.setValue(emailTextField.text, forKey: "email")
-                user.setValue(birthDayUNIX, forKey: "birthday")
-                user.setValue(birthdayTextField.text, forKey: "birthdayString")
+        let userName = nameTextField.text!
+        let userSurname = surnameTextField.text!
+        let userPatronymic = patronymicTextField.text ?? ""
+        let userEmail = emailTextField.text ?? ""
+        let userParameters: Parameters = ["name": userName,
+                                          "surname": userSurname,
+                                          "patronymic": userPatronymic,
+                                          "phone": userTelNum,
+                                          "email": userEmail,
+                                          "birthday": birthDayUNIX]
+        alamofireRequest.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
+            print(userResponse.toJSON())
+            if userResponse.ok == true {
+                do {
+                    let realm = try Realm()
+                    let user = realm.objects(User.self).first!
+                    try realm.write {
+                        user.setValue(userResponse.firstName, forKey: "firstName")
+                        user.setValue(userResponse.surname, forKey: "surname")
+                        user.setValue(userResponse.patronymic, forKey: "patronymic")
+                        user.setValue(userResponse.email, forKey: "email")
+                        user.setValue(userResponse.birthday, forKey: "birthday")
+                        user.setValue(self!.birthdayTextField.text, forKey: "birthdayString")
+                    }
+                } catch {
+                    print(error)
+                }
+                self?.sendAlert(title: "Данные сохранены", message: "Ваш профиль успешно обновлён")
+            } else {
+                self?.sendAlert(title: "Не удалось обновить профиль", message: "Пожалуйста, проверьте правильность введённых данных")
             }
-        } catch {
-            print(error)
         }
+
         service.saveImage(imageName: "userPic", image: userPic)
-        sendAlert(title: "", message: "Ваши данные обновлены")
 //        Отправить на сервер новые данные
     }
     

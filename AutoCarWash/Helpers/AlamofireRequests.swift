@@ -36,8 +36,8 @@ class AlamofireRequests {
         }
     }
     
-//    Запрос регистрации пользователя
-    func clientRegistrRequest(parameters: Parameters, completion: @escaping (UserResponse) -> Void) {
+//    Запрос внесение изменений в данные пользователя
+    func clientSetDataRequest(parameters: Parameters, completion: @escaping (UserResponse) -> Void) {
         
         let url = "http://185.17.121.228/api/v1/clients/\(Session.session.userID)/"
         Alamofire.request(url, method: .put, parameters: parameters, encoding: JSONEncoding.default, headers: headers).responseObject { (response: DataResponse<UserResponse>) in
@@ -56,7 +56,11 @@ class AlamofireRequests {
         }
     }
     
-    func deleteDataFromServer(){
-//        Запрос на сервер об удаленеии даных
+//    Запрос на удаление данных пользователя
+    func deleteDataFromServer() {
+        let url = "http://185.17.121.228/api/v1/clients/\(Session.session.userID)/"
+        Alamofire.request(url, method: .delete, headers: headers).responseJSON { response in
+            print(response)
+        }
     }
 }

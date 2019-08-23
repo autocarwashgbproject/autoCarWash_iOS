@@ -456,6 +456,7 @@
                         <outlet property="userEmailLabel" destination="D1o-xH-xDG" id="d4s-Mb-byT"/>
                         <outlet property="userNameLabel" destination="z06-ow-RHS" id="6nm-0x-qbh"/>
                         <outlet property="userPicImageView" destination="RSg-f6-UyQ" id="jmt-lr-NaW"/>
+                        <outlet property="userProfileView" destination="KP4-2F-Vw0" id="JLb-00-Gzn"/>
                         <outlet property="userTelNumberLabel" destination="ags-8h-KWg" id="qcI-Wo-wVw"/>
                         <segue destination="PlQ-4X-o4A" kind="show" identifier="toPaymentVCSegue" id="tg4-RC-Jhe"/>
                     </connections>
@@ -1570,6 +1571,12 @@
                                             <action selector="surnameTextField:" destination="PQ2-fh-kle" eventType="editingDidEnd" id="6xG-Yd-XQS"/>
                                         </connections>
                                     </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKX-OL-hKn">
+                                        <rect key="frame" x="159" y="378.66666666666669" width="241" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="line" translatesAutoresizingMaskIntoConstraints="NO" id="nqO-zX-g3d" userLabel="line4">
                                         <rect key="frame" x="14" y="407" width="386" height="10"/>
                                         <constraints>
@@ -1698,6 +1705,7 @@
                                     <constraint firstItem="214-k6-tf7" firstAttribute="top" secondItem="0oA-yI-dFb" secondAttribute="bottom" constant="41" id="2kU-c1-lvf"/>
                                     <constraint firstAttribute="trailing" secondItem="0oA-yI-dFb" secondAttribute="trailing" constant="14" id="3OK-ZG-JmO"/>
                                     <constraint firstItem="H78-RI-6Zu" firstAttribute="centerX" secondItem="qrv-9E-wPr" secondAttribute="centerX" id="4LS-bY-zNs"/>
+                                    <constraint firstItem="hKX-OL-hKn" firstAttribute="leading" secondItem="hUk-ZO-ahj" secondAttribute="trailing" id="4xZ-ju-GUR"/>
                                     <constraint firstItem="7KE-tx-hwP" firstAttribute="centerY" secondItem="4T2-Jt-zRa" secondAttribute="centerY" id="552-Wk-pS1"/>
                                     <constraint firstItem="hUk-ZO-ahj" firstAttribute="centerY" secondItem="4T2-Jt-zRa" secondAttribute="centerY" id="6Kj-AP-vp6"/>
                                     <constraint firstItem="8sZ-yG-uq3" firstAttribute="centerY" secondItem="KoQ-lw-H2M" secondAttribute="centerY" id="6SK-kL-8WW"/>
@@ -1745,12 +1753,14 @@
                                     <constraint firstItem="7KE-tx-hwP" firstAttribute="leading" secondItem="8sZ-yG-uq3" secondAttribute="leading" constant="20" id="gu2-aE-fUx"/>
                                     <constraint firstItem="nqO-zX-g3d" firstAttribute="trailing" secondItem="214-k6-tf7" secondAttribute="trailing" id="hqe-xB-S4u"/>
                                     <constraint firstItem="8sZ-yG-uq3" firstAttribute="leading" secondItem="KoQ-lw-H2M" secondAttribute="trailing" constant="10" id="iV5-sY-5un"/>
+                                    <constraint firstItem="hKX-OL-hKn" firstAttribute="centerY" secondItem="hUk-ZO-ahj" secondAttribute="centerY" id="iwb-pP-Qrc"/>
                                     <constraint firstItem="Rbd-Mf-csX" firstAttribute="trailing" secondItem="wwP-Uz-k5N" secondAttribute="trailing" id="kBL-Ss-olG"/>
                                     <constraint firstItem="7KE-tx-hwP" firstAttribute="leading" secondItem="hUk-ZO-ahj" secondAttribute="trailing" id="kTD-DQ-Q5h"/>
                                     <constraint firstItem="Rbd-Mf-csX" firstAttribute="top" secondItem="214-k6-tf7" secondAttribute="bottom" constant="41" id="l37-ib-1ww"/>
                                     <constraint firstItem="214-k6-tf7" firstAttribute="leading" secondItem="0oA-yI-dFb" secondAttribute="leading" id="mPg-bO-Rcd"/>
                                     <constraint firstItem="BHV-zJ-pLN" firstAttribute="centerX" secondItem="g8Y-g6-g1d" secondAttribute="centerX" id="nCP-T8-nEx"/>
                                     <constraint firstItem="Rbd-Mf-csX" firstAttribute="leading" secondItem="Lgt-MI-t4h" secondAttribute="leading" constant="-16" id="qt1-Fh-yCi"/>
+                                    <constraint firstItem="hKX-OL-hKn" firstAttribute="centerX" secondItem="7KE-tx-hwP" secondAttribute="centerX" id="rWP-VV-LeO"/>
                                     <constraint firstItem="V3A-yc-8L6" firstAttribute="centerX" secondItem="Mnj-Yo-K3N" secondAttribute="centerX" id="ruE-jR-bR2"/>
                                     <constraint firstItem="Afd-Dk-HnU" firstAttribute="bottom" secondItem="Nfe-VQ-IuE" secondAttribute="bottom" id="s2s-d4-aCy"/>
                                     <constraint firstItem="214-k6-tf7" firstAttribute="trailing" secondItem="0oA-yI-dFb" secondAttribute="trailing" id="t05-FY-BDC"/>
@@ -1788,6 +1798,7 @@
                         <outlet property="nameTextField" destination="8sZ-yG-uq3" id="Y4Q-3D-Vhl"/>
                         <outlet property="patronymicTextField" destination="MH9-s3-sjn" id="i6D-K9-5DW"/>
                         <outlet property="surnameTextField" destination="wwP-Uz-k5N" id="iTo-ei-MHR"/>
+                        <outlet property="telNumLabel" destination="hKX-OL-hKn" id="tRi-n8-HlJ"/>
                         <outlet property="telNumTextField" destination="7KE-tx-hwP" id="Vc3-1b-5OO"/>
                         <outlet property="userPicImageView" destination="qrv-9E-wPr" id="vLC-Gx-npa"/>
                         <segue destination="WFR-iS-YPF" kind="presentation" identifier="logOutSegue" modalTransitionStyle="flipHorizontal" id="oV2-19-8Rg"/>
@@ -1795,7 +1806,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f61-hH-eJa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3249" y="69"/>
+            <point key="canvasLocation" x="3247.826086956522" y="68.478260869565219"/>
         </scene>
         <!--RegistrationForm-->
         <scene sceneID="Jc7-BV-fIC">
@@ -2269,7 +2280,7 @@
         <image name="user" width="15" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ctv-AV-GNO"/>
+        <segue reference="tg4-RC-Jhe"/>
         <segue reference="9bo-3p-OVO"/>
         <segue reference="NE6-ip-aiX"/>
     </inferredMetricsTieBreakers>

@@ -63,9 +63,9 @@ class RegistrationUserViewController: UIViewController {
                                           "patronymic": patronymic,
                                           "phone": userTelNum,
                                           "email": email,
-                                          "birthday": 123]
+                                          "birthday": 1]
  
-        request.clientRegistrRequest(parameters: userParameters) { userResponse in
+        request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print(userResponse.toJSON())
             let currentUser = User()
             currentUser.userID = userResponse.id
@@ -73,9 +73,10 @@ class RegistrationUserViewController: UIViewController {
             currentUser.surname = userResponse.surname
             currentUser.patronymic = userResponse.patronymic
             currentUser.email = userResponse.email
-            currentUser.telNum = self.userTelNum
-            currentUser.telNumString = self.userTelNumSp
-            self.service.saveDataInRealmWithDeletingOld(object: currentUser, objectType: User.self)
+            currentUser.telNum = self!.userTelNum
+            currentUser.telNumString = self!.userTelNumSp
+            currentUser.token = Session.session.token
+            self?.service.saveDataInRealmWithDeletingOld(object: currentUser, objectType: User.self)
         }
             performSegue(withIdentifier: regCarSegueID, sender: self)
     }

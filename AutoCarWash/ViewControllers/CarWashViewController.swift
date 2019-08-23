@@ -8,9 +8,11 @@
 
 import UIKit
 import Alamofire
+import RealmSwift
 
 class CarWashViewController: UIViewController {
     
+    @IBOutlet weak var userProfileView: ProfileView!
     @IBOutlet weak var userPicImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userTelNumberLabel: UILabel!
@@ -28,7 +30,6 @@ class CarWashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        Запрос на сервер для полученя имеющихся данных пользователя, сохранение в Realm
 //        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
 //        Если есть активная подписка, payButton.isHidden = true
         subscribeStatusLabel.isHidden = true        
@@ -39,6 +40,10 @@ class CarWashViewController: UIViewController {
         
 //        Загрузка данных пользователя из Realm
         user = service.loadUserFromRealm()
+        
+        if user?.firstName == "" {
+            loadDataFromServerAndSaveInRLM()
+        }
         
         guard let userToShow = user else { return }
         
@@ -65,5 +70,27 @@ class CarWashViewController: UIViewController {
         performSegue(withIdentifier: paySegueID, sender: self)
     }
     
-    
+    func loadDataFromServerAndSaveInRLM() {
+        reguest.getUserDataRequest() { [weak self] userResponse in
+            let currentUser = User()
+            currentUser.firstName = userResponse.firstName
+            currentUser.surname = userResponse.surname
+            currentUser.patronymic = userResponse.patronymic
+            currentUser.telNum = userResponse.telNum
+            currentUser.telNumString = self!.service.createTelNumString(String(userResponse.telNum))
+            currentUser.birthday = userResponse.birthday
+            if userResponse.birthday == 0 {
+                currentUser.birthdayString = ""
+            } else {
+                currentUser.birthdayString = self!.service.getDateFromUNIXTime(date: userResponse.birthday)
+            }
+            currentUser.email = userResponse.email
+            currentUser.token = Session.session.token
+            currentUser.userID = Session.session.userID
+            self?.service.saveDataInRealmWithDeletingOld(object: currentUser, objectType: User.self)
+            self?.userNameLabel.text = "\(currentUser.firstName) \(currentUser.patronymic) \(currentUser.surname)"
+            self?.userTelNumberLabel.text = currentUser.telNumString
+            self?.userEmailLabel.text = currentUser.email
+        }
+    }
 }

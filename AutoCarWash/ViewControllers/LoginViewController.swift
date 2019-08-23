@@ -67,11 +67,11 @@ class LoginViewController: UIViewController {
             if authResponse.ok == true {
                 Session.session.token = authResponse.token
                 Session.session.userID = authResponse.userID
-//                if authResponse.isRegistr == true {
-//                    self?.performSegue(withIdentifier: self!.loginSegueID, sender: self)
-//                } else {
+                if authResponse.isRegistr == true {
+                    self?.performSegue(withIdentifier: self!.loginSegueID, sender: self)
+                } else {
                     self?.performSegue(withIdentifier: self!.regSegueID, sender: self)
-//                }
+                }
             } else {
                 self?.sendAlert(title: "Что-то пошло не так", message: "Не получается авторизоваться")
             }
@@ -99,4 +99,5 @@ class LoginViewController: UIViewController {
         userDefaults.set(phoneNumber, forKey: "telNum")
         userDefaults.set(telNumSpaces, forKey: "telNumSpaces")
     }
+    
 }

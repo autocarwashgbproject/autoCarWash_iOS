@@ -22,5 +22,6 @@ class User: Object {
     @objc dynamic var birthday = 0
     @objc dynamic var birthdayString = ""
     @objc dynamic var geolocation = ""
+    @objc dynamic var token = ""
 
 }

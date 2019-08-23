@@ -70,7 +70,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
               char4TextField.text != "",
               char5TextField.text != "",
               char6TextField.text != "",
-            regionTextField.text != "" else { service.saveImage(imageName: "carPic", image: carPic); sendAlert(title: "", message: "Фото автомобиля обновлено"); return }
+            regionTextField.text != "" else { service.saveImage(imageName: "carPic", image: carPic); sendAlert(title: "Данные сохранены", message: "Фото автомобиля обновлено"); return }
         let carNum = "\(char1TextField.text!)\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!)\(char6TextField.text!)\(regionTextField.text!)"
         let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!)"
         let reg = regionTextField.text!
@@ -80,7 +80,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         car.region = reg
         service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
         service.saveImage(imageName: "carPic", image: carPic)
-        sendAlert(title: "", message: "Данные автомобиля обновлены")
+        sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
 //        Отправляем на сервер новый номер машины
     }
     
@@ -102,7 +102,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         char5TextField.text = ""
         char6TextField.text = ""
         regionTextField.text = ""
-        sendAlert(title: "", message: "Данные автомобиля удалены. Введите новый номер")
+        sendAlert(title: "Данные автомобиля удалены", message: "Введите новый номер")
 //        Отправляем на сервер тзапрос об удалении машины
     }
     

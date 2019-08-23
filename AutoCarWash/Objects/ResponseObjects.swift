@@ -16,7 +16,7 @@ class GetSMSResponse: Mappable {
     var ok = false
     var error = 0
     var errorDescription = ""
-    var phone = ""
+    var phone = 0
     var code = 0
     
     required convenience init?(map: Map) {
@@ -38,7 +38,7 @@ class ClientAuthResponse: Mappable {
     var token = ""
     var userID = 0
     var isRegistr = false
-    var telNum = ""
+    var telNum = 0
     var error = 0
     var errorDescription = ""
     
