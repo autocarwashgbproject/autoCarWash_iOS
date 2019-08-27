@@ -40,14 +40,13 @@ class ProfileViewController: UIViewController {
 //        Загрузка даных авто из Realm
         car = service.loadCarFromRealm()
         
-        guard let userToShow = user else { return }
+        guard let userToShow = user,
+              let carToShow = car else { return }
         
 //        Отображение данных пользователя в соответствующих лэйблах
         userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
         userTelNumberLabel.text = "\(userToShow.telNumString)"
         userEmailLabel.text = userToShow.email
-        
-        guard let carToShow = car else { return }
         
 //        Отображение данных авто в соответствующих лэйблах
         if carToShow.regNum != "" {
@@ -56,7 +55,8 @@ class ProfileViewController: UIViewController {
             regionLabel.text = carToShow.region
         } else {
             carNumberLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-            carNumberLabel.text = "Вы не добавили информацию об автомобиле"
+            carNumberLabel.text = "x000xx"
+            regionLabel.text = "000"
         }
         
         userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")

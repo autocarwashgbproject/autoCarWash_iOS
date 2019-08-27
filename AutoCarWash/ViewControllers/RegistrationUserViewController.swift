@@ -28,7 +28,7 @@ class RegistrationUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         setNavBarImage()
         
         hideNavBarItem()
@@ -63,10 +63,12 @@ class RegistrationUserViewController: UIViewController {
                                           "patronymic": patronymic,
                                           "phone": userTelNum,
                                           "email": email,
-                                          "birthday": 1]
+                                          "is_birthday": false,
+                                          "birthday": 0]
  
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print(userResponse.toJSON())
+            guard userResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка. \(userResponse.errorDescription)"); return }
             let currentUser = User()
             currentUser.userID = userResponse.id
             currentUser.firstName = userResponse.firstName
@@ -95,5 +97,4 @@ class RegistrationUserViewController: UIViewController {
         webView.url = "https://geekbrains.ru/"
         performSegue(withIdentifier: readUserCondSegueID, sender: self)
     }
-    
 }

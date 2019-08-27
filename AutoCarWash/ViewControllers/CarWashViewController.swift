@@ -40,37 +40,44 @@ class CarWashViewController: UIViewController {
         
 //        Загрузка данных пользователя из Realm
         user = service.loadUserFromRealm()
-        
+//        Если в Realm нет юзера, грyзим с сервера и сохраняем в Realm
         if user?.firstName == "" {
-            loadDataFromServerAndSaveInRLM()
+            loadUserFromServerAndSaveInRLM()
         }
         
-        guard let userToShow = user else { return }
+//        Загрузка даных авто из Realm
+        car = service.loadCarFromRealm()
+//        Если в Realm нет авто, грузим с сервера и сохраняем в Realm
+        if car?.regNum == "" {
+            loadCarFromServerAndSaveInRLM()
+        }
+        
+        userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
+        
+        guard let userToShow = user,
+              let carToShow = car else { return }
         
         userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
         userTelNumberLabel.text = "\(userToShow.telNumString)"
         userEmailLabel.text = userToShow.email
         
-//        Загрузка даных авто из Realm
-        car = service.loadCarFromRealm()
-        guard let carToShow = car else { return }
-        if carToShow.regNumSpaces != "" {
+        if carToShow.regNum == "" {
+            carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+            carNumLabel.text = "x000xx"
+            regionLabel.text = "000"
+        } else {
             carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
             carNumLabel.text = carToShow.regNumSpaces
             regionLabel.text = carToShow.region
-        } else {
-            carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-            carNumLabel.text = "x000xx00"
         }
         
-        userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
     }
 
     @IBAction func goToPayment(_ sender: Any) {
         performSegue(withIdentifier: paySegueID, sender: self)
     }
     
-    func loadDataFromServerAndSaveInRLM() {
+    func loadUserFromServerAndSaveInRLM() {
         reguest.getUserDataRequest() { [weak self] userResponse in
             let currentUser = User()
             currentUser.firstName = userResponse.firstName
@@ -78,10 +85,11 @@ class CarWashViewController: UIViewController {
             currentUser.patronymic = userResponse.patronymic
             currentUser.telNum = userResponse.telNum
             currentUser.telNumString = self!.service.createTelNumString(String(userResponse.telNum))
-            currentUser.birthday = userResponse.birthday
-            if userResponse.birthday == 0 {
+            if userResponse.isBirthday == false {
                 currentUser.birthdayString = ""
+                currentUser.birthday = 0
             } else {
+                currentUser.birthday = userResponse.birthday
                 currentUser.birthdayString = self!.service.getDateFromUNIXTime(date: userResponse.birthday)
             }
             currentUser.email = userResponse.email
@@ -91,6 +99,21 @@ class CarWashViewController: UIViewController {
             self?.userNameLabel.text = "\(currentUser.firstName) \(currentUser.patronymic) \(currentUser.surname)"
             self?.userTelNumberLabel.text = currentUser.telNumString
             self?.userEmailLabel.text = currentUser.email
+        }
+    }
+    
+    func loadCarFromServerAndSaveInRLM() {
+        reguest.getCarDataRequest() { [weak self] carResponse in
+            print(carResponse.toJSON())
+            guard carResponse.ok == true else { return }
+            let car = Car()
+            car.carID = carResponse.id
+            car.regNum = carResponse.regNum
+            car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
+            car.region = self!.service.createRegion(regNum: carResponse.regNum)
+            self?.service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+            self?.carNumLabel.text = car.regNumSpaces
+            self?.regionLabel.text = car.region
         }
     }
 }

@@ -359,7 +359,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sRk-oR-Hvt" customClass="CarNumberView" customModule="AutoCarWash" customModuleProvider="target">
                                         <rect key="frame" x="123" y="60" width="140" height="30"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="777" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gqt-6b-uJX">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gqt-6b-uJX">
                                                 <rect key="frame" x="105" y="3.9999999999999991" width="30" height="13.666666666666664"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="30" id="bup-HZ-WgH"/>
@@ -1290,7 +1290,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cag-gd-io7" customClass="CarNumberView" customModule="AutoCarWash" customModuleProvider="target">
                                         <rect key="frame" x="179.66666666666666" y="44.666666666666686" width="144.99999999999997" height="40"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A 000 AA" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="02m-xS-1RN" userLabel="Car Num Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="X 000 XX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="02m-xS-1RN" userLabel="Car Num Label">
                                                 <rect key="frame" x="5" y="8" width="95" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="95" id="Hvw-sn-bbr"/>
@@ -1299,7 +1299,7 @@
                                                 <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="777" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N60-Em-Sdg">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N60-Em-Sdg">
                                                 <rect key="frame" x="110.00000000000003" y="4" width="30" height="17"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="30" id="af9-vs-LKh"/>

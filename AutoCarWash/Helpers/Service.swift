@@ -94,6 +94,25 @@ class Service {
         return telNumSpaces
     }
     
+//    Получение "красивого" номера машины и региона
+    func createRegNumSpaces(regNum: String) -> String {
+        guard regNum != "" else { return "" }
+        let regNumArr = Array(regNum)
+        let regNumSp = [regNumArr[0], " ", regNumArr[1], regNumArr[2], regNumArr[3], " ", regNumArr[4], regNumArr[5]]
+        let regNumSpaces = String(regNumSp)
+        return(regNumSpaces)
+    }
+    
+    func createRegion(regNum: String) -> String {
+        guard regNum != "" else { return "" }
+        var regNumArr = Array(regNum)
+        for _ in 1...6 {
+            regNumArr.removeFirst()
+        }
+        let region = String(regNumArr)
+        return(region)
+    }
+    
 //    Cохранение изображения
     func saveImage(imageName: String, image: UIImage) {
         

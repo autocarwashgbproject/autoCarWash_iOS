@@ -65,6 +65,7 @@ class UserResponse: Mappable {
     var patronymic = ""
     var telNum = 0
     var email = ""
+    var isBirthday = false
     var birthday = 0
     var ok = false
     var error = 0
@@ -81,9 +82,29 @@ class UserResponse: Mappable {
         patronymic <- map["patronymic"]
         telNum <- map["phone"]
         email <- map["email"]
+        isBirthday <- map["is_birthday"]
         birthday <- map["birthday"]
         ok <- map["ok"]
         error  <- map["error_code"]
         errorDescription <- map["description"]
+    }
+}
+
+class CarResponse: Mappable {
+    
+    var id = 0
+    var ok = false
+    var regNum = ""
+//    var error = 0
+//    var errorDescription = ""
+    
+    required convenience init?(map: Map) {
+        self.init()
+    }
+    
+    func mapping(map: Map) {
+        id <- map["id"]
+        ok <- map["ok"]
+        regNum <- map["reg_num"]
     }
 }

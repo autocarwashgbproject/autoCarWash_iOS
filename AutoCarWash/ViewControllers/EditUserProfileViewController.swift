@@ -24,7 +24,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     let userPicPicker = UIImagePickerController()
     var userPic = UIImage()
     let service = Service()
-    let alamofireRequest = AlamofireRequests()
+    let request = AlamofireRequests()
     var userRLM: User?
     var userTelNum = 0
 
@@ -93,12 +93,14 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     
 //    Сохранение изменений данных пользователя
     @IBAction func saveChanges(_ sender: Any) {
-        var birthDayUNIX = 1
+        var birthDayUNIX = 0
+        var isBirthday = false
         guard nameTextField.text != "",
               surnameTextField.text != "" else { sendAlert(title: "Заполнены не все поля", message: "Поля 'Имя' и 'Фамилия' не могут быть пустыми") ; return }
         if birthdayTextField.text != "" {
             let dateOfBirth = service.stringToDate(dateString: birthdayTextField.text!)
             birthDayUNIX = service.dateToUnixtime(date: dateOfBirth)
+            isBirthday = true
         }
         let userName = nameTextField.text!
         let userSurname = surnameTextField.text!
@@ -109,8 +111,9 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
                                           "patronymic": userPatronymic,
                                           "phone": userTelNum,
                                           "email": userEmail,
+                                          "is_birthday": isBirthday,
                                           "birthday": birthDayUNIX]
-        alamofireRequest.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
+        request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print(userResponse.toJSON())
             if userResponse.ok == true {
                 do {
@@ -134,13 +137,15 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         }
 
         service.saveImage(imageName: "userPic", image: userPic)
-//        Отправить на сервер новые данные
     }
     
 //    Выход
     @IBAction func logOut(_ sender: Any) {
-        service.deleteDataFromRealm()
-        performSegue(withIdentifier: "logOutSegue", sender: self)
+        request.logoutRequest() { [weak self] logoutResponse in
+            guard logoutResponse.ok == true else { return }
+            self?.service.deleteDataFromRealm()
+            self?.performSegue(withIdentifier: "logOutSegue", sender: self)
+        }
     }
     
 //    Удаление аккаунта
@@ -154,7 +159,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         let actionYes = UIAlertAction(title: "Да", style: .default, handler: { actionYes in
             self.service.deleteDataFromRealm()
-            self.alamofireRequest.deleteDataFromServer()
+            self.request.deleteUserDataFromServer()
             self.performSegue(withIdentifier: "logOutSegue", sender: self)
         })
         alert.addAction(actionNo)
