@@ -20,9 +20,9 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var counterLabel: UILabel!
     let request = AlamofireRequests()
     let service = Service()
-    let currentSession = Session.session
     let userDefaults = UserDefaults.standard
     var phoneNumber = 0
+    var code = 0
     let loginSegueID = "logInSegue"
     let regSegueID = "registrationSegue"
     
@@ -41,7 +41,7 @@ class LoginViewController: UIViewController {
     
 //    Отправка пользователю смс с кодом
     @IBAction func getSMSCode(_ sender: Any) {
-        saveTelNumber()
+        guard saveTelNumber() else { return }
         if counterLabel.isHidden == true || counterLabel.text == "0 c" {
                 repeatCodeLabel.isHidden = false
                 counterLabel.isHidden = false
@@ -49,26 +49,32 @@ class LoginViewController: UIViewController {
         } else {
             return
         }
-//        Запрос на сервер для получения смс-кода "Регистрация номера телефона", если в ответе ок = false, алерт
+        request.getSMS(telNum: phoneNumber){ [weak self] smsResponse in
+            print("GET SMS REQUEST: \(smsResponse.toJSON())")
+            if smsResponse.ok == true {
+                self?.sendAlert(title: "Проверочный код", message: "\(smsResponse.code)")
+                self?.codeTextField.text = "\(smsResponse.code)"
+                self?.code = smsResponse.code
+            } else {
+                self?.sendAlert(title: "Не удалось отправить код", message: "Проверьте правильность указанного номера телефона и повторите попытку")
+            }
+        }
     }
     
+//    Нажатие на кнопку "Далее", отправка на сервер телефона и проверочного кода
     @IBAction func login(_ sender: Any) {
-//        guard let smsCodeStr = codeTextField.text else { return }
-//        let smsCode = Int(smsCodeStr)!
-//        request.clientAuthRequest(telNum: phoneNumber, smsCode: smsCode) { [weak self] authResponse in
-//            if authResponse.ok == true {
-//                self?.currentSession.token = authResponse.token
-//                self?.currentSession.userID = authResponse.userID
-//                if authResponse.isRegistr == true {
-//                    self?.performSegue(withIdentifier: self!.loginSegueID, sender: self)
-//                }
-//                self?.performSegue(withIdentifier: self!.regSegueID, sender: self)
-//            } else {
-//                self?.sendAlert(title: "Что-то пошло не так", message: "Не получается авторизоваться")
-//            }
-//        }
-        performSegue(withIdentifier: regSegueID, sender: self)
-    
+        guard code != 0 else { return }
+        request.clientAuthRequest(telNum: phoneNumber, code: code) { [weak self] authResponse in
+            if authResponse.ok == true {
+                Session.session.token = authResponse.token
+                Session.session.userID = authResponse.userID
+                Session.session.carID = authResponse.carID
+                print("USER AUTH REQUEST: \(authResponse.toJSON())")
+                self!.loginORregistr()
+            } else {
+                self?.sendAlert(title: "Что-то пошло не так", message: "Не получается авторизоваться")
+            }
+        }
     }
     
 //    Счётчик 60 секунд до возможности отправки повторного смс
@@ -81,14 +87,28 @@ class LoginViewController: UIViewController {
             self.counterLabel.text = "\(sec) c"
         }
     }
+    
 //    Сохранение номера телефона в UserDefaults
-    func saveTelNumber() {
+    func saveTelNumber() -> Bool {
         guard let telNumText = telephoneNumberTextField.text,
-            telNumText.count == telephoneNumberTextField.maxLength else { sendAlert(title: "Что-то не так", message: "Проверьте правильность введённого номера"); return }
+            telNumText.count == telephoneNumberTextField.maxLength else { sendAlert(title: "Что-то не так", message: "Проверьте правильность введённого номера"); return false }
         let userDefaults = UserDefaults.standard
         phoneNumber = Int(telNumText)!
         let telNumSpaces = service.createTelNumString(telNumText)
         userDefaults.set(phoneNumber, forKey: "telNum")
         userDefaults.set(telNumSpaces, forKey: "telNumSpaces")
+        return true
+    }
+    
+//    Выбор сегвея для перехода, если данные пользователя есть на сервере - идём на главную, иначе - на регистрацию
+    func loginORregistr() {
+        request.getUserDataRequest() { [weak self] user in
+            print("GET USER REQUEST: \(user.toJSON())")
+            if user.firstName != "" {
+                self?.performSegue(withIdentifier: self!.loginSegueID, sender: self)
+            } else {
+                self?.performSegue(withIdentifier: self!.regSegueID, sender: self)
+            }
+        }
     }
 }

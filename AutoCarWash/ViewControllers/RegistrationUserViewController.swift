@@ -28,7 +28,7 @@ class RegistrationUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         setNavBarImage()
         
         hideNavBarItem()
@@ -54,25 +54,31 @@ class RegistrationUserViewController: UIViewController {
         guard let surname = surnameTextField.text,
               let name = nameTextField.text,
               let patronymic = patronymicTextField.text,
-              let telNum = telNumLabel.text,
               let email = emailTextField.text else { return }
         guard surname != "",
-              name != "",
-              telNum != "" else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, заполните все поля, помеченные звёздочкой"); return }
+              name != "" else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, заполните все поля, помеченные звёздочкой"); return }
         guard IAgreeImageView.image == UIImage(named: "Rectangle 3_filled")  else { sendAlert(title: "Заполнены не все поля", message: "Пожалуйста, подтвердите Ваше согласие с условиями пользования"); return}
-//        let params: Parameters = ["first_name": "\(name)",
-//                                  "surname": "\(surname)",
-//                                  "patronymic": "\(patronymic)",
-//                                  "tel_num": "\(userTelNum)",
-//                                  "email": "\(email)"]
+        let userParameters: Parameters = ["name": name,
+                                          "surname": surname,
+                                          "patronymic": patronymic,
+                                          "phone": userTelNum,
+                                          "email": email,
+                                          "is_birthday": false,
+                                          "birthday": 0]
+        request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
+            print("REGISTRATION USER: \(userResponse.toJSON())")
+            guard userResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка. \(userResponse.errorDescription)"); return }
             let currentUser = User()
-            currentUser.firstName = name
-            currentUser.surname = surname
-            currentUser.patronymic = patronymic
-            currentUser.email = email
-            currentUser.telNum = userTelNum
-            currentUser.telNumString = userTelNumSp
-            service.saveDataInRealmWithDeletingOld(object: currentUser, objectType: User.self)
+            currentUser.userID = userResponse.id
+            currentUser.firstName = userResponse.firstName
+            currentUser.surname = userResponse.surname
+            currentUser.patronymic = userResponse.patronymic
+            currentUser.email = userResponse.email
+            currentUser.telNum = self!.userTelNum
+            currentUser.telNumString = self!.userTelNumSp
+            currentUser.token = Session.session.token
+            self?.service.saveDataInRealmWithDeletingOld(object: currentUser, objectType: User.self)
+        }
             performSegue(withIdentifier: regCarSegueID, sender: self)
     }
     
@@ -85,10 +91,10 @@ class RegistrationUserViewController: UIViewController {
         }
     }
     
+//    Переход на страницу с текстом условий пользования
     @IBAction func readUseCondition(_ sender: UIButton) {
         let webView = WebViewURL.webViewURL
         webView.url = "https://geekbrains.ru/"
         performSegue(withIdentifier: readUserCondSegueID, sender: self)
     }
-    
 }

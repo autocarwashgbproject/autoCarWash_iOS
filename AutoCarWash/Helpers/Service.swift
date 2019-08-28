@@ -62,19 +62,18 @@ class Service {
         }
     }
     
-//    Преобразование текущей даты в Int от UnixTime
+//    Преобразование даты в Int от UnixTime
     func dateToUnixtime(date: Date) -> Int {
         let timeInterval = date.timeIntervalSince1970
         return Int(timeInterval)
     }
     
 //    Получение даты из формата UNIXTime
-    func getTimeFromUNIXTime(date: Int) -> String {
+    func getDateFromUNIXTime(date: Int) -> String {
         let date = Date(timeIntervalSince1970: TimeInterval(date))
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = "dd.MM.yyyy HH:mm"
+        dateFormatter.dateFormat = "dd.MM.yyyy"
         return dateFormatter.string(from: date)
     }
     
@@ -82,6 +81,7 @@ class Service {
     func stringToDate(dateString: String) -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         let date = dateFormatter.date(from: dateString)
         return date!
     }
@@ -92,6 +92,25 @@ class Service {
         let telNumSp = [telNumArr[0], telNumArr[1], telNumArr[2], "-",telNumArr[3], telNumArr[4],  telNumArr[5], "-", telNumArr[6], telNumArr[7], telNumArr[8], telNumArr[9]]
         let telNumSpaces = String(telNumSp)
         return telNumSpaces
+    }
+    
+//    Получение "красивого" номера машины и региона
+    func createRegNumSpaces(regNum: String) -> String {
+        guard regNum != "" else { return "" }
+        let regNumArr = Array(regNum)
+        let regNumSp = [regNumArr[0], " ", regNumArr[1], regNumArr[2], regNumArr[3], " ", regNumArr[4], regNumArr[5]]
+        let regNumSpaces = String(regNumSp)
+        return(regNumSpaces)
+    }
+    
+    func createRegion(regNum: String) -> String {
+        guard regNum != "" else { return "" }
+        var regNumArr = Array(regNum)
+        for _ in 1...6 {
+            regNumArr.removeFirst()
+        }
+        let region = String(regNumArr)
+        return(region)
     }
     
 //    Cохранение изображения

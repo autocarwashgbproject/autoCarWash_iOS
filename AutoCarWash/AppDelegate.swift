@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         IQKeyboardManager.shared.enable = true
         let config = Realm.Configuration(
-            schemaVersion: 8,
+            schemaVersion: 9,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 1) {
                 }
@@ -38,6 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let user = service.loadUserFromRealm()
         if user.telNum != 0 {
+            Session.session.userID = user.userID
+            Session.session.token = user.token
             self.window = UIWindow(frame: UIScreen.main.bounds)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let initialViewController = storyboard.instantiateViewController(withIdentifier: "SecondNavVC")

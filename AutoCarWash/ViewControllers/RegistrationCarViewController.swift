@@ -18,6 +18,7 @@ class RegistrationCarViewController: UIViewController {
     @IBOutlet weak var char6TextField: UITextField!
     @IBOutlet weak var regionTextField: UITextField!
     let service = Service()
+    let request = AlamofireRequests()
     let segueID = "toMainSegue"
     
     override func viewDidLoad() {
@@ -36,26 +37,35 @@ class RegistrationCarViewController: UIViewController {
     
     @IBAction func saveData(_ sender: Any) {
         guard char1TextField.text != "",
-            char2TextField.text != "",
-            char3TextField.text != "",
-            char4TextField.text != "",
-            char5TextField.text != "",
-            char6TextField.text != "",
-            regionTextField.text != "" else { sendAlert(title: "", message: "Пожалуйста, введите номер автомобиля полностью"); return }
-        let carNum = "\(char1TextField.text!)\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!)\(char6TextField.text!)\(regionTextField.text!)"
-        let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!)"
-        let reg = "\(regionTextField.text!)"
-        let car = Car()
-        car.regNum = carNum
-        car.regNumSpaces = carNumSp
-        car.region = reg
-        service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+              char2TextField.text != "",
+              char3TextField.text != "",
+              char4TextField.text != "",
+              char5TextField.text != "",
+              char6TextField.text != "",
+              regionTextField.text != "" else { sendAlert(title: "", message: "Пожалуйста, введите номер автомобиля полностью"); return }
+        let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
+        request.carRegistrationRequest(regNum: carNum) { [weak self] carRegistrResponse in
+            print("REGISTRATION CAR: \(carRegistrResponse.toJSON())")
+            guard carRegistrResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Не удаётся зарегистрировать автомобиль.\(carRegistrResponse.detail)"); return }
+            Session.session.carID = carRegistrResponse.id
+            let car = Car()
+            car.carID = carRegistrResponse.id
+            car.regNum = carRegistrResponse.regNum
+            car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carRegistrResponse.regNum)
+            car.region = self!.service.createRegion(regNum: carRegistrResponse.regNum)
+            self?.service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+            }
         performSegue(withIdentifier: segueID, sender: self)
-    }
+        }
     
+//    Перестановка курсора с одного текстфилда на другой
     @objc func textFieldDidChange(_ textField: UITextField) {
         if textField.text?.count == 1 {
             let nextTextField = view.viewWithTag(textField.tag + 1) as! UITextField
+            nextTextField.becomeFirstResponder()
+        }
+        if textField.text!.isEmpty {
+            let nextTextField = view.viewWithTag(textField.tag - 1) as! UITextField
             nextTextField.becomeFirstResponder()
         }
     }
