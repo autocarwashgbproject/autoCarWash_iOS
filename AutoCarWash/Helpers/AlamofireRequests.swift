@@ -25,11 +25,12 @@ class AlamofireRequests {
     
 //    Запрос "Авторизация клиента"
     func clientAuthRequest(telNum: Int, code: Int, completion: @escaping (ClientAuthResponse) -> Void) {
-        
         let url = "http://185.17.121.228/api/v1/clients/register/"
         let parameters = ["phone": "\(telNum)", "otp": "\(code)"]
         Alamofire.request(url, method: .post, parameters: parameters).responseObject { (response: DataResponse<ClientAuthResponse>) in
             guard let authResponse = response.result.value else { return }
+            Session.session.token = authResponse.token
+            Session.session.userID = authResponse.userID
             completion(authResponse)
         }
     }
@@ -65,7 +66,7 @@ class AlamofireRequests {
     }
     
 //    Запрос на удаление данных пользователя
-    func deleteUserDataFromServer() {
+    func deleteUserRequest() {
         let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
         let url = "http://185.17.121.228/api/v1/clients/\(Session.session.userID)/"
         Alamofire.request(url, method: .delete, headers: headers).responseJSON { response in
@@ -87,7 +88,7 @@ class AlamofireRequests {
 //    Запрос на редактирование данных авто
     func carSetDataRequest(regNum: String, completion: @escaping (CarResponse) -> Void) {
         let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
-        let url = "http://185.17.121.228/api/v1/cars/\(Session.session.userID)/"
+        let url = "http://185.17.121.228/api/v1/cars/\(Session.session.carID)/"
         let carParameters: Parameters = ["reg_num": "\(regNum)"]
         Alamofire.request(url, method: .put, parameters: carParameters, encoding: JSONEncoding.default, headers: headers).responseObject { (response: DataResponse<CarResponse>) in
             guard let car = response.result.value else { return }
@@ -98,8 +99,18 @@ class AlamofireRequests {
 //    Запрос на получение данных авто
     func getCarDataRequest(completion: @escaping (CarResponse) -> Void) {
         let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
-        let url = "http://185.17.121.228/api/v1/cars/\(Session.session.userID)/"
+        let url = "http://185.17.121.228/api/v1/cars/\(Session.session.carID)/"
         Alamofire.request(url, method: .get, headers: headers).responseObject { (response: DataResponse<CarResponse>) in
+            guard let car = response.result.value else { return }
+            completion(car)
+        }
+    }
+    
+//    Запрос на удаление авто
+    func deleteCarRequest(completion: @escaping (CarResponse) -> Void) {
+        let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
+        let url = "http://185.17.121.228/api/v1/cars/\(Session.session.carID)/"
+        Alamofire.request(url, method: .delete, headers: headers).responseObject { (response: DataResponse<CarResponse>) in
             guard let car = response.result.value else { return }
             completion(car)
         }

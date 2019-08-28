@@ -37,31 +37,35 @@ class RegistrationCarViewController: UIViewController {
     
     @IBAction func saveData(_ sender: Any) {
         guard char1TextField.text != "",
-            char2TextField.text != "",
-            char3TextField.text != "",
-            char4TextField.text != "",
-            char5TextField.text != "",
-            char6TextField.text != "",
-            regionTextField.text != "" else { sendAlert(title: "", message: "Пожалуйста, введите номер автомобиля полностью"); return }
+              char2TextField.text != "",
+              char3TextField.text != "",
+              char4TextField.text != "",
+              char5TextField.text != "",
+              char6TextField.text != "",
+              regionTextField.text != "" else { sendAlert(title: "", message: "Пожалуйста, введите номер автомобиля полностью"); return }
         let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
-        let carNumSp = "\(char1TextField.text!.uppercased()) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())"
-        let reg = "\(regionTextField.text!)"
         request.carRegistrationRequest(regNum: carNum) { [weak self] carResponse in
-            print(carResponse.toJSON())
-            guard carResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Не удаётся зарегистрировать автомобиль.");return }
-                let car = Car()
-                car.carID = carResponse.id
-                car.regNum = carResponse.regNum
-                car.regNumSpaces = carNumSp
-                car.region = reg
-                self?.service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+            print("REGISTRATION CAR: \(carResponse.toJSON())")
+            guard carResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Не удаётся зарегистрировать автомобиль.\(carResponse.detail)"); return }
+            Session.session.carID = carResponse.id
+            let car = Car()
+            car.carID = carResponse.id
+            car.regNum = carResponse.regNum
+            car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
+            car.region = self!.service.createRegion(regNum: carResponse.regNum)
+            self?.service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
             }
         performSegue(withIdentifier: segueID, sender: self)
         }
     
+//    Перестановка курсора с одного текстфилда на другой
     @objc func textFieldDidChange(_ textField: UITextField) {
         if textField.text?.count == 1 {
             let nextTextField = view.viewWithTag(textField.tag + 1) as! UITextField
+            nextTextField.becomeFirstResponder()
+        }
+        if textField.text!.isEmpty {
+            let nextTextField = view.viewWithTag(textField.tag - 1) as! UITextField
             nextTextField.becomeFirstResponder()
         }
     }

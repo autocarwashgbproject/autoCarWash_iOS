@@ -50,7 +50,7 @@ class LoginViewController: UIViewController {
             return
         }
         request.getSMS(telNum: phoneNumber){ [weak self] smsResponse in
-            print(smsResponse.toJSON())
+            print("GET SMS REQUEST: \(smsResponse.toJSON())")
             if smsResponse.ok == true {
                 self?.sendAlert(title: "Проверочный код", message: "\(smsResponse.code)")
                 self?.codeTextField.text = "\(smsResponse.code)"
@@ -61,19 +61,19 @@ class LoginViewController: UIViewController {
         }
     }
     
+//    Нажатие на кнопку "Далее", отправка на сервер телефона и проверочного кода
     @IBAction func login(_ sender: Any) {
         guard code != 0 else { return }
         request.clientAuthRequest(telNum: phoneNumber, code: code) { [weak self] authResponse in
             if authResponse.ok == true {
                 Session.session.token = authResponse.token
                 Session.session.userID = authResponse.userID
-                print(authResponse.toJSON())
+                print("USER AUTH REQUEST: \(authResponse.toJSON())")
                 self!.loginORregistr()
             } else {
                 self?.sendAlert(title: "Что-то пошло не так", message: "Не получается авторизоваться")
             }
         }
-//        performSegue(withIdentifier: loginSegueID, sender: self)
     }
     
 //    Счётчик 60 секунд до возможности отправки повторного смс
@@ -86,6 +86,7 @@ class LoginViewController: UIViewController {
             self.counterLabel.text = "\(sec) c"
         }
     }
+    
 //    Сохранение номера телефона в UserDefaults
     func saveTelNumber() -> Bool {
         guard let telNumText = telephoneNumberTextField.text,
@@ -101,7 +102,7 @@ class LoginViewController: UIViewController {
 //    Выбор сегвея для перехода, если данные пользователя есть на сервере - идём на главную, иначе - на регистрацию
     func loginORregistr() {
         request.getUserDataRequest() { [weak self] user in
-            print(user.toJSON())
+            print("GET USER REQUEST: \(user.toJSON())")
             if user.firstName != "" {
                 self?.performSegue(withIdentifier: self!.loginSegueID, sender: self)
             } else {

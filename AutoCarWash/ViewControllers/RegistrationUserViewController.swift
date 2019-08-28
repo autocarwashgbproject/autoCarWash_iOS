@@ -65,9 +65,8 @@ class RegistrationUserViewController: UIViewController {
                                           "email": email,
                                           "is_birthday": false,
                                           "birthday": 0]
- 
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
-            print(userResponse.toJSON())
+            print("REGISTRATION USER: \(userResponse.toJSON())")
             guard userResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка. \(userResponse.errorDescription)"); return }
             let currentUser = User()
             currentUser.userID = userResponse.id
@@ -92,6 +91,7 @@ class RegistrationUserViewController: UIViewController {
         }
     }
     
+//    Переход на страницу с текстом условий пользования
     @IBAction func readUseCondition(_ sender: UIButton) {
         let webView = WebViewURL.webViewURL
         webView.url = "https://geekbrains.ru/"

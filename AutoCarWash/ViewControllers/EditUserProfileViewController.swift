@@ -142,6 +142,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
 //    Выход
     @IBAction func logOut(_ sender: Any) {
         request.logoutRequest() { [weak self] logoutResponse in
+            print("LOGOUT: \(logoutResponse.toJSON())")
             guard logoutResponse.ok == true else { return }
             self?.service.deleteDataFromRealm()
             self?.performSegue(withIdentifier: "logOutSegue", sender: self)
@@ -159,7 +160,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         let actionYes = UIAlertAction(title: "Да", style: .default, handler: { actionYes in
             self.service.deleteDataFromRealm()
-            self.request.deleteUserDataFromServer()
+            self.request.deleteUserRequest()
             self.performSegue(withIdentifier: "logOutSegue", sender: self)
         })
         alert.addAction(actionNo)

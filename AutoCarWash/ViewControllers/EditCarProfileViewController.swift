@@ -20,8 +20,9 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     @IBOutlet weak var char6TextField: UITextField!
     @IBOutlet weak var regionTextField: UITextField!
     let carPicPicker = UIImagePickerController()
-    var carPic = UIImage()
+    var oldCarPic = UIImage()
     let service = Service()
+    let request = AlamofireRequests()
     var car: Car?
 
     override func viewDidLoad() {
@@ -32,6 +33,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         car = service.loadCarFromRealm()
         
         carPicImageView.image = service.loadImageFromDiskWith(fileName: "carPic")
+        oldCarPic = carPicImageView.image!
         
         char1TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         char2TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -70,40 +72,50 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
               char4TextField.text != "",
               char5TextField.text != "",
               char6TextField.text != "",
-            regionTextField.text != "" else { service.saveImage(imageName: "carPic", image: carPic); sendAlert(title: "Данные сохранены", message: "Фото автомобиля обновлено"); return }
-        let carNum = "\(char1TextField.text!)\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!)\(char6TextField.text!)\(regionTextField.text!)"
-        let carNumSp = "\(char1TextField.text!) \(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!) \(char5TextField.text!)\(char6TextField.text!)"
-        let reg = regionTextField.text!
-        let car = Car()
-        car.regNum = carNum
-        car.regNumSpaces = carNumSp
-        car.region = reg
-        service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
-        service.saveImage(imageName: "carPic", image: carPic)
-        sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
-//        Отправляем на сервер новый номер машины
+              regionTextField.text != "" else { if carPicImageView.image != oldCarPic {
+                service.saveImage(imageName: "carPic", image: carPicImageView.image!)
+                sendAlert(title: "Данные сохранены", message: "Фото автомобиля обновлено") };
+                return
+        }
+        let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
+        if car?.regNum != "" {
+            request.carSetDataRequest(regNum: carNum) { [weak self] carResponse in
+                print("EDIT CAR: \(carResponse.toJSON())")
+                guard carResponse.ok == true else { return }
+                self?.saveCarData(carResponse)
+            }
+        } else {
+            request.carRegistrationRequest(regNum: carNum) { carResponse in
+                print("ADD NEW CAR: \(carResponse.toJSON())")
+                guard carResponse.ok == true else { return }
+                self.saveCarData(carResponse)
+            }
+        }
     }
     
 //    Удаление машины
     @IBAction func deleteCar(_ sender: Any) {
-        do {
-            let realm = try Realm()
-            let car = realm.objects(Car.self)
-            realm.beginWrite()
-            realm.delete(car)
-            try realm.commitWrite()
-        } catch {
-            print(error)
+        request.deleteCarRequest() { [weak self] carResponse in
+            print("DELETED CAR: \(carResponse.toJSON())")
+            guard carResponse.ok == true else { return }
+            do {
+                let realm = try Realm()
+                let car = realm.objects(Car.self)
+                realm.beginWrite()
+                realm.delete(car)
+                try realm.commitWrite()
+            } catch {
+                print(error)
+            }
+            self?.char1TextField.text = ""
+            self?.char2TextField.text = ""
+            self?.char3TextField.text = ""
+            self?.char4TextField.text = ""
+            self?.char5TextField.text = ""
+            self?.char6TextField.text = ""
+            self?.regionTextField.text = ""
+            self?.sendAlert(title: "Данные автомобиля удалены", message: "Введите новый номер")
         }
-        char1TextField.text = ""
-        char2TextField.text = ""
-        char3TextField.text = ""
-        char4TextField.text = ""
-        char5TextField.text = ""
-        char6TextField.text = ""
-        regionTextField.text = ""
-        sendAlert(title: "Данные автомобиля удалены", message: "Введите новый номер")
-//        Отправляем на сервер тзапрос об удалении машины
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
@@ -117,7 +129,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             carPicImageView.contentMode = .scaleAspectFill
-            carPic = pickedImage
+            let carPic = pickedImage
             carPicImageView.image = carPic
         }
         dismiss(animated: true, completion: nil)
@@ -125,5 +137,17 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func saveCarData(_ carResponse: CarResponse) {
+        Session.session.carID = carResponse.id
+        let car = Car()
+        car.carID = carResponse.id
+        car.regNum = carResponse.regNum
+        car.regNumSpaces = service.createRegNumSpaces(regNum: carResponse.regNum)
+        car.region = service.createRegion(regNum: carResponse.regNum)
+        service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+        service.saveImage(imageName: "carPic", image: carPicImageView.image!)
+        sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
     }
 }

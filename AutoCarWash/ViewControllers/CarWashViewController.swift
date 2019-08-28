@@ -70,7 +70,7 @@ class CarWashViewController: UIViewController {
             carNumLabel.text = carToShow.regNumSpaces
             regionLabel.text = carToShow.region
         }
-        
+        Session.session.carID = carToShow.carID
     }
 
     @IBAction func goToPayment(_ sender: Any) {
@@ -104,8 +104,9 @@ class CarWashViewController: UIViewController {
     
     func loadCarFromServerAndSaveInRLM() {
         reguest.getCarDataRequest() { [weak self] carResponse in
-            print(carResponse.toJSON())
+            print("GET CAR REQUEST: \(carResponse.toJSON())")
             guard carResponse.ok == true else { return }
+            Session.session.carID = carResponse.id
             let car = Car()
             car.carID = carResponse.id
             car.regNum = carResponse.regNum

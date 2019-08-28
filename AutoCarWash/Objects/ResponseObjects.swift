@@ -95,8 +95,10 @@ class CarResponse: Mappable {
     var id = 0
     var ok = false
     var regNum = ""
-//    var error = 0
-//    var errorDescription = ""
+    var error = 0
+    var errorDescription = ""
+    var detail = ""
+    var idCar = 0
     
     required convenience init?(map: Map) {
         self.init()
@@ -106,5 +108,8 @@ class CarResponse: Mappable {
         id <- map["id"]
         ok <- map["ok"]
         regNum <- map["reg_num"]
+        error <- map["error_code"]
+        errorDescription <- map["description"]
+        detail <- map["detail"]
     }
 }
