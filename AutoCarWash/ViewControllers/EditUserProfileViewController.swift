@@ -114,7 +114,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
                                           "is_birthday": isBirthday,
                                           "birthday": birthDayUNIX]
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
-            print(userResponse.toJSON())
+            print("EDIT USER DATA: \(userResponse.toJSON())")
             if userResponse.ok == true {
                 do {
                     let realm = try Realm()

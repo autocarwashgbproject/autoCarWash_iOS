@@ -45,6 +45,8 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         let carPicTap = UITapGestureRecognizer(target: self, action: #selector(changeCarPic(recognizer:)))
         carPicImageView.isUserInteractionEnabled = true
         carPicImageView.addGestureRecognizer(carPicTap)
+        
+        setPlaseholders()
     }
     
 //    Изменение фото машины
@@ -95,9 +97,9 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     
 //    Удаление машины
     @IBAction func deleteCar(_ sender: Any) {
-        request.deleteCarRequest() { [weak self] carResponse in
-            print("DELETED CAR: \(carResponse.toJSON())")
-            guard carResponse.ok == true else { return }
+        request.deleteCarRequest() { [weak self] deleteCarResponse in
+            print("DELETED CAR: \(deleteCarResponse.toJSON())")
+            guard deleteCarResponse.ok == true else { return }
             do {
                 let realm = try Realm()
                 let car = realm.objects(Car.self)
@@ -107,13 +109,13 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
             } catch {
                 print(error)
             }
-            self?.char1TextField.text = ""
-            self?.char2TextField.text = ""
-            self?.char3TextField.text = ""
-            self?.char4TextField.text = ""
-            self?.char5TextField.text = ""
-            self?.char6TextField.text = ""
-            self?.regionTextField.text = ""
+            self?.char1TextField.placeholder = "X"
+            self?.char2TextField.placeholder = "0"
+            self?.char3TextField.placeholder = "0"
+            self?.char4TextField.placeholder = "0"
+            self?.char5TextField.placeholder = "X"
+            self?.char6TextField.placeholder = "X"
+            self?.regionTextField.placeholder = "000"
             self?.sendAlert(title: "Данные автомобиля удалены", message: "Введите новый номер")
         }
     }
@@ -149,5 +151,24 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
         service.saveImage(imageName: "carPic", image: carPicImageView.image!)
         sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
+    }
+    
+//    Отрисовка существующего номера машины в текстфилдах
+    func setPlaseholders() {
+        var carNum = ""
+        if car?.regNum != "" {
+            carNum = car!.regNum
+            regionTextField.placeholder = car!.region
+        } else {
+            carNum = "X000XX"
+            regionTextField.placeholder = "000"
+        }
+        let carNumArray = Array(carNum)
+        char1TextField.placeholder = "\(carNumArray[0])"
+        char2TextField.placeholder = "\(carNumArray[1])"
+        char3TextField.placeholder = "\(carNumArray[2])"
+        char4TextField.placeholder = "\(carNumArray[3])"
+        char5TextField.placeholder = "\(carNumArray[4])"
+        char6TextField.placeholder = "\(carNumArray[5])"
     }
 }

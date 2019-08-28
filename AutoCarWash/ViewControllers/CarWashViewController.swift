@@ -61,16 +61,19 @@ class CarWashViewController: UIViewController {
         userTelNumberLabel.text = "\(userToShow.telNumString)"
         userEmailLabel.text = userToShow.email
         
-        if carToShow.regNum == "" {
-            carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-            carNumLabel.text = "x000xx"
-            regionLabel.text = "000"
-        } else {
+        if carToShow.regNum != "" {
             carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+            regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
             carNumLabel.text = carToShow.regNumSpaces
             regionLabel.text = carToShow.region
+            Session.session.carID = carToShow.carID
+        } else {
+            carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+            regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+            carNumLabel.text = "x000xx"
+            regionLabel.text = "000"
         }
-        Session.session.carID = carToShow.carID
+        
     }
 
     @IBAction func goToPayment(_ sender: Any) {
@@ -106,13 +109,14 @@ class CarWashViewController: UIViewController {
         reguest.getCarDataRequest() { [weak self] carResponse in
             print("GET CAR REQUEST: \(carResponse.toJSON())")
             guard carResponse.ok == true else { return }
-            Session.session.carID = carResponse.id
             let car = Car()
             car.carID = carResponse.id
             car.regNum = carResponse.regNum
             car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
             car.region = self!.service.createRegion(regNum: carResponse.regNum)
             self?.service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+            self?.carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+            self?.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
             self?.carNumLabel.text = car.regNumSpaces
             self?.regionLabel.text = car.region
         }

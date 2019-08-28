@@ -111,8 +111,8 @@ class AlamofireRequests {
         let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
         let url = "http://185.17.121.228/api/v1/cars/\(Session.session.carID)/"
         Alamofire.request(url, method: .delete, headers: headers).responseObject { (response: DataResponse<CarResponse>) in
-            guard let car = response.result.value else { return }
-            completion(car)
+            guard let deleteCarResponse = response.result.value else { return }
+            completion(deleteCarResponse)
         }
     }
 }

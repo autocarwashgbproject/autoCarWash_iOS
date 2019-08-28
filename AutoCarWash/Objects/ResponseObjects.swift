@@ -41,6 +41,7 @@ class ClientAuthResponse: Mappable {
     var telNum = 0
     var error = 0
     var errorDescription = ""
+    var carID = 0
     
     required convenience init?(map: Map) {
         self.init()
@@ -54,6 +55,7 @@ class ClientAuthResponse: Mappable {
         telNum <- map["phone"]
         error <- map["error_code"]
         errorDescription <- map["description"]
+        carID <- map["cars_id.0"]
     }
 }
 
@@ -98,7 +100,6 @@ class CarResponse: Mappable {
     var error = 0
     var errorDescription = ""
     var detail = ""
-    var idCar = 0
     
     required convenience init?(map: Map) {
         self.init()

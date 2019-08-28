@@ -51,10 +51,12 @@ class ProfileViewController: UIViewController {
 //        Отображение данных авто в соответствующих лэйблах
         if carToShow.regNum != "" {
             carNumberLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+            regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
             carNumberLabel.text = carToShow.regNumSpaces
             regionLabel.text = carToShow.region
         } else {
             carNumberLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+            regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
             carNumberLabel.text = "x000xx"
             regionLabel.text = "000"
         }

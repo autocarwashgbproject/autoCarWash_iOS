@@ -44,15 +44,15 @@ class RegistrationCarViewController: UIViewController {
               char6TextField.text != "",
               regionTextField.text != "" else { sendAlert(title: "", message: "Пожалуйста, введите номер автомобиля полностью"); return }
         let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
-        request.carRegistrationRequest(regNum: carNum) { [weak self] carResponse in
-            print("REGISTRATION CAR: \(carResponse.toJSON())")
-            guard carResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Не удаётся зарегистрировать автомобиль.\(carResponse.detail)"); return }
-            Session.session.carID = carResponse.id
+        request.carRegistrationRequest(regNum: carNum) { [weak self] carRegistrResponse in
+            print("REGISTRATION CAR: \(carRegistrResponse.toJSON())")
+            guard carRegistrResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Не удаётся зарегистрировать автомобиль.\(carRegistrResponse.detail)"); return }
+            Session.session.carID = carRegistrResponse.id
             let car = Car()
-            car.carID = carResponse.id
-            car.regNum = carResponse.regNum
-            car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
-            car.region = self!.service.createRegion(regNum: carResponse.regNum)
+            car.carID = carRegistrResponse.id
+            car.regNum = carRegistrResponse.regNum
+            car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carRegistrResponse.regNum)
+            car.region = self!.service.createRegion(regNum: carRegistrResponse.regNum)
             self?.service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
             }
         performSegue(withIdentifier: segueID, sender: self)
