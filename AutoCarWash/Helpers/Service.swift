@@ -27,7 +27,7 @@ class Service {
     }
     
     //    Загрузка данных пользователя из Realm
-    func loadUserFromRealm() -> User {
+    func loadUserFromRealm(completion: (User) -> Void) {
         var user = User()
         do {
             let realm = try Realm()
@@ -35,11 +35,11 @@ class Service {
         } catch {
             print(error)
         }
-        return user
+        completion(user)
     }
     
 //    Загрузка данных автомобиля из Realm
-    func loadCarFromRealm() -> Car {
+    func loadCarFromRealm(completion: (Car) -> Void){
         var car = Car()
         do {
             let realm = try Realm()
@@ -47,7 +47,7 @@ class Service {
         } catch {
             print(error)
         }
-        return car
+        completion(car)
     }
     
 //    Удаление данных из Realm

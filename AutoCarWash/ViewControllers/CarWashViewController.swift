@@ -38,42 +38,35 @@ class CarWashViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-//        Загрузка данных пользователя из Realm
-        user = service.loadUserFromRealm()
-//        Если в Realm нет юзера, грyзим с сервера и сохраняем в Realm
-        if user?.firstName == "" {
-            loadUserFromServerAndSaveInRLM()
+//        Загрузка пользователя из Realm или с сервера и отображение данныъ
+        service.loadUserFromRealm() { user in
+            if user.firstName == "" {
+                loadUserFromServerAndSaveInRLM()
+            } else {
+                userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
+                userTelNumberLabel.text = "\(user.telNumString)"
+                userEmailLabel.text = user.email
+            }
         }
         
-//        Загрузка даных авто из Realm
-        car = service.loadCarFromRealm()
-//        Если в Realm нет авто, грузим с сервера и сохраняем в Realm
-        if car?.regNum == "" {
-            loadCarFromServerAndSaveInRLM()
+//        Загрузка авто из Realm или с сервера и отображение данных
+        service.loadCarFromRealm() { car in
+            if car.regNum == "" {
+                self.carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+                self.regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+                self.carNumLabel.text = "x000xx"
+                self.regionLabel.text = "000"
+                self.loadCarFromServerAndSaveInRLM()
+            } else {
+                self.carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+                self.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+                self.carNumLabel.text = car.regNumSpaces
+                self.regionLabel.text = car.region
+                Session.session.carID = car.carID
+            }
         }
         
         userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
-        
-        guard let userToShow = user,
-              let carToShow = car else { return }
-        
-        userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
-        userTelNumberLabel.text = "\(userToShow.telNumString)"
-        userEmailLabel.text = userToShow.email
-        
-        if carToShow.regNum != "" {
-            carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-            regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-            carNumLabel.text = carToShow.regNumSpaces
-            regionLabel.text = carToShow.region
-            Session.session.carID = carToShow.carID
-        } else {
-            carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-            regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-            carNumLabel.text = "x000xx"
-            regionLabel.text = "000"
-        }
-        
     }
 
     @IBAction func goToPayment(_ sender: Any) {

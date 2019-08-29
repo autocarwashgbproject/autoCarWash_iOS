@@ -36,22 +36,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print(error)
         }
         
-        let user = service.loadUserFromRealm()
-        if user.telNum != 0 {
-            Session.session.userID = user.userID
-            Session.session.token = user.token
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let initialViewController = storyboard.instantiateViewController(withIdentifier: "SecondNavVC")
-            self.window?.rootViewController = initialViewController
-            self.window?.makeKeyAndVisible()
-        } else {
-            self.window = UIWindow(frame: UIScreen.main.bounds)
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let initialViewController = storyboard.instantiateViewController(withIdentifier: "FirstNavVC")
-            self.window?.rootViewController = initialViewController
-            self.window?.makeKeyAndVisible()
+        service.loadUserFromRealm() { user in
+            if user.telNum != 0 {
+                Session.session.userID = user.userID
+                Session.session.token = user.token
+                self.window = UIWindow(frame: UIScreen.main.bounds)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let initialViewController = storyboard.instantiateViewController(withIdentifier: "SecondNavVC")
+                self.window?.rootViewController = initialViewController
+                self.window?.makeKeyAndVisible()
+            } else {
+                self.window = UIWindow(frame: UIScreen.main.bounds)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let initialViewController = storyboard.instantiateViewController(withIdentifier: "FirstNavVC")
+                self.window?.rootViewController = initialViewController
+                self.window?.makeKeyAndVisible()
+            }
         }
+
         
         return true
     }

@@ -34,31 +34,26 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-//        Загрузка даных пользователя из Realm
-        user = service.loadUserFromRealm()
+//        Загрузка пользователя из Realm и отображение данных
+        service.loadUserFromRealm() { user in
+            userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
+            userTelNumberLabel.text = "\(user.telNumString)"
+            userEmailLabel.text = user.email
+        }
         
-//        Загрузка даных авто из Realm
-        car = service.loadCarFromRealm()
-        
-        guard let userToShow = user,
-              let carToShow = car else { return }
-        
-//        Отображение данных пользователя в соответствующих лэйблах
-        userNameLabel.text = "\(userToShow.firstName) \(userToShow.patronymic) \(userToShow.surname)"
-        userTelNumberLabel.text = "\(userToShow.telNumString)"
-        userEmailLabel.text = userToShow.email
-        
-//        Отображение данных авто в соответствующих лэйблах
-        if carToShow.regNum != "" {
-            carNumberLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-            regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-            carNumberLabel.text = carToShow.regNumSpaces
-            regionLabel.text = carToShow.region
-        } else {
-            carNumberLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-            regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-            carNumberLabel.text = "x000xx"
-            regionLabel.text = "000"
+//        Загрузка авто из Realm и отображение данных
+        service.loadCarFromRealm() { car in
+            if car.regNum != "" {
+                carNumberLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+                regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+                carNumberLabel.text = car.regNumSpaces
+                regionLabel.text = car.region
+            } else {
+                carNumberLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+                regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+                carNumberLabel.text = "x000xx"
+                regionLabel.text = "000"
+            }
         }
         
         userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")

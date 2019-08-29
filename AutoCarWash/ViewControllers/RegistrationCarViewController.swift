@@ -54,8 +54,9 @@ class RegistrationCarViewController: UIViewController {
             car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carRegistrResponse.regNum)
             car.region = self!.service.createRegion(regNum: carRegistrResponse.regNum)
             self?.service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+            self?.performSegue(withIdentifier: self!.segueID, sender: self)
             }
-        performSegue(withIdentifier: segueID, sender: self)
+        
         }
     
 //    Перестановка курсора с одного текстфилда на другой

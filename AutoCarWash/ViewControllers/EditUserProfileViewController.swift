@@ -25,7 +25,6 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     var userPic = UIImage()
     let service = Service()
     let request = AlamofireRequests()
-    var userRLM: User?
     var userTelNum = 0
 
     override func viewDidLoad() {
@@ -34,17 +33,15 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         
         addDatePicker()
         
-        userRLM = service.loadUserFromRealm()
-        
-        guard let user = userRLM else { return }
-        
-        userTelNum = user.telNum
-        nameTextField.text = user.firstName
-        surnameTextField.text = user.surname
-        patronymicTextField.text = user.patronymic
-        telNumLabel.text = "\(user.telNumString)"
-        emailTextField.text = user.email
-        birthdayTextField.text = user.birthdayString
+        service.loadUserFromRealm() { user in
+            userTelNum = user.telNum
+            nameTextField.text = user.firstName
+            surnameTextField.text = user.surname
+            patronymicTextField.text = user.patronymic
+            telNumLabel.text = "\(user.telNumString)"
+            emailTextField.text = user.email
+            birthdayTextField.text = user.birthdayString
+        }
         
         userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
     }

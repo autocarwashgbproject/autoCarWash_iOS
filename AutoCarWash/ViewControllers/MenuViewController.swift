@@ -14,16 +14,14 @@ class MenuViewController: UIViewController {
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userTelNumLabel: UILabel!
     let service = Service()
-    var userRLM: User?
-
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-//        Загрузка данных пользователя для отображения
-        userRLM = service.loadUserFromRealm()
-        guard let user = userRLM else { return }
-        userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
-        userTelNumLabel.text = "\(user.telNumString)"
+//        Загрузка пользователя из Realm и отображение данных
+        service.loadUserFromRealm() { user in
+            userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
+            userTelNumLabel.text = "\(user.telNumString)"
+        }
     }
     
     @IBAction func supportButtonPressed(_ sender: UIButton) {

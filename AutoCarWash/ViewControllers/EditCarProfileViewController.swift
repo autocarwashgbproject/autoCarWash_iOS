@@ -23,14 +23,12 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     var oldCarPic = UIImage()
     let service = Service()
     let request = AlamofireRequests()
-    var car: Car?
+    var isCar = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         carPicPicker.delegate = self
-        
-        car = service.loadCarFromRealm()
         
         carPicImageView.image = service.loadImageFromDiskWith(fileName: "carPic")
         oldCarPic = carPicImageView.image!
@@ -46,7 +44,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         carPicImageView.isUserInteractionEnabled = true
         carPicImageView.addGestureRecognizer(carPicTap)
         
-        setPlaseholders()
+        setPlaceholders()
     }
     
 //    Изменение фото машины
@@ -80,7 +78,14 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
                 return
         }
         let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
-        if car?.regNum != "" {
+        service.loadCarFromRealm() { carRlm in
+            if carRlm.regNum != "" {
+                isCar = true
+            } else {
+                isCar = false
+            }
+        }
+        if isCar {
             request.carSetDataRequest(regNum: carNum) { [weak self] carResponse in
                 print("EDIT CAR: \(carResponse.toJSON())")
                 guard carResponse.ok == true else { return }
@@ -97,6 +102,13 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     
 //    Удаление машины
     @IBAction func deleteCar(_ sender: Any) {
+        char1TextField.text = ""
+        char2TextField.text = ""
+        char3TextField.text = ""
+        char4TextField.text = ""
+        char5TextField.text = ""
+        char6TextField.text = ""
+        regionTextField.text = ""
         request.deleteCarRequest() { [weak self] deleteCarResponse in
             print("DELETED CAR: \(deleteCarResponse.toJSON())")
             guard deleteCarResponse.ok == true else { return }
@@ -154,14 +166,16 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     }
     
 //    Отрисовка существующего номера машины в текстфилдах
-    func setPlaseholders() {
+    func setPlaceholders() {
         var carNum = ""
-        if car?.regNum != "" {
-            carNum = car!.regNum
-            regionTextField.placeholder = car!.region
-        } else {
-            carNum = "X000XX"
-            regionTextField.placeholder = "000"
+        service.loadCarFromRealm() { carRlm in
+            if carRlm.regNum != "" {
+                carNum = carRlm.regNum
+                regionTextField.placeholder = carRlm.region
+            } else {
+                carNum = "X000XX"
+                regionTextField.placeholder = "000"
+            }
         }
         let carNumArray = Array(carNum)
         char1TextField.placeholder = "\(carNumArray[0])"
