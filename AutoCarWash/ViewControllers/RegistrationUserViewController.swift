@@ -41,7 +41,6 @@ class RegistrationUserViewController: UIViewController {
         let IAgreeTap = UITapGestureRecognizer(target: self, action: #selector(agreeTap(recognizer:)))
         IAgreeImageView.isUserInteractionEnabled = true
         IAgreeImageView.addGestureRecognizer(IAgreeTap)
-        
     }
     
 //    Тап по картинкам "я согласем с условиями"

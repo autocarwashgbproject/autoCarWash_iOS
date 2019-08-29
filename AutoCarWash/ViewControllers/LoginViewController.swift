@@ -56,7 +56,7 @@ class LoginViewController: UIViewController {
                 self?.codeTextField.text = "\(smsResponse.code)"
                 self?.code = smsResponse.code
             } else {
-                self?.sendAlert(title: "Не удалось отправить код", message: "Проверьте правильность указанного номера телефона и повторите попытку")
+                self?.sendAlert(title: "Не удалось отправить код", message: "Если номер телефона указан верно, значит проблема на нашей стороне. А значит, очень скоро мы всё починим!")
             }
         }
     }
@@ -72,7 +72,7 @@ class LoginViewController: UIViewController {
                 print("USER AUTH REQUEST: \(authResponse.toJSON())")
                 self!.loginORregistr()
             } else {
-                self?.sendAlert(title: "Что-то пошло не так", message: "Не получается авторизоваться")
+                self?.sendAlert(title: "Не удалось авторизоваться.", message: "Если код указан верно, значит проблема на нашей стороне. А значит, очень скоро мы всё починим!")
             }
         }
     }
@@ -91,7 +91,7 @@ class LoginViewController: UIViewController {
 //    Сохранение номера телефона в UserDefaults
     func saveTelNumber() -> Bool {
         guard let telNumText = telephoneNumberTextField.text,
-            telNumText.count == telephoneNumberTextField.maxLength else { sendAlert(title: "Что-то не так", message: "Проверьте правильность введённого номера"); return false }
+            telNumText.count == telephoneNumberTextField.maxLength else { sendAlert(title: "Что-то не так", message: "Телефонный номер должен состоять из 10 цифр без пробелов"); return false }
         let userDefaults = UserDefaults.standard
         phoneNumber = Int(telNumText)!
         let telNumSpaces = service.createTelNumString(telNumText)

@@ -22,6 +22,7 @@ class CarWashViewController: UIViewController {
     @IBOutlet weak var carNumLabel: UILabel!
     @IBOutlet weak var regionLabel: UILabel!
     let paySegueID = "toPaymentVCSegue"
+    let profileSegueID = "toUserProfileSegue"
     let service = Service()
     let reguest = AlamofireRequests()
     var user : User?
@@ -32,7 +33,11 @@ class CarWashViewController: UIViewController {
 
 //        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
 //        Если есть активная подписка, payButton.isHidden = true
-        subscribeStatusLabel.isHidden = true        
+        subscribeStatusLabel.isHidden = true
+        
+        let toProfileTap = UITapGestureRecognizer(target: self, action: #selector(goToUserProfile(recognizer:)))
+        userProfileView.isUserInteractionEnabled = true
+        userProfileView.addGestureRecognizer(toProfileTap)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -71,6 +76,10 @@ class CarWashViewController: UIViewController {
 
     @IBAction func goToPayment(_ sender: Any) {
         performSegue(withIdentifier: paySegueID, sender: self)
+    }
+    
+    @objc func goToUserProfile(recognizer: UITapGestureRecognizer) {
+        performSegue(withIdentifier: profileSegueID, sender: self)
     }
     
     func loadUserFromServerAndSaveInRLM() {

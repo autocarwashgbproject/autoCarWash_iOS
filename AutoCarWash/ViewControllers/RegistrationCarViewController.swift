@@ -56,7 +56,6 @@ class RegistrationCarViewController: UIViewController {
             self?.service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
             self?.performSegue(withIdentifier: self!.segueID, sender: self)
             }
-        
         }
     
 //    Перестановка курсора с одного текстфилда на другой

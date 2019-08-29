@@ -33,6 +33,8 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         
         addDatePicker()
         
+        userPicPicker.delegate = self
+        
         service.loadUserFromRealm() { user in
             userTelNum = user.telNum
             nameTextField.text = user.firstName
@@ -43,18 +45,13 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
             birthdayTextField.text = user.birthdayString
         }
         
-        userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super .viewDidAppear(true)
-        
-        userPicPicker.delegate = self
-        
         let userPicTap = UITapGestureRecognizer(target: self, action: #selector(changeUserPic(recognizer:)))
         userPicImageView.isUserInteractionEnabled = true
         userPicImageView.addGestureRecognizer(userPicTap)
+        
+        userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
     }
+
     
 //    Установка датапикера
     func addDatePicker(){
