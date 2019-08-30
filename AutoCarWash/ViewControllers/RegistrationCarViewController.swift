@@ -60,11 +60,11 @@ class RegistrationCarViewController: UIViewController {
     
 //    Перестановка курсора с одного текстфилда на другой
     @objc func textFieldDidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
+        if textField.text?.count == 1 && textField.tag < 7 {
             let nextTextField = view.viewWithTag(textField.tag + 1) as! UITextField
             nextTextField.becomeFirstResponder()
         }
-        if textField.text!.isEmpty {
+        if textField.text!.isEmpty && textField.tag > 1 {
             let nextTextField = view.viewWithTag(textField.tag - 1) as! UITextField
             nextTextField.becomeFirstResponder()
         }

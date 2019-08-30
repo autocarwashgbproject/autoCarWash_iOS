@@ -59,7 +59,7 @@ class AlamofireRequests {
     func logoutRequest(completion: @escaping (UserResponse) -> Void) {
        let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
         let url = "http://185.17.121.228/api/v1/clients/\(Session.session.userID)/logout/"
-        Alamofire.request(url, method: .post, headers: headers).responseObject { (response: DataResponse<UserResponse>) in
+        Alamofire.request(url, method: .delete, headers: headers).responseObject { (response: DataResponse<UserResponse>) in
             guard let user = response.result.value else { return }
             completion(user)
         }
@@ -113,6 +113,17 @@ class AlamofireRequests {
         Alamofire.request(url, method: .delete, headers: headers).responseObject { (response: DataResponse<CarResponse>) in
             guard let deleteCarResponse = response.result.value else { return }
             completion(deleteCarResponse)
+        }
+    }
+    
+//    Запрос истории помывок
+    func getHistory(completion: @escaping ([WashResponse]) -> Void) {
+        let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
+        let url = "http://185.17.121.228/api/v1/washing/\(Session.session.userID)/"
+        Alamofire.request(url, method: .get, headers: headers).responseObject {(response: DataResponse<HistoryResponse>) in
+            guard let historyResponse = response.result.value else { return }
+            let history = historyResponse.washing
+            completion(history)
         }
     }
 }

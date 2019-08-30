@@ -77,6 +77,15 @@ class Service {
         return dateFormatter.string(from: date)
     }
     
+//    Получение времени из формата UNIXTime
+    func getTimeFromUNIXTime(date: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(date))
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter.string(from: date)
+    }
+    
 //    Преобразование строки с датой в формат Date
     func stringToDate(dateString: String) -> Date {
         let dateFormatter = DateFormatter()

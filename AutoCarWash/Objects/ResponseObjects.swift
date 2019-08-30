@@ -18,6 +18,7 @@ class GetSMSResponse: Mappable {
     var errorDescription = ""
     var phone = 0
     var code = 0
+    var detail = ""
     
     required convenience init?(map: Map) {
         self.init()
@@ -29,6 +30,7 @@ class GetSMSResponse: Mappable {
         errorDescription <- map["description"]
         phone <- map["phone"]
         code <- map["sms_for_tests"]
+        detail <- map["detail"]
     }
 }
 
@@ -43,6 +45,7 @@ class ClientAuthResponse: Mappable {
     var errorDescription = ""
     var carID = 0
     var carIDs = [Int]()
+    var detail = ""
     
     required convenience init?(map: Map) {
         self.init()
@@ -58,6 +61,7 @@ class ClientAuthResponse: Mappable {
         errorDescription <- map["description"]
         carID <- map["cars_id.0"]
         carIDs <- map["cars_id"]
+        detail <- map["detail"]
     }
 }
 
@@ -74,6 +78,7 @@ class UserResponse: Mappable {
     var ok = false
     var error = 0
     var errorDescription = ""
+    var detail = ""
     
     required convenience init?(map: Map) {
         self.init()
@@ -91,6 +96,7 @@ class UserResponse: Mappable {
         ok <- map["ok"]
         error  <- map["error_code"]
         errorDescription <- map["description"]
+        detail <- map["detail"]
     }
 }
 
@@ -114,5 +120,45 @@ class CarResponse: Mappable {
         error <- map["error_code"]
         errorDescription <- map["description"]
         detail <- map["detail"]
+    }
+}
+
+class HistoryResponse: Mappable {
+    
+    var ok = false
+    var washing = [WashResponse]()
+    
+    required convenience init?(map: Map) {
+        self.init()
+    }
+    
+    func mapping(map: Map) {
+        ok <- map["ok"]
+        washing <- map["washing"]
+    }
+}
+
+class WashResponse: Mappable {
+    
+    var id = 0
+    var washing = ""
+    var isActive = false
+    var washTime = 0
+    var userID = 0
+    var carID = 0
+    var wash = 0
+    
+    required convenience init?(map: Map) {
+        self.init()
+    }
+    
+        func mapping(map: Map) {
+            id <- map["id"]
+            washing <- map["washing"]
+            isActive <- map["is_active"]
+            washTime <- map["timestamp"]
+            userID <- map["user"]
+            carID <- map["car"]
+            wash <- map["wash"]
     }
 }

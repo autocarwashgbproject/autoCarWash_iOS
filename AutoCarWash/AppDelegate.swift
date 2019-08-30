@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         service.loadUserFromRealm() { user in
-            if user.telNum != 0 {
+            if user.firstName != "" {
                 Session.session.userID = user.userID
                 Session.session.token = user.token
                 self.window = UIWindow(frame: UIScreen.main.bounds)

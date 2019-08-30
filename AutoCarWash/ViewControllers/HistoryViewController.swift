@@ -11,22 +11,29 @@ import UIKit
 class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var historyTableView: UITableView!
-    let eventsArr = [Event(eventType: "Оплата", eventDate: "20.08.2019"),
-                    Event(eventType: "Мойка", eventDate: "25.08.2019"),
-                    Event(eventType: "Мойка", eventDate: "28.08.2019"),
-                    Event(eventType: "Мойка", eventDate: "1.09.2019"),
-                    Event(eventType: "Мойка", eventDate: "5.09.2019"),
-                    Event(eventType: "Мойка", eventDate: "10.09.2019"),]
-//    let eventsArr = [Event]()
+    let service = Service()
+    let request = AlamofireRequests()
+    var eventsArr = [Event]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
 //        Запрос на сервер, получаем список событий, отображаем в таблице
+        request.getHistory() { [weak self] history in
+            for event in history {
+                let washingTime = self?.service.getDateFromUNIXTime(date: event.washTime)
+                let description = self!.ifSuccessWash(description: event.washing)
+                let wash = Event(eventType: "Мойка", eventDate: washingTime ?? "no date", timeInt: event.washTime, success: event.isActive, description: description)
+                self?.eventsArr.append(wash)
+            }
+            self?.eventsArr.sort(){$0 > $1}
+            self?.historyTableView.reloadData()
         }
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if eventsArr.count >= 1 {
+        if eventsArr.count > 0 {
             return eventsArr.count
         } else {
             return 1
@@ -39,16 +46,35 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.infoLabel.isHidden = true
             let event = eventsArr[indexPath.row]
             cell.eventDateLabel.text = event.eventDate
-            cell.eventTypeLabel.text = event.eventType
-            if event.eventType == "Мойка" {
-                cell.eventImageView.image = #imageLiteral(resourceName: "bubbles")
+            cell.eventTypeLabel.text = event.description
+            if event.success == true {
+                cell.eventTypeLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
             } else {
-                cell.eventImageView.image = #imageLiteral(resourceName: "coin")
+                cell.eventTypeLabel.textColor = #colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)
             }
+//            if event.eventType == "Мойка" {
+                cell.eventImageView.image = #imageLiteral(resourceName: "bubbles")
+//            } else {
+//                cell.eventImageView.image = #imageLiteral(resourceName: "coin")
+//            }
         } else {
             cell.infoLabel.isHidden = false
+            cell.infoLabel.text = "Здесь будет отображаться история моек и оплат"
             cell.eventImageView.image = #imageLiteral(resourceName: "bubbles")
         }
         return cell
+    }
+    
+    func ifSuccessWash(description: String) -> String {
+        switch description {
+        case "Success":
+            return "Мойка";
+        case "No subscription":
+            return "Нет абонемента";
+        case "Already washed today":
+            return "Сенодня Вы мыли машину"
+        default:
+            return "Мойка"
+        }
     }
 }

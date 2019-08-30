@@ -39,6 +39,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         char4TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         char5TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         char6TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        regionTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         let carPicTap = UITapGestureRecognizer(target: self, action: #selector(changeCarPic(recognizer:)))
         carPicImageView.isUserInteractionEnabled = true
@@ -133,8 +134,12 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 {
+        if textField.text?.count == 1 && textField.tag < 7 {
             let nextTextField = view.viewWithTag(textField.tag + 1) as! UITextField
+            nextTextField.becomeFirstResponder()
+        }
+        if textField.text!.isEmpty && textField.tag > 1 {
+            let nextTextField = view.viewWithTag(textField.tag - 1) as! UITextField
             nextTextField.becomeFirstResponder()
         }
     }
