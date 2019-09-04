@@ -100,7 +100,7 @@ class CarWashViewController: UIViewController {
             currentUser.email = userResponse.email
             currentUser.token = Session.session.token
             currentUser.userID = Session.session.userID
-            self?.service.saveDataInRealmWithDeletingOld(object: currentUser, objectType: User.self)
+            self?.service.saveDataInRealm(object: currentUser, objectType: User.self)
             self?.userNameLabel.text = "\(currentUser.firstName) \(currentUser.patronymic) \(currentUser.surname)"
             self?.userTelNumberLabel.text = currentUser.telNumString
             self?.userEmailLabel.text = currentUser.email
@@ -116,7 +116,7 @@ class CarWashViewController: UIViewController {
             car.regNum = carResponse.regNum
             car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
             car.region = self!.service.createRegion(regNum: carResponse.regNum)
-            self?.service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+            self?.service.saveDataInRealm(object: car, objectType: Car.self)
             self?.carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
             self?.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
             self?.carNumLabel.text = car.regNumSpaces

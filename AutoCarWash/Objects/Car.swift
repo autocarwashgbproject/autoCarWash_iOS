@@ -16,4 +16,7 @@ class Car: Object {
     @objc dynamic var regNumSpaces = ""
     @objc dynamic var region = ""
     
+    override static func primaryKey() -> String? {
+        return "carID"
+    }
 }

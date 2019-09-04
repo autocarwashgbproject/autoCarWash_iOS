@@ -20,6 +20,7 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
         
 //        Запрос на сервер, получаем список событий, отображаем в таблице
         request.getHistory() { [weak self] history in
+            print("HISTORY: \(history.toJSON())")
             for event in history {
                 let washingTime = self?.service.getDateFromUNIXTime(date: event.washTime)
                 let description = self!.ifSuccessWash(description: event.washing)

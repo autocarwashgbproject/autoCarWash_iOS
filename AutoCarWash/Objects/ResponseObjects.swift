@@ -43,7 +43,6 @@ class ClientAuthResponse: Mappable {
     var telNum = 0
     var error = 0
     var errorDescription = ""
-    var carID = 0
     var carIDs = [Int]()
     var detail = ""
     
@@ -59,7 +58,6 @@ class ClientAuthResponse: Mappable {
         telNum <- map["phone"]
         error <- map["error_code"]
         errorDescription <- map["description"]
-        carID <- map["cars_id.0"]
         carIDs <- map["cars_id"]
         detail <- map["detail"]
     }

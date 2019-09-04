@@ -90,13 +90,20 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
             request.carSetDataRequest(regNum: carNum) { [weak self] carResponse in
                 print("EDIT CAR: \(carResponse.toJSON())")
                 guard carResponse.ok == true else { return }
-                self?.saveCarData(carResponse)
+                self?.setCarData(carResponse)
             }
         } else {
-            request.carRegistrationRequest(regNum: carNum) { carResponse in
+            request.carRegistrationRequest(regNum: carNum) { [weak self] carResponse in
                 print("ADD NEW CAR: \(carResponse.toJSON())")
                 guard carResponse.ok == true else { return }
-                self.saveCarData(carResponse)
+                Session.session.carID = carResponse.id
+                let car = Car()
+                car.carID = carResponse.id
+                car.regNum = carResponse.regNum
+                car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
+                car.region = self!.service.createRegion(regNum: carResponse.regNum)
+                self?.service.saveDataInRealm(object: car, objectType: Car.self)
+                self?.sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
             }
         }
     }
@@ -158,14 +165,22 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         dismiss(animated: true, completion: nil)
     }
     
-    func saveCarData(_ carResponse: CarResponse) {
+    func setCarData(_ carResponse: CarResponse) {
         Session.session.carID = carResponse.id
-        let car = Car()
-        car.carID = carResponse.id
-        car.regNum = carResponse.regNum
-        car.regNumSpaces = service.createRegNumSpaces(regNum: carResponse.regNum)
-        car.region = service.createRegion(regNum: carResponse.regNum)
-        service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+        let regNum = carResponse.regNum
+        let regNumSpaces = service.createRegNumSpaces(regNum: carResponse.regNum)
+        let region = service.createRegion(regNum: carResponse.regNum)
+        do {
+            let realm = try Realm()
+            let car = realm.objects(Car.self).first!
+            try realm.write {
+                car.setValue(regNum, forKey: "regNum")
+                car.setValue(regNumSpaces, forKey: "regNumSpaces")
+                car.setValue(region, forKey: "region")
+            }
+        } catch {
+            print(error)
+        }
         service.saveImage(imageName: "carPic", image: carPicImageView.image!)
         sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
     }

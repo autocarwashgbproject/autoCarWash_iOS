@@ -33,8 +33,11 @@ class RegistrationCarViewController: UIViewController {
         char4TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         char5TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         char6TextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        }
+        regionTextField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        
+    }
     
+//    Регистрация автомобиля на сервере, сохранение данных в Realm
     @IBAction func saveData(_ sender: Any) {
         guard char1TextField.text != "",
               char2TextField.text != "",
@@ -53,7 +56,7 @@ class RegistrationCarViewController: UIViewController {
             car.regNum = carRegistrResponse.regNum
             car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carRegistrResponse.regNum)
             car.region = self!.service.createRegion(regNum: carRegistrResponse.regNum)
-            self?.service.saveDataInRealmWithDeletingOld(object: car, objectType: Car.self)
+            self?.service.saveDataInRealm(object: car, objectType: Car.self)
             self?.performSegue(withIdentifier: self!.segueID, sender: self)
             }
         }

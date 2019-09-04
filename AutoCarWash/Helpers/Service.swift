@@ -13,12 +13,10 @@ import RealmSwift
 class Service {
     
 //    Сохранение данных в  Realm
-    func saveDataInRealmWithDeletingOld(object: Object, objectType: Object.Type){
+    func saveDataInRealm(object: Object, objectType: Object.Type) {
         do {
             let realm = try Realm()
-            let oldObject = realm.objects(objectType)
             realm.beginWrite()
-            realm.delete(oldObject)
             realm.add(object)
             try realm.commitWrite()
         } catch {

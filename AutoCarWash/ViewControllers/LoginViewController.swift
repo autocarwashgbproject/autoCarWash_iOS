@@ -68,7 +68,10 @@ class LoginViewController: UIViewController {
             if authResponse.ok == true {
                 Session.session.token = authResponse.token
                 Session.session.userID = authResponse.userID
-                Session.session.carID = authResponse.carID
+                Session.session.carIDs = authResponse.carIDs
+                if authResponse.carIDs.isEmpty == false {
+                    Session.session.carID = authResponse.carIDs[0]
+                }
                 print("USER AUTH REQUEST: \(authResponse.toJSON())")
                 self!.loginORregistr()
             } else {

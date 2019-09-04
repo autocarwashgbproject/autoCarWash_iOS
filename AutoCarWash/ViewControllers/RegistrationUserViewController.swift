@@ -76,7 +76,7 @@ class RegistrationUserViewController: UIViewController {
             currentUser.telNum = self!.userTelNum
             currentUser.telNumString = self!.userTelNumSp
             currentUser.token = Session.session.token
-            self?.service.saveDataInRealmWithDeletingOld(object: currentUser, objectType: User.self)
+            self?.service.saveDataInRealm(object: currentUser, objectType: User.self)
         }
             performSegue(withIdentifier: regCarSegueID, sender: self)
     }

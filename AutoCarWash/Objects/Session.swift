@@ -16,6 +16,7 @@ class Session {
     var token = ""
     var userID = 0
     var carID = 0
+    var carIDs = [Int]()
     
     private init(){}
     
