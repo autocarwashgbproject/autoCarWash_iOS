@@ -18,12 +18,19 @@ class PaymentViewController: UIViewController {
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var sumLabel: UILabel!
     @IBOutlet weak var line5: UIImageView!
+    @IBOutlet weak var extendAutomaticallyImageView: UIImageView!
     let paySegueID = "toPaymentSegue"
     let service = Service()
     let request = AlamofireRequests()
+    var extend = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let extendTap = UITapGestureRecognizer(target: self, action: #selector(extendSubscript(recognizer:)))
+        extendAutomaticallyImageView.isUserInteractionEnabled = true
+        extendAutomaticallyImageView.addGestureRecognizer(extendTap)
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -52,5 +59,17 @@ class PaymentViewController: UIViewController {
             carNumLabel.text != "" else { return }
         WebViewURL.webViewURL.url = "https://kassa.yandex.ru"
         performSegue(withIdentifier: paySegueID, sender: self)
+    }
+    
+    @objc func extendSubscript(recognizer: UIGestureRecognizer) {
+        changeState(imageView: extendAutomaticallyImageView)
+    }
+    
+    func changeState(imageView: UIImageView){
+        if imageView.image == UIImage(named: "Rectangle 3") {
+            imageView.image = UIImage(named: "Rectangle 3_filled")
+        } else {
+            imageView.image = UIImage(named: "Rectangle 3")
+        }
     }
 }
