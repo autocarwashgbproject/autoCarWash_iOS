@@ -66,12 +66,16 @@ class LoginViewController: UIViewController {
         guard code != 0 else { return }
         request.clientAuthRequest(telNum: phoneNumber, code: code) { [weak self] authResponse in
             if authResponse.ok == true {
-                Session.session.token = authResponse.token
-                Session.session.userID = authResponse.userID
-                Session.session.carIDs = authResponse.carIDs
+                let sessionInfo = SessionInfo()
+                sessionInfo.userID = authResponse.userID
+                sessionInfo.token = authResponse.token
                 if authResponse.carIDs.isEmpty == false {
-                    Session.session.carID = authResponse.carIDs[0]
+                    sessionInfo.carID = authResponse.carIDs[0]
                 }
+                self?.service.saveDataInRealm(object: sessionInfo, objectType: SessionInfo.self)
+                Session.session.token = sessionInfo.token
+                Session.session.userID = sessionInfo.userID
+                Session.session.carID = sessionInfo.carID
                 print("USER AUTH REQUEST: \(authResponse.toJSON())")
                 self!.loginORregistr()
             } else {
@@ -97,7 +101,7 @@ class LoginViewController: UIViewController {
             telNumText.count == telephoneNumberTextField.maxLength else { sendAlert(title: "Что-то не так", message: "Телефонный номер должен состоять из 10 цифр без пробелов"); return false }
         let userDefaults = UserDefaults.standard
         phoneNumber = Int(telNumText)!
-        let telNumSpaces = service.createTelNumString(telNumText)
+        let telNumSpaces = service.createTelNumString(phoneNumber)
         userDefaults.set(phoneNumber, forKey: "telNum")
         userDefaults.set(telNumSpaces, forKey: "telNumSpaces")
         return true

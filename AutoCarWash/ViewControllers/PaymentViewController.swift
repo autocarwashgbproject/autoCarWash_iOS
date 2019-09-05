@@ -15,6 +15,7 @@ class PaymentViewController: UIViewController {
     @IBOutlet weak var toPaymentButton: UIButton!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var carNumLabel: UILabel!
+    @IBOutlet weak var startSubscriptionLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var sumLabel: UILabel!
     @IBOutlet weak var line5: UIImageView!
@@ -43,14 +44,18 @@ class PaymentViewController: UIViewController {
 //        infoLabel.isHidden = true
 //        sumLabel.isHidden = true
 //        line4.isHidden = true
+//        startSubscriptionLabel.text = время начала абонемента из ответа сервера
+        startSubscriptionLabel.text = Date.getCurrentDate()
         
-        service.loadUserFromRealm() { user in
-            self.userNameLabel.text = "\(user.firstName) \(user.surname)"
+        request.getUserDataRequest() { [weak self] user in
+            self?.userNameLabel.text = "\(user.firstName) \(user.surname)"
         }
         
-        service.loadCarFromRealm() { car in
+        request.getCarDataRequest() { [weak self] car in
             guard car.regNum != "" else { return }
-            self.carNumLabel.text = "\(car.regNumSpaces) \(car.region) RUS"
+            let regNumSpaces = self!.service.createRegNumSpaces(regNum: car.regNum)
+            let region = self!.service.createRegion(regNum: car.regNum)
+            self?.carNumLabel.text = "\(regNumSpaces) \(region) RUS"
         }
     }
     

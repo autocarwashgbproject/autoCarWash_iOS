@@ -67,6 +67,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     
 //    Сохранение изменений данных машны
     @IBAction func saveChanges(_ sender: Any) {
+//        guard нет оплаченного аблнемента else { sendAlert(title: "Нельзя изменить номер автомобиля", message: "У Вас оплачен абонемент на пользование автомойкой. Пока подписка активна, номер автомобиля измннить нельзя"), return}
         guard char1TextField.text != "",
               char2TextField.text != "",
               char3TextField.text != "",
@@ -79,30 +80,28 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
                 return
         }
         let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
-        service.loadCarFromRealm() { carRlm in
-            if carRlm.regNum != "" {
-                isCar = true
-            } else {
-                isCar = false
-            }
-        }
         if isCar {
             request.carSetDataRequest(regNum: carNum) { [weak self] carResponse in
                 print("EDIT CAR: \(carResponse.toJSON())")
                 guard carResponse.ok == true else { return }
-                self?.setCarData(carResponse)
+                self?.service.saveImage(imageName: "carPic", image: self!.carPicImageView.image!)
+                self?.sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
             }
         } else {
             request.carRegistrationRequest(regNum: carNum) { [weak self] carResponse in
                 print("ADD NEW CAR: \(carResponse.toJSON())")
                 guard carResponse.ok == true else { return }
                 Session.session.carID = carResponse.id
-                let car = Car()
-                car.carID = carResponse.id
-                car.regNum = carResponse.regNum
-                car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
-                car.region = self!.service.createRegion(regNum: carResponse.regNum)
-                self?.service.saveDataInRealm(object: car, objectType: Car.self)
+                do {
+                    let realm = try Realm()
+                    let sessionInfo = realm.objects(SessionInfo.self).first!
+                    try realm.write {
+                        sessionInfo.setValue(carResponse.id, forKey: "carID")
+                    }
+                } catch {
+                    print(error)
+                }
+                self?.service.saveImage(imageName: "carPic", image: self!.carPicImageView.image!)
                 self?.sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
             }
         }
@@ -120,15 +119,6 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         request.deleteCarRequest() { [weak self] deleteCarResponse in
             print("DELETED CAR: \(deleteCarResponse.toJSON())")
             guard deleteCarResponse.ok == true else { return }
-            do {
-                let realm = try Realm()
-                let car = realm.objects(Car.self)
-                realm.beginWrite()
-                realm.delete(car)
-                try realm.commitWrite()
-            } catch {
-                print(error)
-            }
             self?.char1TextField.placeholder = "X"
             self?.char2TextField.placeholder = "0"
             self?.char3TextField.placeholder = "0"
@@ -141,7 +131,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     }
     
     @objc func textFieldDidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 && textField.tag < 7 {
+        if textField.text?.count == textField.maxLength && textField.tag < 7 {
             let nextTextField = view.viewWithTag(textField.tag + 1) as! UITextField
             nextTextField.becomeFirstResponder()
         }
@@ -151,7 +141,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         }
     }
     
-//    Функции выбора карпика
+    //    MARK: Функции выбора карпика
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             carPicImageView.contentMode = .scaleAspectFill
@@ -165,44 +155,33 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         dismiss(animated: true, completion: nil)
     }
     
-    func setCarData(_ carResponse: CarResponse) {
-        Session.session.carID = carResponse.id
-        let regNum = carResponse.regNum
-        let regNumSpaces = service.createRegNumSpaces(regNum: carResponse.regNum)
-        let region = service.createRegion(regNum: carResponse.regNum)
-        do {
-            let realm = try Realm()
-            let car = realm.objects(Car.self).first!
-            try realm.write {
-                car.setValue(regNum, forKey: "regNum")
-                car.setValue(regNumSpaces, forKey: "regNumSpaces")
-                car.setValue(region, forKey: "region")
-            }
-        } catch {
-            print(error)
-        }
-        service.saveImage(imageName: "carPic", image: carPicImageView.image!)
-        sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
-    }
-    
 //    Отрисовка существующего номера машины в текстфилдах
     func setPlaceholders() {
         var carNum = ""
-        service.loadCarFromRealm() { carRlm in
-            if carRlm.regNum != "" {
-                carNum = carRlm.regNum
-                regionTextField.placeholder = carRlm.region
+        request.getCarDataRequest() { [weak self] car in
+            if car.regNum != "" {
+                self?.isCar = true
+                carNum = car.regNum
+                let carNumArray = Array(carNum)
+                self?.char1TextField.placeholder = "\(carNumArray[0])"
+                self?.char2TextField.placeholder = "\(carNumArray[1])"
+                self?.char3TextField.placeholder = "\(carNumArray[2])"
+                self?.char4TextField.placeholder = "\(carNumArray[3])"
+                self?.char5TextField.placeholder = "\(carNumArray[4])"
+                self?.char6TextField.placeholder = "\(carNumArray[5])"
+                self?.regionTextField.placeholder = self?.service.createRegion(regNum: car.regNum)
             } else {
+                self?.isCar = false
                 carNum = "X000XX"
-                regionTextField.placeholder = "000"
+                let carNumArray = Array(carNum)
+                self?.char1TextField.placeholder = "\(carNumArray[0])"
+                self?.char2TextField.placeholder = "\(carNumArray[1])"
+                self?.char3TextField.placeholder = "\(carNumArray[2])"
+                self?.char4TextField.placeholder = "\(carNumArray[3])"
+                self?.char5TextField.placeholder = "\(carNumArray[4])"
+                self?.char6TextField.placeholder = "\(carNumArray[5])"
+                self?.regionTextField.placeholder = "000"
             }
         }
-        let carNumArray = Array(carNum)
-        char1TextField.placeholder = "\(carNumArray[0])"
-        char2TextField.placeholder = "\(carNumArray[1])"
-        char3TextField.placeholder = "\(carNumArray[2])"
-        char4TextField.placeholder = "\(carNumArray[3])"
-        char5TextField.placeholder = "\(carNumArray[4])"
-        char6TextField.placeholder = "\(carNumArray[5])"
     }
 }

@@ -67,16 +67,6 @@ class RegistrationUserViewController: UIViewController {
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print("REGISTRATION USER: \(userResponse.toJSON())")
             guard userResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка. \(userResponse.errorDescription)"); return }
-            let currentUser = User()
-            currentUser.userID = userResponse.id
-            currentUser.firstName = userResponse.firstName
-            currentUser.surname = userResponse.surname
-            currentUser.patronymic = userResponse.patronymic
-            currentUser.email = userResponse.email
-            currentUser.telNum = self!.userTelNum
-            currentUser.telNumString = self!.userTelNumSp
-            currentUser.token = Session.session.token
-            self?.service.saveDataInRealm(object: currentUser, objectType: User.self)
         }
             performSegue(withIdentifier: regCarSegueID, sender: self)
     }

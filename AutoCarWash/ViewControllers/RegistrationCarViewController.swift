@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class RegistrationCarViewController: UIViewController {
 
@@ -37,7 +38,7 @@ class RegistrationCarViewController: UIViewController {
         
     }
     
-//    Регистрация автомобиля на сервере, сохранение данных в Realm
+//    Регистрация автомобиля
     @IBAction func saveData(_ sender: Any) {
         guard char1TextField.text != "",
               char2TextField.text != "",
@@ -51,19 +52,22 @@ class RegistrationCarViewController: UIViewController {
             print("REGISTRATION CAR: \(carRegistrResponse.toJSON())")
             guard carRegistrResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Не удаётся зарегистрировать автомобиль.\(carRegistrResponse.detail)"); return }
             Session.session.carID = carRegistrResponse.id
-            let car = Car()
-            car.carID = carRegistrResponse.id
-            car.regNum = carRegistrResponse.regNum
-            car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carRegistrResponse.regNum)
-            car.region = self!.service.createRegion(regNum: carRegistrResponse.regNum)
-            self?.service.saveDataInRealm(object: car, objectType: Car.self)
+            do {
+                let realm = try Realm()
+                let sessionInfo = realm.objects(SessionInfo.self).first!
+                try realm.write {
+                    sessionInfo.setValue(carRegistrResponse.id, forKey: "carID")
+                }
+            } catch {
+                print(error)
+            }
             self?.performSegue(withIdentifier: self!.segueID, sender: self)
             }
         }
     
 //    Перестановка курсора с одного текстфилда на другой
     @objc func textFieldDidChange(_ textField: UITextField) {
-        if textField.text?.count == 1 && textField.tag < 7 {
+        if textField.tag < 7 && textField.text?.count == textField.maxLength {
             let nextTextField = view.viewWithTag(textField.tag + 1) as! UITextField
             nextTextField.becomeFirstResponder()
         }

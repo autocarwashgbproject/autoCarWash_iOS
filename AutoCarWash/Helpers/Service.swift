@@ -24,28 +24,15 @@ class Service {
         }
     }
     
-    //    Загрузка данных пользователя из Realm
-    func loadUserFromRealm(completion: (User) -> Void) {
-        var user = User()
+    func loadSessionInfoFromRealm(completion: (SessionInfo) -> Void) {
+        var sessionInfo = SessionInfo()
         do {
             let realm = try Realm()
-            user = realm.objects(User.self).first ?? user
+            sessionInfo = realm.objects(SessionInfo.self).first ?? sessionInfo
         } catch {
-            print(error)
+          print(error)
         }
-        completion(user)
-    }
-    
-//    Загрузка данных автомобиля из Realm
-    func loadCarFromRealm(completion: (Car) -> Void){
-        var car = Car()
-        do {
-            let realm = try Realm()
-            car = realm.objects(Car.self).first ?? car
-        } catch {
-            print(error)
-        }
-        completion(car)
+        completion(sessionInfo)
     }
     
 //    Удаление данных из Realm
@@ -94,8 +81,9 @@ class Service {
     }
     
 //    Получение "красивого" номера телефона для отображения на экранах
-    func createTelNumString(_ telnum: String) -> String {
-        let telNumArr = Array(telnum)
+    func createTelNumString(_ telnum: Int) -> String {
+        let telNumString = String(telnum)
+        let telNumArr = Array(telNumString)
         let telNumSp = [telNumArr[0], telNumArr[1], telNumArr[2], "-",telNumArr[3], telNumArr[4],  telNumArr[5], "-", telNumArr[6], telNumArr[7], telNumArr[8], telNumArr[9]]
         let telNumSpaces = String(telNumSp)
         return telNumSpaces
@@ -110,6 +98,7 @@ class Service {
         return(regNumSpaces)
     }
     
+//    Получение региона
     func createRegion(regNum: String) -> String {
         guard regNum != "" else { return "" }
         var regNumArr = Array(regNum)
@@ -179,3 +168,10 @@ class Service {
     }
 }
 
+extension Date {
+    static func getCurrentDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        return dateFormatter.string(from: Date())
+    }
+}

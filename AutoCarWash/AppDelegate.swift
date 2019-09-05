@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         IQKeyboardManager.shared.enable = true
         let config = Realm.Configuration(
-            schemaVersion: 10,
+            schemaVersion: 11,
             migrationBlock: { migration, oldSchemaVersion in
                 if (oldSchemaVersion < 1) {
                 }
@@ -35,11 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         catch {
             print(error)
         }
-        
-        service.loadUserFromRealm() { user in
-            if user.firstName != "" {
-                Session.session.userID = user.userID
-                Session.session.token = user.token
+        service.loadSessionInfoFromRealm() { sessionRLM in
+            if sessionRLM.token != "" {
+                Session.session.userID = sessionRLM.userID
+                Session.session.token = sessionRLM.token
+                Session.session.carID = sessionRLM.carID
                 self.window = UIWindow(frame: UIScreen.main.bounds)
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let initialViewController = storyboard.instantiateViewController(withIdentifier: "SecondNavVC")
@@ -53,8 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.window?.makeKeyAndVisible()
             }
         }
-
-        
         return true
     }
 

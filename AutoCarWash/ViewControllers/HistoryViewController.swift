@@ -14,26 +14,16 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
     let service = Service()
     let request = AlamofireRequests()
     var eventsArr = [Event]()
+    var refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        Запрос на сервер, получаем список событий, отображаем в таблице
-        request.getHistory() { [weak self] history in
-            print("HISTORY: \(history.toJSON())")
-            for event in history {
-                let washingTime = self?.service.getDateFromUNIXTime(date: event.washTime)
-                let description = self!.ifSuccessWash(description: event.washing)
-                let wash = Event(eventType: "Мойка", eventDate: washingTime ?? "no date", timeInt: event.washTime, success: event.isActive, description: description)
-                self?.eventsArr.append(wash)
-            }
-            self?.eventsArr.sort(){$0 > $1}
-            self?.historyTableView.reloadData()
-        }
+        getHistoryAndShow()
+        addRefreshControl()
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         if eventsArr.count > 0 {
             return eventsArr.count
         } else {
@@ -66,6 +56,21 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
+    func getHistoryAndShow() {
+        request.getHistory() { [weak self] history in
+            print("HISTORY: \(history.toJSON())")
+            self?.eventsArr.removeAll()
+            for event in history {
+                let washingTime = self?.service.getDateFromUNIXTime(date: event.washTime)
+                let description = self!.ifSuccessWash(description: event.washing)
+                let wash = Event(eventType: "Мойка", eventDate: washingTime ?? "no date", timeInt: event.washTime, success: event.isActive, description: description)
+                self?.eventsArr.append(wash)
+            }
+            self?.eventsArr.sort(){$0 > $1}
+            self?.historyTableView.reloadData()
+        }
+    }
+    
     func ifSuccessWash(description: String) -> String {
         switch description {
         case "Success":
@@ -77,5 +82,16 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
         default:
             return "Мойка"
         }
+    }
+    
+    func addRefreshControl() {
+        refreshControl.tintColor = #colorLiteral(red: 0.7540792823, green: 0.8779987097, blue: 0.8976370692, alpha: 1)
+        refreshControl.addTarget(self, action: #selector(refreshHistory), for: .valueChanged)
+        historyTableView.addSubview(refreshControl)
+    }
+    
+    @objc func refreshHistory() {
+        getHistoryAndShow()
+        refreshControl.endRefreshing()
     }
 }

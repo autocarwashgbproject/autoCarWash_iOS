@@ -14,13 +14,14 @@ class MenuViewController: UIViewController {
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userTelNumLabel: UILabel!
     let service = Service()
+    let request = AlamofireRequests()
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-//        Загрузка пользователя из Realm и отображение данных
-        service.loadUserFromRealm() { user in
-            userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
-            userTelNumLabel.text = "\(user.telNumString)"
+    override func viewDidLoad() {
+        super.viewDidLoad()
+//        Загрузка пользователя с сервера и отображение данных
+        request.getUserDataRequest() { [weak self] user in
+            self?.userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
+            self?.userTelNumLabel.text = self?.service.createTelNumString(user.telNum)
         }
     }
     

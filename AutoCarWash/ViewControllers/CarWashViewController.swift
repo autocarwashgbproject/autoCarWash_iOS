@@ -25,8 +25,6 @@ class CarWashViewController: UIViewController {
     let profileSegueID = "toUserProfileSegue"
     let service = Service()
     let reguest = AlamofireRequests()
-    var user : User?
-    var car : Car?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +32,13 @@ class CarWashViewController: UIViewController {
 //        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
 //        Если есть активная подписка, payButton.isHidden = true
         subscribeStatusLabel.isHidden = true
+        
+//        Загрузка пользователя с сервера и отображение данных
+        reguest.getUserDataRequest() { [weak self] user in
+            self?.userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
+            self?.userTelNumberLabel.text = self?.service.createTelNumString(user.telNum)
+            self?.userEmailLabel.text = user.email
+        }
         
         let toProfileTap = UITapGestureRecognizer(target: self, action: #selector(goToUserProfile(recognizer:)))
         userProfileView.isUserInteractionEnabled = true
@@ -43,33 +48,21 @@ class CarWashViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-//        Загрузка пользователя из Realm или с сервера и отображение данныъ
-        service.loadUserFromRealm() { user in
-            if user.firstName == "" {
-                loadUserFromServerAndSaveInRLM()
-            } else {
-                userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
-                userTelNumberLabel.text = "\(user.telNumString)"
-                userEmailLabel.text = user.email
-            }
-        }
-        
-//        Загрузка авто из Realm или с сервера и отображение данных
-        service.loadCarFromRealm() { car in
+//        Загрузка авто с сервера и отображение данных
+        reguest.getCarDataRequest() { [weak self] car in
             if car.regNum == "" {
-                self.carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-                self.regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-                self.carNumLabel.text = "x000xx"
-                self.regionLabel.text = "000"
-                self.loadCarFromServerAndSaveInRLM()
+                self?.carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+                self?.regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+                self?.carNumLabel.text = "x000xx"
+                self?.regionLabel.text = "000"
             } else {
-                self.carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-                self.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-                self.carNumLabel.text = car.regNumSpaces
-                self.regionLabel.text = car.region
-                Session.session.carID = car.carID
+                self?.carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+                self?.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
+                self?.carNumLabel.text = self?.service.createRegNumSpaces(regNum: car.regNum)
+                self?.regionLabel.text = self?.service.createRegion(regNum: car.regNum)
             }
         }
+
         
         userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
     }
@@ -80,47 +73,5 @@ class CarWashViewController: UIViewController {
     
     @objc func goToUserProfile(recognizer: UITapGestureRecognizer) {
         performSegue(withIdentifier: profileSegueID, sender: self)
-    }
-    
-    func loadUserFromServerAndSaveInRLM() {
-        reguest.getUserDataRequest() { [weak self] userResponse in
-            let currentUser = User()
-            currentUser.firstName = userResponse.firstName
-            currentUser.surname = userResponse.surname
-            currentUser.patronymic = userResponse.patronymic
-            currentUser.telNum = userResponse.telNum
-            currentUser.telNumString = self!.service.createTelNumString(String(userResponse.telNum))
-            if userResponse.isBirthday == false {
-                currentUser.birthdayString = ""
-                currentUser.birthday = 0
-            } else {
-                currentUser.birthday = userResponse.birthday
-                currentUser.birthdayString = self!.service.getDateFromUNIXTime(date: userResponse.birthday)
-            }
-            currentUser.email = userResponse.email
-            currentUser.token = Session.session.token
-            currentUser.userID = Session.session.userID
-            self?.service.saveDataInRealm(object: currentUser, objectType: User.self)
-            self?.userNameLabel.text = "\(currentUser.firstName) \(currentUser.patronymic) \(currentUser.surname)"
-            self?.userTelNumberLabel.text = currentUser.telNumString
-            self?.userEmailLabel.text = currentUser.email
-        }
-    }
-    
-    func loadCarFromServerAndSaveInRLM() {
-        reguest.getCarDataRequest() { [weak self] carResponse in
-            print("GET CAR REQUEST: \(carResponse.toJSON())")
-            guard carResponse.ok == true else { return }
-            let car = Car()
-            car.carID = carResponse.id
-            car.regNum = carResponse.regNum
-            car.regNumSpaces = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
-            car.region = self!.service.createRegion(regNum: carResponse.regNum)
-            self?.service.saveDataInRealm(object: car, objectType: Car.self)
-            self?.carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-            self?.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-            self?.carNumLabel.text = car.regNumSpaces
-            self?.regionLabel.text = car.region
-        }
     }
 }

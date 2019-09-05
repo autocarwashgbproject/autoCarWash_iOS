@@ -35,14 +35,18 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         
         userPicPicker.delegate = self
         
-        service.loadUserFromRealm() { user in
-            userTelNum = user.telNum
-            nameTextField.text = user.firstName
-            surnameTextField.text = user.surname
-            patronymicTextField.text = user.patronymic
-            telNumLabel.text = "\(user.telNumString)"
-            emailTextField.text = user.email
-            birthdayTextField.text = user.birthdayString
+        request.getUserDataRequest() { [weak self] user in
+            self?.userTelNum = user.telNum
+            self?.nameTextField.text = user.firstName
+            self?.surnameTextField.text = user.surname
+            self?.patronymicTextField.text = user.patronymic
+            self?.telNumLabel.text = self?.service.createTelNumString(user.telNum)
+            self?.emailTextField.text = user.email
+            if user.isBirthday {
+                self?.birthdayTextField.text = self?.service.getDateFromUNIXTime(date: user.birthday)
+            } else {
+                self?.birthdayTextField.text = ""
+            }
         }
         
         let userPicTap = UITapGestureRecognizer(target: self, action: #selector(changeUserPic(recognizer:)))
@@ -110,20 +114,6 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print("EDIT USER DATA: \(userResponse.toJSON())")
             if userResponse.ok == true {
-                do {
-                    let realm = try Realm()
-                    let user = realm.objects(User.self).first!
-                    try realm.write {
-                        user.setValue(userResponse.firstName, forKey: "firstName")
-                        user.setValue(userResponse.surname, forKey: "surname")
-                        user.setValue(userResponse.patronymic, forKey: "patronymic")
-                        user.setValue(userResponse.email, forKey: "email")
-                        user.setValue(userResponse.birthday, forKey: "birthday")
-                        user.setValue(self!.birthdayTextField.text, forKey: "birthdayString")
-                    }
-                } catch {
-                    print(error)
-                }
                 self?.sendAlert(title: "Данные сохранены", message: "Ваш профиль успешно обновлён")
             } else {
                 self?.sendAlert(title: "Не удалось обновить профиль", message: "Пожалуйста, проверьте правильность введённых данных")
