@@ -23,10 +23,12 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     var oldCarPic = UIImage()
     let service = Service()
     let request = AlamofireRequests()
-    var isCar = false
+    var isCar : Bool!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        Запрос на сервер о состоянии подписки
         
         carPicPicker.delegate = self
         
@@ -48,7 +50,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         setPlaceholders()
     }
     
-//    Изменение фото машины
+//    MARK: - Изменение фото машины
 //    - по нажатию на аватарку
     @objc func changeCarPic(recognizer: UITapGestureRecognizer) {
         pickPhotoFromLibrary(imagePicker: carPicPicker)
@@ -59,15 +61,19 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         pickPhotoFromLibrary(imagePicker: carPicPicker)
     }
     
-//    Удаление фото машины
+//    Нажатие на кнопку "Удалить фото"
     @IBAction func deleteCarPic(_ sender: Any) {
+        carPicDelete()
+    }
+    
+//    Удаление фото машины
+    func carPicDelete() {
         service.saveImage(imageName: "carPic", image: #imageLiteral(resourceName: "circle_car"))
         carPicImageView.image = #imageLiteral(resourceName: "circle_car")
     }
     
 //    Сохранение изменений данных машны
     @IBAction func saveChanges(_ sender: Any) {
-//        guard нет оплаченного аблнемента else { sendAlert(title: "Нельзя изменить номер автомобиля", message: "У Вас оплачен абонемент на пользование автомойкой. Пока подписка активна, номер автомобиля измннить нельзя"), return}
         guard char1TextField.text != "",
               char2TextField.text != "",
               char3TextField.text != "",
@@ -76,21 +82,23 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
               char6TextField.text != "",
               regionTextField.text != "" else { if carPicImageView.image != oldCarPic {
                 service.saveImage(imageName: "carPic", image: carPicImageView.image!)
-                sendAlert(title: "Данные сохранены", message: "Фото автомобиля обновлено") };
+                sendAlert(title: "Готово", message: "Фото автомобиля обновлено") };
                 return
         }
+//        guard нет_абонемента else { sendAlert(title: "Нельзя изменить номер автомобиля", message: "У Вас оплачен абонемент на пользование автомойкой. Пока подписка активна, номер автомобиля измeнить невозможно"); return}
         let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
         if isCar {
             request.carSetDataRequest(regNum: carNum) { [weak self] carResponse in
                 print("EDIT CAR: \(carResponse.toJSON())")
                 guard carResponse.ok == true else { return }
                 self?.service.saveImage(imageName: "carPic", image: self!.carPicImageView.image!)
-                self?.sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
+                self?.sendAlert(title: "Готово", message: "Данные автомобиля обновлены")
             }
         } else {
             request.carRegistrationRequest(regNum: carNum) { [weak self] carResponse in
                 print("ADD NEW CAR: \(carResponse.toJSON())")
                 guard carResponse.ok == true else { return }
+                self?.isCar = true
                 Session.session.carID = carResponse.id
                 do {
                     let realm = try Realm()
@@ -102,34 +110,17 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
                     print(error)
                 }
                 self?.service.saveImage(imageName: "carPic", image: self!.carPicImageView.image!)
-                self?.sendAlert(title: "Данные сохранены", message: "Номер автомобиля успешно обновлён")
+                self?.sendAlert(title: "Готово", message: "Данные автомобиля обновлены")
             }
         }
     }
     
-//    Удаление машины
+    //    Нажатие на кнопку "Удалить автомобиль"
     @IBAction func deleteCar(_ sender: Any) {
-        char1TextField.text = ""
-        char2TextField.text = ""
-        char3TextField.text = ""
-        char4TextField.text = ""
-        char5TextField.text = ""
-        char6TextField.text = ""
-        regionTextField.text = ""
-        request.deleteCarRequest() { [weak self] deleteCarResponse in
-            print("DELETED CAR: \(deleteCarResponse.toJSON())")
-            guard deleteCarResponse.ok == true else { return }
-            self?.char1TextField.placeholder = "X"
-            self?.char2TextField.placeholder = "0"
-            self?.char3TextField.placeholder = "0"
-            self?.char4TextField.placeholder = "0"
-            self?.char5TextField.placeholder = "X"
-            self?.char6TextField.placeholder = "X"
-            self?.regionTextField.placeholder = "000"
-            self?.sendAlert(title: "Данные автомобиля удалены", message: "Введите новый номер")
-        }
+        deleteAlert()
     }
     
+//    Перестановка курсора
     @objc func textFieldDidChange(_ textField: UITextField) {
         if textField.text?.count == textField.maxLength && textField.tag < 7 {
             let nextTextField = view.viewWithTag(textField.tag + 1) as! UITextField
@@ -141,7 +132,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         }
     }
     
-    //    MARK: Функции выбора карпика
+    //    MARK: - Функции выбора аватарки машины
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             carPicImageView.contentMode = .scaleAspectFill
@@ -155,33 +146,64 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         dismiss(animated: true, completion: nil)
     }
     
-//    Отрисовка существующего номера машины в текстфилдах
+//    Отрисовка существующего номера машины в плэйсхолдерах тестовых полей
     func setPlaceholders() {
         var carNum = ""
         request.getCarDataRequest() { [weak self] car in
             if car.regNum != "" {
                 self?.isCar = true
                 carNum = car.regNum
-                let carNumArray = Array(carNum)
-                self?.char1TextField.placeholder = "\(carNumArray[0])"
-                self?.char2TextField.placeholder = "\(carNumArray[1])"
-                self?.char3TextField.placeholder = "\(carNumArray[2])"
-                self?.char4TextField.placeholder = "\(carNumArray[3])"
-                self?.char5TextField.placeholder = "\(carNumArray[4])"
-                self?.char6TextField.placeholder = "\(carNumArray[5])"
+                self?.separateRegNumAndShow(carNum)
                 self?.regionTextField.placeholder = self?.service.createRegion(regNum: car.regNum)
             } else {
                 self?.isCar = false
                 carNum = "X000XX"
-                let carNumArray = Array(carNum)
-                self?.char1TextField.placeholder = "\(carNumArray[0])"
-                self?.char2TextField.placeholder = "\(carNumArray[1])"
-                self?.char3TextField.placeholder = "\(carNumArray[2])"
-                self?.char4TextField.placeholder = "\(carNumArray[3])"
-                self?.char5TextField.placeholder = "\(carNumArray[4])"
-                self?.char6TextField.placeholder = "\(carNumArray[5])"
+                self?.separateRegNumAndShow(carNum)
                 self?.regionTextField.placeholder = "000"
             }
         }
+    }
+    
+//    Разделение и отображение номера
+    func separateRegNumAndShow(_ carNum: String) {
+        let carNumArray = Array(carNum)
+        char1TextField.placeholder = "\(carNumArray[0])"
+        char2TextField.placeholder = "\(carNumArray[1])"
+        char3TextField.placeholder = "\(carNumArray[2])"
+        char4TextField.placeholder = "\(carNumArray[3])"
+        char5TextField.placeholder = "\(carNumArray[4])"
+        char6TextField.placeholder = "\(carNumArray[5])"
+    }
+    
+//    Алерт с предупреждением об удалении автомобиля
+    func deleteAlert() {
+        let alert = UIAlertController(title: "Удалить автомобиль?", message: "", preferredStyle: .alert)
+        let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
+        let actionYes = UIAlertAction(title: "Да", style: .default, handler: { actionYes in
+            self.char1TextField.text = ""
+            self.char2TextField.text = ""
+            self.char3TextField.text = ""
+            self.char4TextField.text = ""
+            self.char5TextField.text = ""
+            self.char6TextField.text = ""
+            self.regionTextField.text = ""
+            self.request.deleteCarRequest() { [weak self] deleteCarResponse in
+                print("DELETED CAR: \(deleteCarResponse.toJSON())")
+                guard deleteCarResponse.ok == true else { return }
+                self?.char1TextField.placeholder = "X"
+                self?.char2TextField.placeholder = "0"
+                self?.char3TextField.placeholder = "0"
+                self?.char4TextField.placeholder = "0"
+                self?.char5TextField.placeholder = "X"
+                self?.char6TextField.placeholder = "X"
+                self?.regionTextField.placeholder = "000"
+                self?.carPicDelete()
+                self?.isCar = false
+                self?.sendAlert(title: "Данные автомобиля удалены", message: "Введите новый номер")
+            }
+        })
+        alert.addAction(actionNo)
+        alert.addAction(actionYes)
+        present(alert, animated: true, completion: nil)
     }
 }

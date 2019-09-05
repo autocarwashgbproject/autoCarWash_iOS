@@ -24,7 +24,7 @@ extension UIViewController {
         }
     }
     
-    //    Алерт
+//    Алерт
     func sendAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)

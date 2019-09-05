@@ -35,15 +35,15 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         
         userPicPicker.delegate = self
         
-        request.getUserDataRequest() { [weak self] user in
-            self?.userTelNum = user.telNum
-            self?.nameTextField.text = user.firstName
-            self?.surnameTextField.text = user.surname
-            self?.patronymicTextField.text = user.patronymic
-            self?.telNumLabel.text = self?.service.createTelNumString(user.telNum)
-            self?.emailTextField.text = user.email
-            if user.isBirthday {
-                self?.birthdayTextField.text = self?.service.getDateFromUNIXTime(date: user.birthday)
+        request.getUserDataRequest() { [weak self] userResponse in
+            self?.userTelNum = userResponse.telNum
+            self?.nameTextField.text = userResponse.firstName
+            self?.surnameTextField.text = userResponse.surname
+            self?.patronymicTextField.text = userResponse.patronymic
+            self?.telNumLabel.text = self?.service.createTelNumString(userResponse.telNum)
+            self?.emailTextField.text = userResponse.email
+            if userResponse.isBirthday {
+                self?.birthdayTextField.text = self?.service.getDateFromUNIXTime(date: userResponse.birthday)
             } else {
                 self?.birthdayTextField.text = ""
             }
@@ -55,7 +55,6 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         
         userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
     }
-
     
 //    Установка датапикера
     func addDatePicker(){
@@ -114,7 +113,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print("EDIT USER DATA: \(userResponse.toJSON())")
             if userResponse.ok == true {
-                self?.sendAlert(title: "Данные сохранены", message: "Ваш профиль успешно обновлён")
+                self?.sendAlert(title: "Готово", message: "Ваш профиль успешно обновлён")
             } else {
                 self?.sendAlert(title: "Не удалось обновить профиль", message: "Пожалуйста, проверьте правильность введённых данных")
             }
@@ -123,7 +122,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         service.saveImage(imageName: "userPic", image: userPic)
     }
     
-//    Выход
+//    Выход из аккаунта
     @IBAction func logOut(_ sender: Any) {
         request.logoutRequest() { [weak self] logoutResponse in
             print("LOGOUT: \(logoutResponse.toJSON())")
@@ -140,7 +139,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     
 //    Алерт с предупреждением об удалении аккаунта
     func deleteAlert() {
-        let alert = UIAlertController(title: "Удалить аккаунт?", message: "Вы уверены, что хотите удалить аккаунт? Данные будут удалены безвозвратно", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Удалить аккаунт?", message: "Вы уверены, что хотите удалить аккаунт? Данные будут потеряны безвозвратно", preferredStyle: .alert)
         let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         let actionYes = UIAlertAction(title: "Да", style: .default, handler: { actionYes in
             self.service.deleteDataFromRealm()

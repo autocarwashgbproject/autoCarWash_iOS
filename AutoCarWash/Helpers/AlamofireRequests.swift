@@ -117,7 +117,7 @@ class AlamofireRequests {
     }
     
 //    Запрос истории помывок
-    func getHistory(completion: @escaping ([WashResponse]) -> Void) {
+    func getWashHistory(completion: @escaping ([WashResponse]) -> Void) {
         let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
         let url = "http://185.17.121.228/api/v1/washing/\(Session.session.userID)/"
         Alamofire.request(url, method: .get, headers: headers).responseObject {(response: DataResponse<HistoryResponse>) in

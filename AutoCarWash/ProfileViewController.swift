@@ -30,10 +30,10 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
 //        Загрузка пользователя с сервера и отображение данных
-        request.getUserDataRequest() { [weak self] user in
-            self?.userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
-            self?.userTelNumberLabel.text = self?.service.createTelNumString(user.telNum)
-            self?.userEmailLabel.text = user.email
+        request.getUserDataRequest() { [weak self] userResponse in
+            self?.userNameLabel.text = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
+            self?.userTelNumberLabel.text = self?.service.createTelNumString(userResponse.telNum)
+            self?.userEmailLabel.text = userResponse.email
         }
         
 //        Тап по вьюшке с данными пользователя
@@ -51,12 +51,12 @@ class ProfileViewController: UIViewController {
         super.viewWillAppear(true)
         
 //        Загрузка авто с сервера и отображение данных
-        request.getCarDataRequest() { [weak self] car in
-            if car.regNum != "" {
+        request.getCarDataRequest() { [weak self] carResponse in
+            if carResponse.regNum != "" {
                 self?.carNumberLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
                 self?.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-                self?.carNumberLabel.text = self?.service.createRegNumSpaces(regNum: car.regNum)
-                self?.regionLabel.text = self?.service.createRegion(regNum: car.regNum)
+                self?.carNumberLabel.text = self?.service.createRegNumSpaces(regNum: carResponse.regNum)
+                self?.regionLabel.text = self?.service.createRegion(regNum: carResponse.regNum)
             } else {
                 self?.carNumberLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
                 self?.regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
@@ -70,9 +70,11 @@ class ProfileViewController: UIViewController {
         carPicImageView.image = service.loadImageFromDiskWith(fileName: "carPic")
     }
     
+//    Перехад в профиль юзера
     @objc func goToUserProfile(recognizer: UITapGestureRecognizer) {
         performSegue(withIdentifier: userProfileSegueID, sender: self)
     }
+//    Переход в профиль авто
     @objc func goToCarProfile(recognizer: UITapGestureRecognizer) {
         performSegue(withIdentifier: carProfileSegueID, sender: self)
     }

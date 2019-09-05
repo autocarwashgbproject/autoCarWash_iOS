@@ -82,6 +82,7 @@ class Service {
     
 //    Получение "красивого" номера телефона для отображения на экранах
     func createTelNumString(_ telnum: Int) -> String {
+        guard telnum != 0 else { return ""}
         let telNumString = String(telnum)
         let telNumArr = Array(telNumString)
         let telNumSp = [telNumArr[0], telNumArr[1], telNumArr[2], "-",telNumArr[3], telNumArr[4],  telNumArr[5], "-", telNumArr[6], telNumArr[7], telNumArr[8], telNumArr[9]]
@@ -116,7 +117,7 @@ class Service {
         
         let fileName = imageName
         let fileURL = documentsDirectory.appendingPathComponent(fileName)
-        guard let data = image.jpegData(compressionQuality: 1) else { return }
+        guard let data = image.jpegData(compressionQuality: 3) else { return }
         
         //Checks if file exists, removes it if so.
         if FileManager.default.fileExists(atPath: fileURL.path) {

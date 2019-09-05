@@ -72,9 +72,11 @@ class PaymentViewController: UIViewController {
     
     func changeState(imageView: UIImageView){
         if imageView.image == UIImage(named: "Rectangle 3") {
-            imageView.image = UIImage(named: "Rectangle 3_filled")
+            imageView.image = UIImage(named: "Rectangle 3_blue")
+            extend = true
         } else {
             imageView.image = UIImage(named: "Rectangle 3")
+            extend = false
         }
     }
 }

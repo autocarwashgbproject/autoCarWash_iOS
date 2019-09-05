@@ -134,10 +134,10 @@
 		D600773D22F1A1BD00B7CD50 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				D6B7005422FBF12C008A25C9 /* Event.swift */,
+				D61CA2FE2320BE5E000A1E50 /* SessionInfo.swift */,
 				D603C97A230B95140071E8F3 /* Session.swift */,
 				D603C97C230BA00A0071E8F3 /* ResponseObjects.swift */,
-				D61CA2FE2320BE5E000A1E50 /* SessionInfo.swift */,
+				D6B7005422FBF12C008A25C9 /* Event.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";

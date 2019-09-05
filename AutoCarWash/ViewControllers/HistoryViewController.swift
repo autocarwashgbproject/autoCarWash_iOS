@@ -57,9 +57,9 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func getHistoryAndShow() {
-        request.getHistory() { [weak self] history in
+        eventsArr.removeAll()
+        request.getWashHistory() { [weak self] history in
             print("HISTORY: \(history.toJSON())")
-            self?.eventsArr.removeAll()
             for event in history {
                 let washingTime = self?.service.getDateFromUNIXTime(date: event.washTime)
                 let description = self!.ifSuccessWash(description: event.washing)

@@ -23,6 +23,7 @@ class CarWashViewController: UIViewController {
     @IBOutlet weak var regionLabel: UILabel!
     let paySegueID = "toPaymentVCSegue"
     let profileSegueID = "toUserProfileSegue"
+    let authorisationSegueID = "toAuthSegue"
     let service = Service()
     let reguest = AlamofireRequests()
     
@@ -34,10 +35,16 @@ class CarWashViewController: UIViewController {
         subscribeStatusLabel.isHidden = true
         
 //        Загрузка пользователя с сервера и отображение данных
-        reguest.getUserDataRequest() { [weak self] user in
-            self?.userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
-            self?.userTelNumberLabel.text = self?.service.createTelNumString(user.telNum)
-            self?.userEmailLabel.text = user.email
+        reguest.getUserDataRequest() { [weak self] userResponse in
+            print("GET USER: \(userResponse.toJSON())")
+            if userResponse.detail == "Недопустимый токен." {
+                self?.service.deleteDataFromRealm();
+                self?.performSegue(withIdentifier: self!.authorisationSegueID, sender: self);
+                return
+            }
+            self?.userNameLabel.text = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
+            self?.userTelNumberLabel.text = self?.service.createTelNumString(userResponse.telNum)
+            self?.userEmailLabel.text = userResponse.email
         }
         
         let toProfileTap = UITapGestureRecognizer(target: self, action: #selector(goToUserProfile(recognizer:)))
@@ -50,6 +57,7 @@ class CarWashViewController: UIViewController {
         
 //        Загрузка авто с сервера и отображение данных
         reguest.getCarDataRequest() { [weak self] car in
+            print("GET CAR: \(car.toJSON())")
             if car.regNum == "" {
                 self?.carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
                 self?.regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
@@ -63,7 +71,6 @@ class CarWashViewController: UIViewController {
             }
         }
 
-        
         userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
     }
 
