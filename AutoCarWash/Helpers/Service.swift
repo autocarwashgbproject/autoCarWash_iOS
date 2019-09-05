@@ -58,7 +58,7 @@ class Service {
         let date = Date(timeIntervalSince1970: TimeInterval(date))
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.dateFormat = "dd/MM/yyyy"
         return dateFormatter.string(from: date)
     }
     
@@ -172,7 +172,7 @@ class Service {
 extension Date {
     static func getCurrentDate() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.dateFormat = "dd/MM/yyyy"
         return dateFormatter.string(from: Date())
     }
 }

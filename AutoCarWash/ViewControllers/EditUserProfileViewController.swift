@@ -16,7 +16,6 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var surnameTextField: UITextField!
     @IBOutlet weak var patronymicTextField: UITextField!
-    @IBOutlet weak var telNumTextField: UITextField!
     @IBOutlet weak var telNumLabel: UILabel!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var birthdayTextField: UITextField!
@@ -29,7 +28,6 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        telNumTextField.isHidden = true
         
         addDatePicker()
         
@@ -40,7 +38,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
             self?.nameTextField.text = userResponse.firstName
             self?.surnameTextField.text = userResponse.surname
             self?.patronymicTextField.text = userResponse.patronymic
-            self?.telNumLabel.text = self?.service.createTelNumString(userResponse.telNum)
+            self?.telNumLabel.text = "+7-\(self!.service.createTelNumString(userResponse.telNum))"
             self?.emailTextField.text = userResponse.email
             if userResponse.isBirthday {
                 self?.birthdayTextField.text = self?.service.getDateFromUNIXTime(date: userResponse.birthday)
@@ -67,7 +65,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
 //    Обработка изменения даты
     @objc func dateChanged() {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy"
+        formatter.dateFormat = "dd/MM/yyyy"
         birthdayTextField.text = formatter.string(from: birthdayPicker.date)
     }
     

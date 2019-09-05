@@ -43,7 +43,7 @@ class CarWashViewController: UIViewController {
                 return
             }
             self?.userNameLabel.text = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
-            self?.userTelNumberLabel.text = self?.service.createTelNumString(userResponse.telNum)
+            self?.userTelNumberLabel.text = "+7-\(self!.service.createTelNumString(userResponse.telNum))"
             self?.userEmailLabel.text = userResponse.email
         }
         

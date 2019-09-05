@@ -32,7 +32,7 @@ class ProfileViewController: UIViewController {
 //        Загрузка пользователя с сервера и отображение данных
         request.getUserDataRequest() { [weak self] userResponse in
             self?.userNameLabel.text = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
-            self?.userTelNumberLabel.text = self?.service.createTelNumString(userResponse.telNum)
+            self?.userTelNumberLabel.text = "+7-\(self!.service.createTelNumString(userResponse.telNum))"
             self?.userEmailLabel.text = userResponse.email
         }
         

@@ -21,7 +21,7 @@ class MenuViewController: UIViewController {
 //        Загрузка пользователя с сервера и отображение данных
         request.getUserDataRequest() { [weak self] user in
             self?.userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
-            self?.userTelNumLabel.text = self?.service.createTelNumString(user.telNum)
+            self?.userTelNumLabel.text = "+7-\(self!.service.createTelNumString(user.telNum))"
         }
     }
     
