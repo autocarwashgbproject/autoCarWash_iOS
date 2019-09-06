@@ -42,6 +42,11 @@ class CarWashViewController: UIViewController {
                 self?.performSegue(withIdentifier: self!.authorisationSegueID, sender: self);
                 return
             }
+            if !userResponse.cars.isEmpty {
+                Session.session.carIDs = userResponse.cars
+                Session.session.carID = userResponse.cars[0]
+                self?.loadCarAndShow()
+            }
             self?.userNameLabel.text = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
             self?.userTelNumberLabel.text = "+7-\(self!.service.createTelNumString(userResponse.telNum))"
             self?.userEmailLabel.text = userResponse.email
@@ -55,7 +60,23 @@ class CarWashViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
+        loadCarAndShow()
+
+        userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
+    }
+
+//    Нажатие на кпонку "Оплатить"
+    @IBAction func goToPayment(_ sender: Any) {
+        performSegue(withIdentifier: paySegueID, sender: self)
+    }
+    
+//    Переход на редактирование профиля по нажатию на вьюшку профиля
+    @objc func goToUserProfile(recognizer: UITapGestureRecognizer) {
+        performSegue(withIdentifier: profileSegueID, sender: self)
+    }
+    
 //        Загрузка авто с сервера и отображение данных
+    func loadCarAndShow() {
         reguest.getCarDataRequest() { [weak self] car in
             print("GET CAR: \(car.toJSON())")
             if car.regNum == "" {
@@ -70,15 +91,6 @@ class CarWashViewController: UIViewController {
                 self?.regionLabel.text = self?.service.createRegion(regNum: car.regNum)
             }
         }
-
-        userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
-    }
-
-    @IBAction func goToPayment(_ sender: Any) {
-        performSegue(withIdentifier: paySegueID, sender: self)
     }
     
-    @objc func goToUserProfile(recognizer: UITapGestureRecognizer) {
-        performSegue(withIdentifier: profileSegueID, sender: self)
-    }
 }

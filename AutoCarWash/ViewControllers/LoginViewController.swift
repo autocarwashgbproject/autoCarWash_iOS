@@ -69,7 +69,8 @@ class LoginViewController: UIViewController {
                 let sessionInfo = SessionInfo()
                 sessionInfo.userID = authResponse.userID
                 sessionInfo.token = authResponse.token
-                if authResponse.carIDs.isEmpty == false {
+                if !authResponse.carIDs.isEmpty {
+                    Session.session.carIDs = authResponse.carIDs
                     sessionInfo.carID = authResponse.carIDs[0]
                 }
                 self?.service.saveDataInRealm(object: sessionInfo, objectType: SessionInfo.self)

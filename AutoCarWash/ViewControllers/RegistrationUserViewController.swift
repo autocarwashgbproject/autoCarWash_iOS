@@ -67,8 +67,8 @@ class RegistrationUserViewController: UIViewController {
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print("REGISTRATION USER: \(userResponse.toJSON())")
             guard userResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка. \(userResponse.errorDescription)"); return }
+             self?.performSegue(withIdentifier: self!.regCarSegueID, sender: self)
         }
-            performSegue(withIdentifier: regCarSegueID, sender: self)
     }
     
 //    Смена картинки с пустого квадрата на заполненный и наоборот

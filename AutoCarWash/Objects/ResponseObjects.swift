@@ -53,7 +53,7 @@ class ClientAuthResponse: Mappable {
     func mapping(map: Map) {
         ok <- map["ok"]
         token <- map["token"]
-        userID <- map["id_client"]
+        userID <- map["id"]
         isRegistr <- map["is_registered"]
         telNum <- map["phone"]
         error <- map["error_code"]
@@ -77,6 +77,7 @@ class UserResponse: Mappable {
     var error = 0
     var errorDescription = ""
     var detail = ""
+    var cars = [Int]()
     
     required convenience init?(map: Map) {
         self.init()
@@ -95,6 +96,7 @@ class UserResponse: Mappable {
         error  <- map["error_code"]
         errorDescription <- map["description"]
         detail <- map["detail"]
+        cars <- map["cars_id"]
     }
 }
 

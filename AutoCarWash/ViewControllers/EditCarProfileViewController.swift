@@ -90,14 +90,14 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         if isCar {
             request.carSetDataRequest(regNum: carNum) { [weak self] carResponse in
                 print("EDIT CAR: \(carResponse.toJSON())")
-                guard carResponse.ok == true else { return }
+                guard carResponse.ok else { return }
                 self?.service.saveImage(imageName: "carPic", image: self!.carPicImageView.image!)
                 self?.sendAlert(title: "Готово", message: "Данные автомобиля обновлены")
             }
         } else {
             request.carRegistrationRequest(regNum: carNum) { [weak self] carResponse in
                 print("ADD NEW CAR: \(carResponse.toJSON())")
-                guard carResponse.ok == true else { return }
+                guard carResponse.ok else { return }
                 self?.isCar = true
                 Session.session.carID = carResponse.id
                 do {
@@ -180,22 +180,17 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         let alert = UIAlertController(title: "Удалить автомобиль?", message: "", preferredStyle: .alert)
         let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         let actionYes = UIAlertAction(title: "Да", style: .default, handler: { actionYes in
-            self.char1TextField.text = ""
-            self.char2TextField.text = ""
-            self.char3TextField.text = ""
-            self.char4TextField.text = ""
-            self.char5TextField.text = ""
-            self.char6TextField.text = ""
-            self.regionTextField.text = ""
+            self.char1TextField.text = nil
+            self.char2TextField.text = nil
+            self.char3TextField.text = nil
+            self.char4TextField.text = nil
+            self.char5TextField.text = nil
+            self.char6TextField.text = nil
+            self.regionTextField.text = nil
             self.request.deleteCarRequest() { [weak self] deleteCarResponse in
                 print("DELETED CAR: \(deleteCarResponse.toJSON())")
-                guard deleteCarResponse.ok == true else { return }
-                self?.char1TextField.placeholder = "X"
-                self?.char2TextField.placeholder = "0"
-                self?.char3TextField.placeholder = "0"
-                self?.char4TextField.placeholder = "0"
-                self?.char5TextField.placeholder = "X"
-                self?.char6TextField.placeholder = "X"
+                guard deleteCarResponse.ok else { return }
+                self?.separateRegNumAndShow("X000XX")
                 self?.regionTextField.placeholder = "000"
                 self?.carPicDelete()
                 self?.isCar = false
