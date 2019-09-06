@@ -108,6 +108,9 @@ class CarResponse: Mappable {
     var error = 0
     var errorDescription = ""
     var detail = ""
+    var isSubscribe = false
+    var beginDate = 0
+    var endDate = 0
     
     required convenience init?(map: Map) {
         self.init()
@@ -120,6 +123,9 @@ class CarResponse: Mappable {
         error <- map["error_code"]
         errorDescription <- map["description"]
         detail <- map["detail"]
+        isSubscribe <- map["is_subscribe"]
+        beginDate <- map["subscription_date"]
+        endDate <- map["subscription_date_validation"]
     }
 }
 

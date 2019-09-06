@@ -66,7 +66,7 @@ class RegistrationUserViewController: UIViewController {
                                           "birthday": 0]
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print("REGISTRATION USER: \(userResponse.toJSON())")
-            guard userResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка. \(userResponse.errorDescription)"); return }
+            guard userResponse.ok else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка. \(userResponse.errorDescription)"); return }
              self?.performSegue(withIdentifier: self!.regCarSegueID, sender: self)
         }
     }

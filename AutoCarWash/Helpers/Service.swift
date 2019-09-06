@@ -24,6 +24,7 @@ class Service {
         }
     }
     
+//    Загрузка данных сессии из Realm
     func loadSessionInfoFromRealm(completion: (SessionInfo) -> Void) {
         var sessionInfo = SessionInfo()
         do {
@@ -117,7 +118,7 @@ class Service {
         
         let fileName = imageName
         let fileURL = documentsDirectory.appendingPathComponent(fileName)
-        guard let data = image.jpegData(compressionQuality: 3) else { return }
+        guard let data = image.jpegData(compressionQuality: 5) else { return }
         
         //Checks if file exists, removes it if so.
         if FileManager.default.fileExists(atPath: fileURL.path) {

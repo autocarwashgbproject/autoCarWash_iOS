@@ -329,8 +329,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NJa-Lt-Q4r" userLabel="Info View" customClass="ProfileView" customModule="AutoCarWash" customModuleProvider="target">
                                 <rect key="frame" x="14" y="246" width="347" height="100"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Абонемент оплачем до 15.10.2019" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OCt-59-bCt">
-                                        <rect key="frame" x="5" y="12" width="337" height="20.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Абонемент оплачем до 15.10.2019" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OCt-59-bCt">
+                                        <rect key="frame" x="5" y="10" width="337" height="43"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -394,12 +394,13 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="hQm-0n-GCL" firstAttribute="centerX" secondItem="NJa-Lt-Q4r" secondAttribute="centerX" id="0Ky-TP-CvP"/>
-                                    <constraint firstItem="OCt-59-bCt" firstAttribute="top" secondItem="NJa-Lt-Q4r" secondAttribute="top" constant="12" id="13w-AS-pvh"/>
                                     <constraint firstAttribute="bottom" secondItem="sRk-oR-Hvt" secondAttribute="bottom" constant="12" id="2Es-9h-NX2"/>
+                                    <constraint firstItem="OCt-59-bCt" firstAttribute="top" secondItem="NJa-Lt-Q4r" secondAttribute="top" constant="10" id="7Ge-qS-ckA"/>
                                     <constraint firstItem="hQm-0n-GCL" firstAttribute="top" secondItem="NJa-Lt-Q4r" secondAttribute="top" constant="16" id="9SP-ZQ-U1L"/>
                                     <constraint firstItem="OCt-59-bCt" firstAttribute="centerX" secondItem="NJa-Lt-Q4r" secondAttribute="centerX" id="VoR-sz-goF"/>
                                     <constraint firstItem="sRk-oR-Hvt" firstAttribute="centerX" secondItem="NJa-Lt-Q4r" secondAttribute="centerX" id="WS8-EH-e97"/>
                                     <constraint firstAttribute="trailing" secondItem="OCt-59-bCt" secondAttribute="trailing" constant="5" id="aeT-jP-OHI"/>
+                                    <constraint firstItem="sRk-oR-Hvt" firstAttribute="top" secondItem="OCt-59-bCt" secondAttribute="bottom" constant="5" id="ahj-DO-8xG"/>
                                     <constraint firstItem="OCt-59-bCt" firstAttribute="leading" secondItem="NJa-Lt-Q4r" secondAttribute="leading" constant="5" id="tNK-uE-bt8"/>
                                     <constraint firstAttribute="height" constant="100" id="v89-oR-6Dd"/>
                                 </constraints>
@@ -2528,7 +2529,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="NLA-ap-yYd"/>
         <segue reference="nfU-PX-wFc"/>
-        <segue reference="tg4-RC-Jhe"/>
+        <segue reference="ctv-AV-GNO"/>
         <segue reference="bNZ-en-r6X"/>
         <segue reference="EXc-yW-eOe"/>
         <segue reference="OLO-0b-Wqy"/>

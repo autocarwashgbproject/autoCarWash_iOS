@@ -23,10 +23,18 @@ class PaymentViewController: UIViewController {
     let paySegueID = "toPaymentSegue"
     let service = Service()
     let request = AlamofireRequests()
-    var extend = false
+    var extend: Bool!
+    var isSubscribe: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        checkDataLabel.text = ""
+        toPaymentButton.isHidden = true
+        priceLabel.isHidden = true
+        infoLabel.isHidden = true
+        sumLabel.isHidden = true
+        line5.isHidden = true
         
         let extendTap = UITapGestureRecognizer(target: self, action: #selector(extendSubscript(recognizer:)))
         extendAutomaticallyImageView.isUserInteractionEnabled = true
@@ -36,41 +44,58 @@ class PaymentViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-//        Запрос на сервер о наличии абонемента
-//        Если есть абонемент
-//        checkDataLabel.text = "Абонемент оплачен"
-//        toPaymentButton.isHidden = true
-//        priceLabel.isHidden = true
-//        infoLabel.isHidden = true
-//        sumLabel.isHidden = true
-//        line4.isHidden = true
-//        startSubscriptionLabel.text = время начала абонемента из ответа сервера
-        startSubscriptionLabel.text = Date.getCurrentDate()
         
-        request.getUserDataRequest() { [weak self] user in
-            self?.userNameLabel.text = "\(user.firstName) \(user.surname)"
-        }
+        userNameLabel.text = User.user.shortName
+        carNumLabel.text = "\(Car.car.regNum) \(Car.car.region) RUS"
         
-        request.getCarDataRequest() { [weak self] car in
-            guard car.regNum != "" else { return }
-            let regNumSpaces = self!.service.createRegNumSpaces(regNum: car.regNum)
-            let region = self!.service.createRegion(regNum: car.regNum)
-            self?.carNumLabel.text = "\(regNumSpaces) \(region) RUS"
+        request.getCarDataRequest() { [weak self] carResponse in
+            guard carResponse.ok else { return }
+            if carResponse.isSubscribe {
+                self?.isSubscribe = true
+                self?.checkDataLabel.text = "Абонемент оплачен"
+                self?.toPaymentButton.isHidden = true
+                self?.priceLabel.isHidden = true
+                self?.infoLabel.isHidden = true
+                self?.sumLabel.isHidden = true
+                self?.line5.isHidden = true
+                let beginDate = self?.service.getDateFromUNIXTime(date: carResponse.beginDate)
+                self?.startSubscriptionLabel.text = beginDate
+//                if carResponse.autoExtend {
+//                  extendAutomaticallyImageView.image = UIImage(named: "Rectangle 3_blue")
+//              } else {
+//                  extendAutomaticallyImageView.image = UIImage(named: "Rectangle 3")
+//              }
+            } else {
+                self?.isSubscribe = false
+                self?.checkDataLabel.text = "Проверьте Ваши данные"
+                self?.toPaymentButton.isHidden = false
+                self?.priceLabel.isHidden = false
+                self?.infoLabel.isHidden = false
+                self?.sumLabel.isHidden = false
+                self?.line5.isHidden = false
+                self?.startSubscriptionLabel.text = Date.getCurrentDate()
+            }
         }
     }
     
+//    Переход к оплате абонемента с передачей нужных параметров
     @IBAction func goToPayment(_ sender: Any) {
-        guard userNameLabel.text != "",
-            carNumLabel.text != "" else { return }
+        guard carNumLabel.text != "" else { sendAlert(title: "Укажите номер автомобиля", message: "Поле 'Гос. номер' не может быть пустым. Пожалуйста, перейдите в профиль и укажите номер автомобиля"); return }
         WebViewURL.webViewURL.url = "https://kassa.yandex.ru"
         performSegue(withIdentifier: paySegueID, sender: self)
     }
     
+//    Тап по квадратику "Продлевать автоматически"
     @objc func extendSubscript(recognizer: UIGestureRecognizer) {
-        changeState(imageView: extendAutomaticallyImageView)
+        if isSubscribe {
+            changeStateSubscribe(imageView: extendAutomaticallyImageView)
+        } else {
+            changeStateNoSubscribe(imageView: extendAutomaticallyImageView)
+        }
     }
     
-    func changeState(imageView: UIImageView){
+//    Тап по квадратику, если подписки нет
+    func changeStateNoSubscribe(imageView: UIImageView) {
         if imageView.image == UIImage(named: "Rectangle 3") {
             imageView.image = UIImage(named: "Rectangle 3_blue")
             extend = true
@@ -78,5 +103,33 @@ class PaymentViewController: UIViewController {
             imageView.image = UIImage(named: "Rectangle 3")
             extend = false
         }
+    }
+    
+//    Тап по квадратику, если подписка есть
+    func changeStateSubscribe(imageView: UIImageView) {
+        if imageView.image == UIImage(named: "Rectangle 3") {
+            extendAlert(title: "Продлевать подписку?", message: "Нажимая 'Да', вы соглашаетесь на автоматическое продление абонемента. После окончания периода с Вашей карты автоматически спишется ₽2000. Продолжить?") {
+//                Запрос на сервер, продлевать существующую подписку
+                print("EXTEND SUBSCRIBE")
+                imageView.image = UIImage(named: "Rectangle 3_blue")
+            }
+        } else {
+            extendAlert(title: "Отменить автопродление?", message: "Нажимая 'Да', Вы отказываетесь от автоматического продления подписки. Продолжить?") {
+//                Запрос на сервер, отменить продление существующей подписки
+                print("DON'T EXTEND SUBSCRIBE")
+                imageView.image = UIImage(named: "Rectangle 3")
+            }
+        }
+    }
+    
+    func extendAlert(title: String, message: String, completion: @escaping () -> Void) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
+        let actionYes = UIAlertAction(title: "Да", style: .default, handler: { actionYes in
+            completion()
+        })
+        alert.addAction(actionNo)
+        alert.addAction(actionYes)
+        present(alert, animated: true, completion: nil)
     }
 }

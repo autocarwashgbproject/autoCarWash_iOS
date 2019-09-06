@@ -38,7 +38,7 @@ class HistoryViewController: UIViewController, UITableViewDelegate, UITableViewD
             let event = eventsArr[indexPath.row]
             cell.eventDateLabel.text = event.eventDate
             cell.eventTypeLabel.text = event.description
-            if event.success == true {
+            if event.success {
                 cell.eventTypeLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
             } else {
                 cell.eventTypeLabel.textColor = #colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)

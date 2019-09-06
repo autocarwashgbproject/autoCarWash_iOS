@@ -18,11 +18,15 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        Загрузка пользователя с сервера и отображение данных
-        request.getUserDataRequest() { [weak self] user in
-            self?.userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
-            self?.userTelNumLabel.text = "+7-\(self!.service.createTelNumString(user.telNum))"
-        }
+////        Загрузка пользователя с сервера и отображение данных
+//        request.getUserDataRequest() { [weak self] user in
+//            self?.userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
+//            self?.userTelNumLabel.text = "+7-\(self!.service.createTelNumString(user.telNum))"
+//        }
+        
+        userNameLabel.text = User.user.shortName
+        userTelNumLabel.text = User.user.telNumber
+        
     }
     
     @IBAction func supportButtonPressed(_ sender: UIButton) {

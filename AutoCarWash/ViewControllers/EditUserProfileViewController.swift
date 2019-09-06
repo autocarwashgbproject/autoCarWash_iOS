@@ -22,9 +22,11 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     let birthdayPicker = UIDatePicker()
     let userPicPicker = UIImagePickerController()
     var userPic = UIImage()
+    var oldImage = UIImage()
     let service = Service()
     let request = AlamofireRequests()
     var userTelNum = 0
+    var isSubscription: Bool!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +54,11 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         userPicImageView.addGestureRecognizer(userPicTap)
         
         userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
+        oldImage = userPicImageView.image ?? #imageLiteral(resourceName: "circle_user")
+        
+        request.getCarDataRequest() { [weak self] carResponse in
+            self?.isSubscription = carResponse.isSubscribe
+        }
     }
     
 //    Установка датапикера
@@ -92,7 +99,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         var isBirthday = false
         guard nameTextField.text != "",
               surnameTextField.text != "" else { sendAlert(title: "Заполнены не все поля", message: "Поля 'Имя' и 'Фамилия' не могут быть пустыми") ; return }
-        if birthdayTextField.text != "" {
+        if birthdayTextField.text != nil {
             let dateOfBirth = service.stringToDate(dateString: birthdayTextField.text!)
             birthDayUNIX = service.dateToUnixtime(date: dateOfBirth)
             isBirthday = true
@@ -111,6 +118,10 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print("EDIT USER DATA: \(userResponse.toJSON())")
             if userResponse.ok == true {
+                User.user.fullName = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
+                User.user.shortName = "\(userResponse.firstName) \(userResponse.surname)"
+                User.user.birthday = self!.birthdayTextField.text ?? ""
+                User.user.email = userResponse.email
                 self?.sendAlert(title: "Готово", message: "Ваш профиль успешно обновлён")
             } else {
                 self?.sendAlert(title: "Не удалось обновить профиль", message: "Пожалуйста, проверьте правильность введённых данных")
@@ -132,6 +143,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     
 //    Удаление аккаунта
     @IBAction func deleteAccuont(_ sender: Any) {
+        guard !isSubscription else { sendAlert(title: "Невозможно удалить аккаунт", message: "У Вас оплачен абонемент на пользование автомойкой. Пока подписка активна удалить аккаунт нельзя"); return }
         deleteAlert()
     }
     
@@ -149,7 +161,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         present(alert, animated: true, completion: nil)
     }
     
-//    Функции выбора юзерпика
+//    MARK: - Функции выбора юзерпика
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             userPic = pickedImage

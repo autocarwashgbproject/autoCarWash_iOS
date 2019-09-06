@@ -42,7 +42,7 @@ class LoginViewController: UIViewController {
 //    Отправка пользователю смс с кодом
     @IBAction func getSMSCode(_ sender: Any) {
         guard saveTelNumber() else { return }
-        if counterLabel.isHidden == true || counterLabel.text == "0 c" {
+        if counterLabel.isHidden || counterLabel.text == "0 c" {
                 repeatCodeLabel.isHidden = false
                 counterLabel.isHidden = false
                 countSec()
@@ -51,7 +51,7 @@ class LoginViewController: UIViewController {
         }
         request.getSMS(telNum: phoneNumber){ [weak self] smsResponse in
             print("GET SMS REQUEST: \(smsResponse.toJSON())")
-            if smsResponse.ok == true {
+            if smsResponse.ok {
                 self?.sendAlert(title: "Проверочный код", message: "\(smsResponse.code)")
                 self?.codeTextField.text = "\(smsResponse.code)"
                 self?.code = smsResponse.code
@@ -65,7 +65,7 @@ class LoginViewController: UIViewController {
     @IBAction func login(_ sender: Any) {
         guard code != 0 else { return }
         request.clientAuthRequest(telNum: phoneNumber, code: code) { [weak self] authResponse in
-            if authResponse.ok == true {
+            if authResponse.ok {
                 let sessionInfo = SessionInfo()
                 sessionInfo.userID = authResponse.userID
                 sessionInfo.token = authResponse.token

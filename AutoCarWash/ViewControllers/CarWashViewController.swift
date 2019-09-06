@@ -29,28 +29,9 @@ class CarWashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        Запрос на сервер о состоянии подписки, результат отобразить в subscribeStatusLabel
-//        Если есть активная подписка, payButton.isHidden = true
-        subscribeStatusLabel.isHidden = true
         
-//        Загрузка пользователя с сервера и отображение данных
-        reguest.getUserDataRequest() { [weak self] userResponse in
-            print("GET USER: \(userResponse.toJSON())")
-            if userResponse.detail == "Недопустимый токен." {
-                self?.service.deleteDataFromRealm();
-                self?.performSegue(withIdentifier: self!.authorisationSegueID, sender: self);
-                return
-            }
-            if !userResponse.cars.isEmpty {
-                Session.session.carIDs = userResponse.cars
-                Session.session.carID = userResponse.cars[0]
-                self?.loadCarAndShow()
-            }
-            self?.userNameLabel.text = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
-            self?.userTelNumberLabel.text = "+7-\(self!.service.createTelNumString(userResponse.telNum))"
-            self?.userEmailLabel.text = userResponse.email
-        }
+        payButton.isHidden = true
+        subscribeStatusLabel.isHidden = true
         
         let toProfileTap = UITapGestureRecognizer(target: self, action: #selector(goToUserProfile(recognizer:)))
         userProfileView.isUserInteractionEnabled = true
@@ -59,6 +40,8 @@ class CarWashViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        
+        loadUserAndShow()
         
         loadCarAndShow()
 
@@ -75,6 +58,33 @@ class CarWashViewController: UIViewController {
         performSegue(withIdentifier: profileSegueID, sender: self)
     }
     
+//        Загрузка пользователя с сервера и отображение данных, переход на авторизацию, если нет токена
+    func loadUserAndShow() {
+        reguest.getUserDataRequest() { [weak self] userResponse in
+            print("GET USER: \(userResponse.toJSON())")
+            if userResponse.detail == "Недопустимый токен." {
+                self?.service.deleteDataFromRealm();
+                self?.performSegue(withIdentifier: self!.authorisationSegueID, sender: self);
+                return
+            }
+            if !userResponse.cars.isEmpty {
+                Session.session.carIDs = userResponse.cars
+                Session.session.carID = userResponse.cars[0]
+                self?.loadCarAndShow()
+            }
+            User.user.fullName = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
+            User.user.shortName = "\(userResponse.firstName) \(userResponse.surname)"
+            User.user.telNumber = "+7-\(self!.service.createTelNumString(userResponse.telNum))"
+            User.user.email = userResponse.email
+            if userResponse.isBirthday {
+                User.user.birthday = self!.service.getDateFromUNIXTime(date: userResponse.birthday)
+            }
+            self?.userNameLabel.text = User.user.fullName
+            self?.userTelNumberLabel.text = User.user.telNumber
+            self?.userEmailLabel.text = User.user.email
+        }
+    }
+    
 //        Загрузка авто с сервера и отображение данных
     func loadCarAndShow() {
         reguest.getCarDataRequest() { [weak self] car in
@@ -85,12 +95,22 @@ class CarWashViewController: UIViewController {
                 self?.carNumLabel.text = "x000xx"
                 self?.regionLabel.text = "000"
             } else {
+                Car.car.regNum = self!.service.createRegNumSpaces(regNum: car.regNum)
+                Car.car.region = self!.service.createRegion(regNum: car.regNum)
                 self?.carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
                 self?.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-                self?.carNumLabel.text = self?.service.createRegNumSpaces(regNum: car.regNum)
-                self?.regionLabel.text = self?.service.createRegion(regNum: car.regNum)
+                self?.carNumLabel.text = Car.car.regNum
+                self?.regionLabel.text = Car.car.region
+            }
+            if car.isSubscribe {
+                self?.payButton.isHidden = true
+                self?.subscribeStatusLabel.isHidden = false
+                let endDate = self!.service.getDateFromUNIXTime(date: car.endDate)
+                self?.subscribeStatusLabel.text = "Абонемент оплачен до \(endDate)"
+            } else {
+                self?.payButton.isHidden = false
+                self?.subscribeStatusLabel.isHidden = true
             }
         }
     }
-    
 }

@@ -24,6 +24,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     let service = Service()
     let request = AlamofireRequests()
     var isCar : Bool!
+    var isSubscribe: Bool!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,22 +76,25 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
 //    Сохранение изменений данных машны
     @IBAction func saveChanges(_ sender: Any) {
         guard char1TextField.text != "",
-              char2TextField.text != "",
-              char3TextField.text != "",
-              char4TextField.text != "",
-              char5TextField.text != "",
-              char6TextField.text != "",
-              regionTextField.text != "" else { if carPicImageView.image != oldCarPic {
-                service.saveImage(imageName: "carPic", image: carPicImageView.image!)
-                sendAlert(title: "Готово", message: "Фото автомобиля обновлено") };
+            char2TextField.text != "",
+            char3TextField.text != "",
+            char4TextField.text != "",
+            char5TextField.text != "",
+            char6TextField.text != "",
+            regionTextField.text != "" else {
+                if carPicImageView.image != oldCarPic {
+                    service.saveImage(imageName: "carPic", image: carPicImageView.image!)
+                    sendAlert(title: "Готово", message: "Фото автомобиля обновлено") };
                 return
         }
-//        guard нет_абонемента else { sendAlert(title: "Нельзя изменить номер автомобиля", message: "У Вас оплачен абонемент на пользование автомойкой. Пока подписка активна, номер автомобиля измeнить невозможно"); return}
+        guard !isSubscribe else { sendAlert(title: "Невозможно изменить номер автомобиля", message: "У Вас есть оплаченный абонемент на пользование автомойкой для автомобиля c номером \(Car.car.regNum) \(Car.car.region) RUS. Пока подписка активна, номер автомобиля измeнить нельзя"); return}
         let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
         if isCar {
             request.carSetDataRequest(regNum: carNum) { [weak self] carResponse in
                 print("EDIT CAR: \(carResponse.toJSON())")
                 guard carResponse.ok else { return }
+                Car.car.regNum = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
+                Car.car.region = self!.service.createRegion(regNum: carResponse.regNum)
                 self?.service.saveImage(imageName: "carPic", image: self!.carPicImageView.image!)
                 self?.sendAlert(title: "Готово", message: "Данные автомобиля обновлены")
             }
@@ -100,6 +104,8 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
                 guard carResponse.ok else { return }
                 self?.isCar = true
                 Session.session.carID = carResponse.id
+                Car.car.regNum = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
+                Car.car.region = self!.service.createRegion(regNum: carResponse.regNum)
                 do {
                     let realm = try Realm()
                     let sessionInfo = realm.objects(SessionInfo.self).first!
@@ -117,6 +123,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     
     //    Нажатие на кнопку "Удалить автомобиль"
     @IBAction func deleteCar(_ sender: Any) {
+        guard !isSubscribe else { sendAlert(title: "Невозможно удалить автомобиль", message: "У Вас есть оплаченный абонемент на пользование автомойкой для автомобиля c номером \(Car.car.regNum) \(Car.car.region) RUS. Пока подписка активна, удалить автомобиль нельзя"); return}
         deleteAlert()
     }
     
@@ -150,11 +157,12 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     func setPlaceholders() {
         var carNum = ""
         request.getCarDataRequest() { [weak self] car in
-            if car.regNum != "" {
+            if car.ok {
                 self?.isCar = true
                 carNum = car.regNum
                 self?.separateRegNumAndShow(carNum)
                 self?.regionTextField.placeholder = self?.service.createRegion(regNum: car.regNum)
+                self?.isSubscribe = car.isSubscribe
             } else {
                 self?.isCar = false
                 carNum = "X000XX"
@@ -194,6 +202,8 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
                 self?.regionTextField.placeholder = "000"
                 self?.carPicDelete()
                 self?.isCar = false
+                Car.car.regNum = ""
+                Car.car.region = ""
                 self?.sendAlert(title: "Данные автомобиля удалены", message: "Введите новый номер")
             }
         })
