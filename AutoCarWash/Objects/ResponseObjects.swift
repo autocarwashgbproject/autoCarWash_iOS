@@ -109,6 +109,7 @@ class CarResponse: Mappable {
     var errorDescription = ""
     var detail = ""
     var isSubscribe = false
+    var extend = false
     var beginDate = 0
     var endDate = 0
     
@@ -124,6 +125,7 @@ class CarResponse: Mappable {
         errorDescription <- map["description"]
         detail <- map["detail"]
         isSubscribe <- map["is_subscribe"]
+        extend <- map["is_regular_pay"]
         beginDate <- map["subscription_date"]
         endDate <- map["subscription_date_validation"]
     }

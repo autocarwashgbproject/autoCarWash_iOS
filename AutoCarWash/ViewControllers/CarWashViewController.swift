@@ -22,7 +22,8 @@ class CarWashViewController: UIViewController {
     @IBOutlet weak var carNumLabel: UILabel!
     @IBOutlet weak var regionLabel: UILabel!
     let paySegueID = "toPaymentVCSegue"
-    let profileSegueID = "toUserProfileSegue"
+    let userProfileSegueID = "toUserProfileSegue"
+    let carProfileSegueID = "toCarProfileSegue"
     let authorisationSegueID = "toAuthSegue"
     let service = Service()
     let reguest = AlamofireRequests()
@@ -30,12 +31,23 @@ class CarWashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
+        let url = "http://185.17.121.228/api/v1/cars/\(Session.session.carID)/"
+        Alamofire.request(url, method: .get, headers: headers).responseJSON() { response in
+            print("JSON: \(response)")
+        }
+
+        
         payButton.isHidden = true
         subscribeStatusLabel.isHidden = true
         
         let toProfileTap = UITapGestureRecognizer(target: self, action: #selector(goToUserProfile(recognizer:)))
         userProfileView.isUserInteractionEnabled = true
         userProfileView.addGestureRecognizer(toProfileTap)
+        
+        let carNumTap = UITapGestureRecognizer(target: self, action: #selector(goToCarProfile(recognizer:)))
+        carNumLabel.isUserInteractionEnabled = true
+        carNumLabel.addGestureRecognizer(carNumTap)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -50,12 +62,18 @@ class CarWashViewController: UIViewController {
 
 //    Нажатие на кпонку "Оплатить"
     @IBAction func goToPayment(_ sender: Any) {
+        guard carNumLabel.text != "x000xx" else { sendAlert(title: "Вам нужен автомобиль", message: "Пожалуйста, укажите номер автомобиля для оплаты абонемента"); return }
         performSegue(withIdentifier: paySegueID, sender: self)
     }
     
 //    Переход на редактирование профиля по нажатию на вьюшку профиля
     @objc func goToUserProfile(recognizer: UITapGestureRecognizer) {
-        performSegue(withIdentifier: profileSegueID, sender: self)
+        performSegue(withIdentifier: userProfileSegueID, sender: self)
+    }
+    
+//    Переход на редактирование автомобиля по нажатию на номер
+    @objc func goToCarProfile(recognizer: UITapGestureRecognizer) {
+        performSegue(withIdentifier: carProfileSegueID, sender: self)
     }
     
 //        Загрузка пользователя с сервера и отображение данных, переход на авторизацию, если нет токена

@@ -19,7 +19,7 @@ extension UIViewController {
             let height = navVC.navigationBar.frame.height
             let logoContainer = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
             logoContainer.image = logoImage
-            logoContainer.contentMode = .bottom
+            logoContainer.contentMode = .top
             navigationItem.titleView = logoContainer
         }
     }

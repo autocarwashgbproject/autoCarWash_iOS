@@ -85,12 +85,23 @@ class AlamofireRequests {
         }
     }
     
-//    Запрос на редактирование данных авто
+//    Запрос на редактирование номера авто
     func carSetDataRequest(regNum: String, completion: @escaping (CarResponse) -> Void) {
         let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
         let url = "http://185.17.121.228/api/v1/cars/\(Session.session.carID)/"
         let carParameters: Parameters = ["reg_num": "\(regNum)"]
         Alamofire.request(url, method: .put, parameters: carParameters, encoding: JSONEncoding.default, headers: headers).responseObject { (response: DataResponse<CarResponse>) in
+            guard let car = response.result.value else { return }
+            completion(car)
+        }
+    }
+    
+//    Запрос на подключение/отмену автопродления подписки
+    func extendSubscribe(extend: Bool, completion: @escaping (CarResponse) -> Void) {
+        let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
+        let url = "http://185.17.121.228/api/v1/cars/\(Session.session.carID)/"
+        let extendParameters: Parameters = ["is_regular_pay": extend]
+        Alamofire.request(url, method: .put, parameters: extendParameters, encoding: JSONEncoding.default, headers: headers).responseObject { (response: DataResponse<CarResponse>) in
             guard let car = response.result.value else { return }
             completion(car)
         }

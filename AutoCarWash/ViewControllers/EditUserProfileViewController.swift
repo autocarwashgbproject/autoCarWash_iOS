@@ -99,7 +99,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         var isBirthday = false
         guard nameTextField.text != "",
               surnameTextField.text != "" else { sendAlert(title: "Заполнены не все поля", message: "Поля 'Имя' и 'Фамилия' не могут быть пустыми") ; return }
-        if birthdayTextField.text != nil {
+        if birthdayTextField.text != "" {
             let dateOfBirth = service.stringToDate(dateString: birthdayTextField.text!)
             birthDayUNIX = service.dateToUnixtime(date: dateOfBirth)
             isBirthday = true
@@ -117,7 +117,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
                                           "birthday": birthDayUNIX]
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print("EDIT USER DATA: \(userResponse.toJSON())")
-            if userResponse.ok == true {
+            if userResponse.ok {
                 User.user.fullName = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
                 User.user.shortName = "\(userResponse.firstName) \(userResponse.surname)"
                 User.user.birthday = self!.birthdayTextField.text ?? ""
@@ -135,7 +135,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     @IBAction func logOut(_ sender: Any) {
         request.logoutRequest() { [weak self] logoutResponse in
             print("LOGOUT: \(logoutResponse.toJSON())")
-            guard logoutResponse.ok == true else { return }
+            guard logoutResponse.ok else { return }
             self?.service.deleteDataFromRealm()
             self?.performSegue(withIdentifier: "logOutSegue", sender: self)
         }

@@ -29,13 +29,6 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        Загрузка пользователя с сервера и отображение данных
-//        request.getUserDataRequest() { [weak self] userResponse in
-//            self?.userNameLabel.text = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
-//            self?.userTelNumberLabel.text = "+7-\(self!.service.createTelNumString(userResponse.telNum))"
-//            self?.userEmailLabel.text = userResponse.email
-//        }
-        
 //        Тап по вьюшке с данными пользователя
         let userProfileTap = UITapGestureRecognizer(target: self, action: #selector(goToUserProfile(recognizer:)))
         userProfileView.isUserInteractionEnabled = true
@@ -65,21 +58,6 @@ class ProfileViewController: UIViewController {
             carNumberLabel.text = "x000xx"
             regionLabel.text = "000"
         }
-        
-//        Загрузка авто с сервера и отображение данных
-//        request.getCarDataRequest() { [weak self] carResponse in
-//            if carResponse.ok {
-//                self?.carNumberLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-//                self?.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
-//                self?.carNumberLabel.text = self?.service.createRegNumSpaces(regNum: carResponse.regNum)
-//                self?.regionLabel.text = self?.service.createRegion(regNum: carResponse.regNum)
-//            } else {
-//                self?.carNumberLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-//                self?.regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-//                self?.carNumberLabel.text = "x000xx"
-//                self?.regionLabel.text = "000"
-//            }
-//        }
         
         userPicImageView.image = service.loadImageFromDiskWith(fileName: "userPic")
 

@@ -49,6 +49,7 @@ class PaymentViewController: UIViewController {
         carNumLabel.text = "\(Car.car.regNum) \(Car.car.region) RUS"
         
         request.getCarDataRequest() { [weak self] carResponse in
+            print("GET CAR: \(carResponse.toJSON())")
             guard carResponse.ok else { return }
             if carResponse.isSubscribe {
                 self?.isSubscribe = true
@@ -60,11 +61,11 @@ class PaymentViewController: UIViewController {
                 self?.line5.isHidden = true
                 let beginDate = self?.service.getDateFromUNIXTime(date: carResponse.beginDate)
                 self?.startSubscriptionLabel.text = beginDate
-//                if carResponse.autoExtend {
-//                  extendAutomaticallyImageView.image = UIImage(named: "Rectangle 3_blue")
-//              } else {
-//                  extendAutomaticallyImageView.image = UIImage(named: "Rectangle 3")
-//              }
+                if carResponse.extend {
+                  self?.extendAutomaticallyImageView.image = UIImage(named: "Rectangle 3_blue")
+              } else {
+                  self?.extendAutomaticallyImageView.image = UIImage(named: "Rectangle 3")
+              }
             } else {
                 self?.isSubscribe = false
                 self?.checkDataLabel.text = "Проверьте Ваши данные"

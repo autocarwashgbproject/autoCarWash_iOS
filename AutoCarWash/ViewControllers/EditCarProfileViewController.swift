@@ -121,8 +121,9 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         }
     }
     
-    //    Нажатие на кнопку "Удалить автомобиль"
+//    Нажатие на кнопку "Удалить автомобиль"
     @IBAction func deleteCar(_ sender: Any) {
+        guard isCar else { return }
         guard !isSubscribe else { sendAlert(title: "Невозможно удалить автомобиль", message: "У Вас есть оплаченный абонемент на пользование автомойкой для автомобиля c номером \(Car.car.regNum) \(Car.car.region) RUS. Пока подписка активна, удалить автомобиль нельзя"); return}
         deleteAlert()
     }
@@ -165,6 +166,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
                 self?.isSubscribe = car.isSubscribe
             } else {
                 self?.isCar = false
+                self?.isSubscribe = false
                 carNum = "X000XX"
                 self?.separateRegNumAndShow(carNum)
                 self?.regionTextField.placeholder = "000"
@@ -202,6 +204,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
                 self?.regionTextField.placeholder = "000"
                 self?.carPicDelete()
                 self?.isCar = false
+                self?.isSubscribe = false
                 Car.car.regNum = ""
                 Car.car.region = ""
                 self?.sendAlert(title: "Данные автомобиля удалены", message: "Введите новый номер")
