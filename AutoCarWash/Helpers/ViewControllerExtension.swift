@@ -14,7 +14,7 @@ extension UIViewController {
 //    Установка логотипа в НавБар
     func setNavBarImage() {
         if let navVC = navigationController {
-            let logoImage = #imageLiteral(resourceName: "carWash_logo")
+            let logoImage = UIImage(named: "carWash_logo")
             let width = navVC.navigationBar.frame.width
             let height = navVC.navigationBar.frame.height
             let logoContainer = UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height))
@@ -43,5 +43,4 @@ extension UIViewController {
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true, completion: nil)
     }
-    
 }

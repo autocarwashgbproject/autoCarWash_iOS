@@ -22,9 +22,8 @@ class RegistrationUserViewController: UIViewController {
     let userDefaults = UserDefaults.standard
     let regCarSegueID = "toCarRegistr"
     let readUserCondSegueID = "toWebViewSegue"
-    var userTelNum = 0
+    var userTelNum = ""
     var userTelNumSp = ""
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +32,7 @@ class RegistrationUserViewController: UIViewController {
         
         hideNavBarItem()
         
-        userTelNum = userDefaults.integer(forKey: "telNum")
+        userTelNum = userDefaults.string(forKey: "telNum")!
         userTelNumSp = userDefaults.string(forKey: "telNumSpaces")!
         telNumLabel.text = userTelNumSp
         
@@ -65,8 +64,9 @@ class RegistrationUserViewController: UIViewController {
                                           "is_birthday": false,
                                           "birthday": 0]
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
-            print("REGISTRATION USER: \(userResponse.toJSON())")
-            guard userResponse.ok else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка. \(userResponse.errorDescription)"); return }
+            guard let ok = userResponse.ok else { return }
+            print("REGISTRATION USER: \(userResponse.ok ?? false) ID: \(userResponse.id ?? 0), Name: \(userResponse.name ?? "No name") \(userResponse.patronymic ?? "") \(userResponse.surname ?? ""), Telephone: \(userResponse.phone ?? 0) Error: \(userResponse.error_code ?? 0) \(userResponse.description ?? "") \(userResponse.detail ?? "")")
+            guard ok else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка при сохранении данных"); return }
              self?.performSegue(withIdentifier: self!.regCarSegueID, sender: self)
         }
     }

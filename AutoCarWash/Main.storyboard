@@ -320,8 +320,8 @@
                                     <constraint firstAttribute="height" constant="20" id="coG-ry-KYG"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Великие Луки, пр-т Октябрьский, 9Б" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OqY-MR-5cC">
-                                <rect key="frame" x="65" y="195" width="305" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OqY-MR-5cC">
+                                <rect key="frame" x="65" y="215" width="305" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -433,6 +433,7 @@
                     <navigationItem key="navigationItem" id="WxO-8v-lJt"/>
                     <connections>
                         <outlet property="carNumLabel" destination="6SE-UH-e1G" id="Vqm-Mt-F0a"/>
+                        <outlet property="geoPositionLabel" destination="OqY-MR-5cC" id="ABO-4a-SYK"/>
                         <outlet property="payButton" destination="hQm-0n-GCL" id="PxA-8T-Sbe"/>
                         <outlet property="regionLabel" destination="Gqt-6b-uJX" id="Np4-n6-4XO"/>
                         <outlet property="subscribeStatusLabel" destination="OCt-59-bCt" id="lMD-bF-n8U"/>
@@ -2521,16 +2522,16 @@
         <image name="history" width="25" height="25"/>
         <image name="line" width="327" height="2"/>
         <image name="placeholder" width="10" height="10"/>
-        <image name="star" width="25.5" height="25.5"/>
+        <image name="star" width="26" height="26"/>
         <image name="support" width="15" height="15"/>
         <image name="upper_logo" width="178.5" height="31"/>
-        <image name="user" width="24" height="29"/>
+        <image name="user" width="25" height="25.5"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="NLA-ap-yYd"/>
         <segue reference="KTf-KA-xzx"/>
         <segue reference="tg4-RC-Jhe"/>
-        <segue reference="bNZ-en-r6X"/>
+        <segue reference="IYI-SN-8Dv"/>
         <segue reference="EXc-yW-eOe"/>
         <segue reference="OLO-0b-Wqy"/>
     </inferredMetricsTieBreakers>

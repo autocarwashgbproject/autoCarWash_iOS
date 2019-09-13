@@ -25,7 +25,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     var oldImage = UIImage()
     let service = Service()
     let request = AlamofireRequests()
-    var userTelNum = 0
+    var userTelNum = ""
     var isSubscription: Bool!
 
     override func viewDidLoad() {
@@ -36,14 +36,15 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         userPicPicker.delegate = self
         
         request.getUserDataRequest() { [weak self] userResponse in
-            self?.userTelNum = userResponse.telNum
-            self?.nameTextField.text = userResponse.firstName
+            self?.userTelNum = "\(userResponse.phone ?? 0)"
+            self?.nameTextField.text = userResponse.name
             self?.surnameTextField.text = userResponse.surname
             self?.patronymicTextField.text = userResponse.patronymic
-            self?.telNumLabel.text = "+7-\(self!.service.createTelNumString(userResponse.telNum))"
+            self?.telNumLabel.text = "+7-\(self!.service.createTelNumString(self!.userTelNum))"
             self?.emailTextField.text = userResponse.email
-            if userResponse.isBirthday {
-                self?.birthdayTextField.text = self?.service.getDateFromUNIXTime(date: userResponse.birthday)
+            guard let isBirthday = userResponse.is_birthday else { return }
+            if isBirthday {
+                self?.birthdayTextField.text = self?.service.getDateFromUNIXTime(date: userResponse.birthday!)
             } else {
                 self?.birthdayTextField.text = ""
             }
@@ -57,7 +58,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         oldImage = userPicImageView.image ?? #imageLiteral(resourceName: "circle_user")
         
         request.getCarDataRequest() { [weak self] carResponse in
-            self?.isSubscription = carResponse.isSubscribe
+            self?.isSubscription = carResponse.is_subscribe
         }
     }
     
@@ -116,12 +117,13 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
                                           "is_birthday": isBirthday,
                                           "birthday": birthDayUNIX]
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
-            print("EDIT USER DATA: \(userResponse.toJSON())")
-            if userResponse.ok {
-                User.user.fullName = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
-                User.user.shortName = "\(userResponse.firstName) \(userResponse.surname)"
+            print("EDIT USER DATA: Name: \(userResponse.name ?? "No name") \(userResponse.patronymic ?? "No patronymic") \(userResponse.surname ?? "No surname"), Email: \(userResponse.email ?? "No email"), Birthday: \(userResponse.birthday ?? 0)")
+            guard let ok = userResponse.ok else { return }
+            if ok {
+                User.user.fullName = "\(userResponse.name ?? "") \(userResponse.patronymic ?? "") \(userResponse.surname ?? "")"
+                User.user.shortName = "\(userResponse.name ?? "") \(userResponse.surname ?? "")"
                 User.user.birthday = self!.birthdayTextField.text ?? ""
-                User.user.email = userResponse.email
+                User.user.email = userResponse.email ?? ""
                 self?.sendAlert(title: "Готово", message: "Ваш профиль успешно обновлён")
             } else {
                 self?.sendAlert(title: "Не удалось обновить профиль", message: "Пожалуйста, проверьте правильность введённых данных")
@@ -134,7 +136,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
 //    Выход из аккаунта
     @IBAction func logOut(_ sender: Any) {
         request.logoutRequest() { [weak self] logoutResponse in
-            print("LOGOUT: \(logoutResponse.toJSON())")
+            print("LOGOUT: ID: \(logoutResponse.id), Message: \(logoutResponse.description)")
             guard logoutResponse.ok else { return }
             self?.service.deleteDataFromRealm()
             self?.performSegue(withIdentifier: "logOutSegue", sender: self)
@@ -149,12 +151,15 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     
 //    Алерт с предупреждением об удалении аккаунта
     func deleteAlert() {
-        let alert = UIAlertController(title: "Удалить аккаунт?", message: "Вы уверены, что хотите удалить аккаунт? Данные будут потеряны безвозвратно", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Удалить аккаунт?", message: "Вы уверены, что хотите удалить аккаунт? Данные будут потеряны безвозвратно.", preferredStyle: .alert)
         let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         let actionYes = UIAlertAction(title: "Да", style: .default, handler: { actionYes in
             self.service.deleteDataFromRealm()
-            self.request.deleteUserRequest()
-            self.performSegue(withIdentifier: "logOutSegue", sender: self)
+            self.request.deleteUserRequest() { deleteResponse in
+                guard deleteResponse.ok else { return }
+                print("USER DELETED: \(deleteResponse.id), \(deleteResponse.description)")
+                self.performSegue(withIdentifier: "logOutSegue", sender: self)
+            }
         })
         alert.addAction(actionNo)
         alert.addAction(actionYes)

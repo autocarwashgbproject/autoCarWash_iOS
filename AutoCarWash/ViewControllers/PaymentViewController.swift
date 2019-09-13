@@ -49,9 +49,10 @@ class PaymentViewController: UIViewController {
         carNumLabel.text = "\(Car.car.regNum) \(Car.car.region) RUS"
         
         request.getCarDataRequest() { [weak self] carResponse in
-            print("GET CAR: \(carResponse.toJSON())")
-            guard carResponse.ok else { return }
-            if carResponse.isSubscribe {
+            print("GET CAR: ID: \(carResponse.id ?? 0), Regnum: \(carResponse.reg_num ?? ""), Error: \(carResponse.error_code ?? 0), \(carResponse.description ?? ""), \(carResponse.detail ?? "")")
+            guard let ok = carResponse.ok else { return }
+            guard ok else { return }
+            if carResponse.is_subscribe! {
                 self?.isSubscribe = true
                 self?.checkDataLabel.text = "Абонемент оплачен"
                 self?.toPaymentButton.isHidden = true
@@ -59,13 +60,13 @@ class PaymentViewController: UIViewController {
                 self?.infoLabel.isHidden = true
                 self?.sumLabel.isHidden = true
                 self?.line5.isHidden = true
-                let beginDate = self?.service.getDateFromUNIXTime(date: carResponse.beginDate)
+                let beginDate = self?.service.getDateFromUNIXTime(date: carResponse.subscription_date!)
                 self?.startSubscriptionLabel.text = beginDate
-                if carResponse.extend {
-                  self?.extendAutomaticallyImageView.image = UIImage(named: "Rectangle 3_blue")
-              } else {
-                  self?.extendAutomaticallyImageView.image = UIImage(named: "Rectangle 3")
-              }
+//                if carResponse.is_regular_pay {
+//                  self?.extendAutomaticallyImageView.image = UIImage(named: "Rectangle 3_blue")
+//              } else {
+//                  self?.extendAutomaticallyImageView.image = UIImage(named: "Rectangle 3")
+//              }
             } else {
                 self?.isSubscribe = false
                 self?.checkDataLabel.text = "Проверьте Ваши данные"
@@ -109,7 +110,7 @@ class PaymentViewController: UIViewController {
 //    Тап по квадратику, если подписка есть
     func changeStateSubscribe(imageView: UIImageView) {
         if imageView.image == UIImage(named: "Rectangle 3") {
-            extendAlert(title: "Продлевать подписку?", message: "Нажимая 'Да', вы соглашаетесь на автоматическое продление абонемента. После окончания периода с Вашей карты автоматически спишется ₽2000. Продолжить?") {
+            extendAlert(title: "Продлевать подписку?", message: "Нажимая 'Да', вы соглашаетесь на автоматическое продление абонемента. После окончания периода с Вашей карты автоматически спишется 2000₽. Продолжить?") {
 //                Запрос на сервер, продлевать существующую подписку
                 print("EXTEND SUBSCRIBE")
                 imageView.image = UIImage(named: "Rectangle 3_blue")

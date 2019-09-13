@@ -91,21 +91,23 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
         if isCar {
             request.carSetDataRequest(regNum: carNum) { [weak self] carResponse in
-                print("EDIT CAR: \(carResponse.toJSON())")
-                guard carResponse.ok else { return }
-                Car.car.regNum = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
-                Car.car.region = self!.service.createRegion(regNum: carResponse.regNum)
+                print("EDIT CAR: \(carResponse.ok ?? false) ID: \(carResponse.id ?? 0), New number: \(carResponse.reg_num ?? "No reg_num") Error: \(carResponse.error_code ?? 0), \(carResponse.description ?? ""), \(carResponse.detail ?? "")")
+                guard let ok = carResponse.ok else { return }
+                guard ok else { return }
+                Car.car.regNum = self!.service.createRegNumSpaces(regNum: carResponse.reg_num!)
+                Car.car.region = self!.service.createRegion(regNum: carResponse.reg_num!)
                 self?.service.saveImage(imageName: "carPic", image: self!.carPicImageView.image!)
                 self?.sendAlert(title: "Готово", message: "Данные автомобиля обновлены")
             }
         } else {
             request.carRegistrationRequest(regNum: carNum) { [weak self] carResponse in
-                print("ADD NEW CAR: \(carResponse.toJSON())")
-                guard carResponse.ok else { return }
+                print("ADD NEW CAR: \(carResponse.ok ?? false) ID: \(carResponse.id ?? 0) Regnum: \(carResponse.reg_num ?? "") Error: \(carResponse.error_code ?? 0), \(carResponse.description ?? ""), \(carResponse.detail ?? "")")
+                guard let ok = carResponse.ok else { return }
+                guard ok else { return }
                 self?.isCar = true
-                Session.session.carID = carResponse.id
-                Car.car.regNum = self!.service.createRegNumSpaces(regNum: carResponse.regNum)
-                Car.car.region = self!.service.createRegion(regNum: carResponse.regNum)
+                Session.session.carID = carResponse.id!
+                Car.car.regNum = self!.service.createRegNumSpaces(regNum: carResponse.reg_num!)
+                Car.car.region = self!.service.createRegion(regNum: carResponse.reg_num!)
                 do {
                     let realm = try Realm()
                     let sessionInfo = realm.objects(SessionInfo.self).first!
@@ -157,13 +159,14 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
 //    Отрисовка существующего номера машины в плэйсхолдерах тестовых полей
     func setPlaceholders() {
         var carNum = ""
-        request.getCarDataRequest() { [weak self] car in
-            if car.ok {
+        request.getCarDataRequest() { [weak self] carResponse in
+            guard let ok = carResponse.ok else { return }
+            if ok {
                 self?.isCar = true
-                carNum = car.regNum
+                carNum = carResponse.reg_num!
                 self?.separateRegNumAndShow(carNum)
-                self?.regionTextField.placeholder = self?.service.createRegion(regNum: car.regNum)
-                self?.isSubscribe = car.isSubscribe
+                self?.regionTextField.placeholder = self?.service.createRegion(regNum: carNum)
+                self?.isSubscribe = carResponse.is_subscribe!
             } else {
                 self?.isCar = false
                 self?.isSubscribe = false
@@ -198,8 +201,9 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
             self.char6TextField.text = nil
             self.regionTextField.text = nil
             self.request.deleteCarRequest() { [weak self] deleteCarResponse in
-                print("DELETED CAR: \(deleteCarResponse.toJSON())")
-                guard deleteCarResponse.ok else { return }
+                print("DELETED CAR: \(deleteCarResponse.ok ?? false) ID: \(deleteCarResponse.id ?? 0), \(deleteCarResponse.description ?? "")")
+                guard let ok = deleteCarResponse.ok else { return }
+                guard ok else { return }
                 self?.separateRegNumAndShow("X000XX")
                 self?.regionTextField.placeholder = "000"
                 self?.carPicDelete()

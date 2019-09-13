@@ -8,7 +8,7 @@
 
 import UIKit
 import Foundation
-import RealmSwift
+import RealmSwift   
 
 class Service {
     
@@ -75,17 +75,16 @@ class Service {
 //    Преобразование строки с датой в формат Date
     func stringToDate(dateString: String) -> Date {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.dateFormat = "dd/MM/yyyy"
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         let date = dateFormatter.date(from: dateString)
         return date!
     }
     
 //    Получение "красивого" номера телефона для отображения на экранах
-    func createTelNumString(_ telnum: Int) -> String {
-        guard telnum != 0 else { return ""}
-        let telNumString = String(telnum)
-        let telNumArr = Array(telNumString)
+    func createTelNumString(_ telnum: String) -> String {
+        guard telnum != "" else { return ""}
+        let telNumArr = Array(telnum)
         let telNumSp = [telNumArr[0], telNumArr[1], telNumArr[2], "-",telNumArr[3], telNumArr[4],  telNumArr[5], "-", telNumArr[6], telNumArr[7], telNumArr[8], telNumArr[9]]
         let telNumSpaces = String(telNumSp)
         return telNumSpaces
@@ -93,7 +92,7 @@ class Service {
     
 //    Получение "красивого" номера машины и региона
     func createRegNumSpaces(regNum: String) -> String {
-        guard regNum != "" else { return "" }
+        guard regNum != "" else { return  "" }
         let regNumArr = Array(regNum)
         let regNumSp = [regNumArr[0], " ", regNumArr[1], regNumArr[2], regNumArr[3], " ", regNumArr[4], regNumArr[5]]
         let regNumSpaces = String(regNumSp)
@@ -118,7 +117,7 @@ class Service {
         
         let fileName = imageName
         let fileURL = documentsDirectory.appendingPathComponent(fileName)
-        guard let data = image.jpegData(compressionQuality: 1) else { return }
+        guard let data = image.jpegData(compressionQuality: 0.1) else { return }
         
         //Checks if file exists, removes it if so.
         if FileManager.default.fileExists(atPath: fileURL.path) {

@@ -11,124 +11,70 @@ import Alamofire
 import AlamofireObjectMapper
 import ObjectMapper
 
-class GetSMSResponse: Mappable {
+
+class GetSMSResponse: Codable {
     
-    var ok = false
-    var error = 0
-    var errorDescription = ""
-    var phone = 0
-    var code = 0
-    var detail = ""
-    
-    required convenience init?(map: Map) {
-        self.init()
-    }
-    
-    func mapping(map: Map) {
-        ok <- map["ok"]
-        error <- map["error_code"]
-        errorDescription <- map["description"]
-        phone <- map["phone"]
-        code <- map["sms_for_tests"]
-        detail <- map["detail"]
-    }
+    var ok: Bool
+    var phone: Int
+    var sms_for_tests: Int
+    var error_code: Int?
+    var description: String?
+    var detail: String?
+
 }
 
-class ClientAuthResponse: Mappable {
+class ClientAuthResponse: Codable {
     
-    var ok = false
-    var token = ""
-    var userID = 0
-    var isRegistr = false
-    var telNum = 0
-    var error = 0
-    var errorDescription = ""
-    var carIDs = [Int]()
-    var detail = ""
+    var ok: Bool
+    var token: String
+    var id: Int
+    var is_registered: Bool
+    var phone: Int
+    var cars_id: [Int]?
+    var error_code: Int?
+    var description: String?
+    var detail: String?
     
-    required convenience init?(map: Map) {
-        self.init()
-    }
-    
-    func mapping(map: Map) {
-        ok <- map["ok"]
-        token <- map["token"]
-        userID <- map["id"]
-        isRegistr <- map["is_registered"]
-        telNum <- map["phone"]
-        error <- map["error_code"]
-        errorDescription <- map["description"]
-        carIDs <- map["cars_id"]
-        detail <- map["detail"]
-    }
 }
 
-class UserResponse: Mappable {
+class UserResponse: Codable {
     
-    var id = 0
-    var firstName = ""
-    var surname = ""
-    var patronymic = ""
-    var telNum = 0
-    var email = ""
-    var isBirthday = false
-    var birthday = 0
-    var ok = false
-    var error = 0
-    var errorDescription = ""
-    var detail = ""
-    var cars = [Int]()
+    var ok: Bool?
+    var id: Int?
+    var name: String?
+    var surname: String?
+    var patronymic: String?
+    var phone: Int?
+    var email: String?
+    var is_birthday: Bool?
+    var birthday: Int?
+    var cars_id: [Int]?
+    var error_code: Int?
+    var description: String?
+    var detail: String?
     
-    required convenience init?(map: Map) {
-        self.init()
-    }
-    
-    func mapping(map: Map) {
-        id <- map["id"]
-        firstName <- map["name"]
-        surname <- map["surname"]
-        patronymic <- map["patronymic"]
-        telNum <- map["phone"]
-        email <- map["email"]
-        isBirthday <- map["is_birthday"]
-        birthday <- map["birthday"]
-        ok <- map["ok"]
-        error  <- map["error_code"]
-        errorDescription <- map["description"]
-        detail <- map["detail"]
-        cars <- map["cars_id"]
-    }
 }
 
-class CarResponse: Mappable {
+class LogoutDeleteResponse: Codable {
     
-    var id = 0
-    var ok = false
-    var regNum = ""
-    var error = 0
-    var errorDescription = ""
-    var detail = ""
-    var isSubscribe = false
-    var extend = false
-    var beginDate = 0
-    var endDate = 0
+    var ok: Bool
+    var id: Int
+    var description: String
     
-    required convenience init?(map: Map) {
-        self.init()
-    }
+}
+
+class CarResponse: Codable {
     
-    func mapping(map: Map) {
-        id <- map["id"]
-        ok <- map["ok"]
-        regNum <- map["reg_num"]
-        error <- map["error_code"]
-        errorDescription <- map["description"]
-        detail <- map["detail"]
-        isSubscribe <- map["is_subscribe"]
-        extend <- map["is_regular_pay"]
-        beginDate <- map["subscription_date"]
-        endDate <- map["subscription_date_validation"]
-    }
+    var ok: Bool?
+    var id: Int?
+    var reg_num: String?
+    var is_subscribe: Bool?
+    var subscription_date: Int?
+    var subscription_date_validation: Int?
+    var error_code: Int?
+    var description: String?
+    var detail: String?
+    
 }
 
 class HistoryResponse: Mappable {

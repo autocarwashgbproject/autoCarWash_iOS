@@ -12,7 +12,6 @@ import Alamofire
 
 class LoginViewController: UIViewController {
     
-    
     @IBOutlet weak var telephoneNumberTextField: UITextField!
     @IBOutlet weak var codeTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
@@ -21,7 +20,7 @@ class LoginViewController: UIViewController {
     let request = AlamofireRequests()
     let service = Service()
     let userDefaults = UserDefaults.standard
-    var phoneNumber = 0
+    var phoneNumber = ""
     var code = 0
     let loginSegueID = "logInSegue"
     let regSegueID = "registrationSegue"
@@ -43,45 +42,47 @@ class LoginViewController: UIViewController {
     @IBAction func getSMSCode(_ sender: Any) {
         guard saveTelNumber() else { return }
         if counterLabel.isHidden || counterLabel.text == "0 c" {
-                repeatCodeLabel.isHidden = false
-                counterLabel.isHidden = false
-                countSec()
+            repeatCodeLabel.isHidden = false
+            counterLabel.isHidden = false
+            countSec()
         } else {
             return
         }
         request.getSMS(telNum: phoneNumber){ [weak self] smsResponse in
-            print("GET SMS REQUEST: \(smsResponse.toJSON())")
-            if smsResponse.ok {
-                self?.sendAlert(title: "Проверочный код", message: "\(smsResponse.code)")
-                self?.codeTextField.text = "\(smsResponse.code)"
-                self?.code = smsResponse.code
-            } else {
-                self?.sendAlert(title: "Не удалось отправить код", message: "Если номер телефона указан верно, значит проблема на нашей стороне. А значит, очень скоро мы всё починим!")
-            }
+            print("GET SMS REQUEST: \(smsResponse.ok), Code: \(smsResponse.sms_for_tests), Phone: \(smsResponse.phone), Error: \(smsResponse.error_code ?? 0), Description: \(smsResponse.description ?? "No error"), Detail: \(smsResponse.detail ?? "No detail")")
+            guard smsResponse.ok else {
+                self?.sendAlert(title: "Не удалось отправить код", message: "Если номер телефона указан верно, значит проблема на нашей стороне. А значит, очень скоро мы всё починим!");
+                return }
+            self?.sendAlert(title: "Проверочный код", message: "\(smsResponse.sms_for_tests)")
+            self?.codeTextField.text = "\(smsResponse.sms_for_tests)"
+            self?.code = smsResponse.sms_for_tests
         }
     }
     
 //    Нажатие на кнопку "Далее", отправка на сервер телефона и проверочного кода
     @IBAction func login(_ sender: Any) {
         guard code != 0 else { return }
+//        request.clientAuthRequestJSON(telNum: phoneNumber, code: code)
         request.clientAuthRequest(telNum: phoneNumber, code: code) { [weak self] authResponse in
-            if authResponse.ok {
-                let sessionInfo = SessionInfo()
-                sessionInfo.userID = authResponse.userID
-                sessionInfo.token = authResponse.token
-                if !authResponse.carIDs.isEmpty {
-                    Session.session.carIDs = authResponse.carIDs
-                    sessionInfo.carID = authResponse.carIDs[0]
-                }
-                self?.service.saveDataInRealm(object: sessionInfo, objectType: SessionInfo.self)
-                Session.session.token = sessionInfo.token
-                Session.session.userID = sessionInfo.userID
-                Session.session.carID = sessionInfo.carID
-                print("USER AUTH REQUEST: \(authResponse.toJSON())")
-                self!.loginORregistr()
-            } else {
-                self?.sendAlert(title: "Не удалось авторизоваться.", message: "Если код указан верно, значит проблема на нашей стороне. А значит, очень скоро мы всё починим!")
+            guard authResponse.ok  else {
+                self?.sendAlert(title: "Не удалось авторизоваться.", message: "Если код указан верно, значит проблема на нашей стороне. А значит, очень скоро мы всё починим!");
+                return
             }
+            let sessionInfo = SessionInfo()
+            sessionInfo.userID = authResponse.id
+            sessionInfo.token = authResponse.token
+            if authResponse.cars_id != nil {
+                if !authResponse.cars_id!.isEmpty {
+                    Session.session.carIDs = authResponse.cars_id!
+                    sessionInfo.carID = authResponse.cars_id![0]
+                }
+            }
+            self?.service.saveDataInRealm(object: sessionInfo, objectType: SessionInfo.self)
+            Session.session.token = sessionInfo.token
+            Session.session.userID = sessionInfo.userID
+            Session.session.carID = sessionInfo.carID
+            print("USER AUTH REQUEST: \(authResponse.ok), Token: \(authResponse.token), UserID: \(authResponse.id), CarIDs: \(authResponse.cars_id ?? [0]), IsRegistered: \(authResponse.is_registered), Telephone: \(authResponse.phone), Error: \(authResponse.error_code ?? 0), \(authResponse.description ?? "No error"), \(authResponse.detail ?? "")")
+            self!.loginORregistr()
         }
     }
     
@@ -99,10 +100,13 @@ class LoginViewController: UIViewController {
 //    Сохранение номера телефона в UserDefaults
     func saveTelNumber() -> Bool {
         guard let telNumText = telephoneNumberTextField.text,
-            telNumText.count == telephoneNumberTextField.maxLength else { sendAlert(title: "Что-то не так", message: "Телефонный номер должен состоять из 10 цифр без пробелов"); return false }
+              telNumText.count == telephoneNumberTextField.maxLength else {
+                sendAlert(title: "Что-то не так", message: "Телефонный номер должен состоять из 10 цифр без пробелов");
+                return false
+        }
         let userDefaults = UserDefaults.standard
-        phoneNumber = Int(telNumText)!
-        let telNumSpaces = service.createTelNumString(phoneNumber)
+        let telNumSpaces = service.createTelNumString(telNumText)
+        phoneNumber = telNumText
         userDefaults.set(phoneNumber, forKey: "telNum")
         userDefaults.set(telNumSpaces, forKey: "telNumSpaces")
         return true
@@ -110,9 +114,9 @@ class LoginViewController: UIViewController {
     
 //    Выбор сегвея для перехода, если данные пользователя есть на сервере - идём на главную, иначе - на регистрацию
     func loginORregistr() {
-        request.getUserDataRequest() { [weak self] user in
-            print("GET USER REQUEST: \(user.toJSON())")
-            if user.firstName != "" {
+        request.getUserDataRequest() { [weak self] userResponse in
+            print("GET USER REQUEST: \(userResponse.ok ?? false) ID: \(String(describing: userResponse.id)), Name: \(String(describing: userResponse.name)) \(String(describing: userResponse.patronymic)) \(String(describing: userResponse.surname)), Cars: \(String(describing: userResponse.cars_id)), Error: \(userResponse.error_code ?? 0), \(userResponse.description ?? "No error"), \(userResponse.description ?? "")")
+            if userResponse.name != nil {
                 self?.performSegue(withIdentifier: self!.loginSegueID, sender: self)
             } else {
                 self?.performSegue(withIdentifier: self!.regSegueID, sender: self)

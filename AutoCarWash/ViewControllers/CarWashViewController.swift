@@ -12,6 +12,7 @@ import RealmSwift
 
 class CarWashViewController: UIViewController {
     
+    @IBOutlet weak var geoPositionLabel: UILabel!
     @IBOutlet weak var userProfileView: ProfileView!
     @IBOutlet weak var userPicImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
@@ -25,18 +26,16 @@ class CarWashViewController: UIViewController {
     let userProfileSegueID = "toUserProfileSegue"
     let carProfileSegueID = "toCarProfileSegue"
     let authorisationSegueID = "toAuthSegue"
+    var carNumber = ""
+    let geoposition = "Великие Луки, пр-т Октябрьский, 9Б"
+    var subscribe = false
     let service = Service()
     let reguest = AlamofireRequests()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
-        let url = "http://185.17.121.228/api/v1/cars/\(Session.session.carID)/"
-        Alamofire.request(url, method: .get, headers: headers).responseJSON() { response in
-            print("JSON: \(response)")
-        }
-
+        geoPositionLabel.text = geoposition
         
         payButton.isHidden = true
         subscribeStatusLabel.isHidden = true
@@ -76,54 +75,60 @@ class CarWashViewController: UIViewController {
         performSegue(withIdentifier: carProfileSegueID, sender: self)
     }
     
-//        Загрузка пользователя с сервера и отображение данных, переход на авторизацию, если нет токена
+//    Загрузка пользователя с сервера и отображение данных, переход на авторизацию, если нет токена
     func loadUserAndShow() {
         reguest.getUserDataRequest() { [weak self] userResponse in
-            print("GET USER: \(userResponse.toJSON())")
             if userResponse.detail == "Недопустимый токен." {
                 self?.service.deleteDataFromRealm();
                 self?.performSegue(withIdentifier: self!.authorisationSegueID, sender: self);
                 return
             }
-            if !userResponse.cars.isEmpty {
-                Session.session.carIDs = userResponse.cars
-                Session.session.carID = userResponse.cars[0]
+            print("GET USER: \(userResponse.ok ?? false) ID: \(userResponse.id ?? 0), Name: \(userResponse.name ?? "") \(userResponse.patronymic ?? "") \(userResponse.surname ?? "") Error: \(userResponse.error_code ?? 0) \(userResponse.description ?? "") \(userResponse.detail ?? "")")
+            guard let ok = userResponse.ok else { return }
+            guard ok else { self?.sendAlert(title: "Не удаётся загрузить данные с сервера", message: "Возможно, отсутствует соединение с Интернетом или соединениe слишком слабое"); return }
+            if userResponse.cars_id != nil {
+                Session.session.carIDs = userResponse.cars_id!
+                Session.session.carID = userResponse.cars_id![0]
                 self?.loadCarAndShow()
             }
-            User.user.fullName = "\(userResponse.firstName) \(userResponse.patronymic) \(userResponse.surname)"
-            User.user.shortName = "\(userResponse.firstName) \(userResponse.surname)"
-            User.user.telNumber = "+7-\(self!.service.createTelNumString(userResponse.telNum))"
-            User.user.email = userResponse.email
-            if userResponse.isBirthday {
-                User.user.birthday = self!.service.getDateFromUNIXTime(date: userResponse.birthday)
-            }
+            User.user.fullName = "\(userResponse.name ?? "") \(userResponse.patronymic ?? "") \(userResponse.surname ?? "")"
+            User.user.shortName = "\(userResponse.name ?? "") \(userResponse.surname ?? "")"
+            let phoneNumber = "\(userResponse.phone ?? 0000000000)"
+            User.user.telNumber = "+7-\(self!.service.createTelNumString(phoneNumber))"
+            User.user.email = userResponse.email ?? ""
             self?.userNameLabel.text = User.user.fullName
             self?.userTelNumberLabel.text = User.user.telNumber
             self?.userEmailLabel.text = User.user.email
+            guard let isBirthday = userResponse.is_birthday else { return }
+            if isBirthday {
+                User.user.birthday = self!.service.getDateFromUNIXTime(date: userResponse.birthday!)
+            }
         }
     }
     
 //        Загрузка авто с сервера и отображение данных
     func loadCarAndShow() {
-        reguest.getCarDataRequest() { [weak self] car in
-            print("GET CAR: \(car.toJSON())")
-            if car.regNum == "" {
+        reguest.getCarDataRequest() { [weak self] carResponse in
+            print("GET CAR: \(carResponse.ok ?? false) ID: \(carResponse.id ?? 0) Regnum: \(carResponse.reg_num ?? "")")
+            guard let regNum = carResponse.reg_num else { return }
+            if regNum == "" {
                 self?.carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
                 self?.regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
                 self?.carNumLabel.text = "x000xx"
                 self?.regionLabel.text = "000"
             } else {
-                Car.car.regNum = self!.service.createRegNumSpaces(regNum: car.regNum)
-                Car.car.region = self!.service.createRegion(regNum: car.regNum)
+                Car.car.regNum = self!.service.createRegNumSpaces(regNum: regNum)
+                Car.car.region = self!.service.createRegion(regNum: regNum)
                 self?.carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
                 self?.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
                 self?.carNumLabel.text = Car.car.regNum
                 self?.regionLabel.text = Car.car.region
             }
-            if car.isSubscribe {
+            guard let isSubscribe = carResponse.is_subscribe else { return }
+            if isSubscribe {
                 self?.payButton.isHidden = true
                 self?.subscribeStatusLabel.isHidden = false
-                let endDate = self!.service.getDateFromUNIXTime(date: car.endDate)
+                let endDate = self!.service.getDateFromUNIXTime(date: carResponse.subscription_date_validation!)
                 self?.subscribeStatusLabel.text = "Абонемент оплачен до \(endDate)"
             } else {
                 self?.payButton.isHidden = false

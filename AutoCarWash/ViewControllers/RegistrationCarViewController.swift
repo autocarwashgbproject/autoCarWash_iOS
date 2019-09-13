@@ -48,15 +48,16 @@ class RegistrationCarViewController: UIViewController {
               char6TextField.text != "",
               regionTextField.text != "" else { sendAlert(title: "", message: "Пожалуйста, введите номер автомобиля полностью"); return }
         let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
-        request.carRegistrationRequest(regNum: carNum) { [weak self] carRegistrResponse in
-            print("REGISTRATION CAR: \(carRegistrResponse.toJSON())")
-            guard carRegistrResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Не удаётся зарегистрировать автомобиль.\(carRegistrResponse.detail)"); return }
-            Session.session.carID = carRegistrResponse.id
+        request.carRegistrationRequest(regNum: carNum) { [weak self] carResponse in
+            print("REGISTRATION CAR: \(carResponse.ok ?? false) \(carResponse.reg_num ?? ""), ID: \(carResponse.id ?? 0)")
+            guard let ok = carResponse.ok else { return }
+            guard ok else { self?.sendAlert(title: "Что-то пошло не так", message: "Не удаётся зарегистрировать автомобиль.\(carResponse.detail ?? "")"); return }
+            Session.session.carID = carResponse.id!
             do {
                 let realm = try Realm()
                 let sessionInfo = realm.objects(SessionInfo.self).first!
                 try realm.write {
-                    sessionInfo.setValue(carRegistrResponse.id, forKey: "carID")
+                    sessionInfo.setValue(carResponse.id, forKey: "carID")
                 }
             } catch {
                 print(error)
