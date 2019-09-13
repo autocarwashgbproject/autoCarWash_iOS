@@ -23,13 +23,11 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     var oldCarPic = UIImage()
     let service = Service()
     let request = AlamofireRequests()
-    var isCar : Bool!
-    var isSubscribe: Bool!
+    var isCar = false
+    var isSubscribe = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        Запрос на сервер о состоянии подписки
         
         carPicPicker.delegate = self
         
@@ -92,7 +90,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         if isCar {
             request.carSetDataRequest(regNum: carNum) { [weak self] carResponse in
                 print("EDIT CAR: \(carResponse.ok ?? false) ID: \(carResponse.id ?? 0), New number: \(carResponse.reg_num ?? "No reg_num") Error: \(carResponse.error_code ?? 0), \(carResponse.description ?? ""), \(carResponse.detail ?? "")")
-                guard let ok = carResponse.ok else { return }
+                guard let ok = carResponse.ok else { self?.sendAlert(title: "Не удаётся сохранить изменения", message: "Возможно, отсутствует соединение с интернетом, попробуйте позднее"); return }
                 guard ok else { return }
                 Car.car.regNum = self!.service.createRegNumSpaces(regNum: carResponse.reg_num!)
                 Car.car.region = self!.service.createRegion(regNum: carResponse.reg_num!)
@@ -102,8 +100,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         } else {
             request.carRegistrationRequest(regNum: carNum) { [weak self] carResponse in
                 print("ADD NEW CAR: \(carResponse.ok ?? false) ID: \(carResponse.id ?? 0) Regnum: \(carResponse.reg_num ?? "") Error: \(carResponse.error_code ?? 0), \(carResponse.description ?? ""), \(carResponse.detail ?? "")")
-                guard let ok = carResponse.ok else { return }
-                guard ok else { return }
+                guard carResponse.ok == true else { self?.sendAlert(title: "Не удаётся сохранить изменения", message: "Возможно, отсутствует соединение с интернетом, попробуйте позднее"); return }
                 self?.isCar = true
                 Session.session.carID = carResponse.id!
                 Car.car.regNum = self!.service.createRegNumSpaces(regNum: carResponse.reg_num!)
@@ -160,13 +157,12 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     func setPlaceholders() {
         var carNum = ""
         request.getCarDataRequest() { [weak self] carResponse in
-            guard let ok = carResponse.ok else { return }
-            if ok {
+            if carResponse.ok == true {
                 self?.isCar = true
+                self?.isSubscribe = carResponse.is_subscribe!
                 carNum = carResponse.reg_num!
                 self?.separateRegNumAndShow(carNum)
                 self?.regionTextField.placeholder = self?.service.createRegion(regNum: carNum)
-                self?.isSubscribe = carResponse.is_subscribe!
             } else {
                 self?.isCar = false
                 self?.isSubscribe = false
@@ -193,25 +189,27 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
         let alert = UIAlertController(title: "Удалить автомобиль?", message: "", preferredStyle: .alert)
         let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         let actionYes = UIAlertAction(title: "Да", style: .default, handler: { actionYes in
-            self.char1TextField.text = nil
-            self.char2TextField.text = nil
-            self.char3TextField.text = nil
-            self.char4TextField.text = nil
-            self.char5TextField.text = nil
-            self.char6TextField.text = nil
-            self.regionTextField.text = nil
             self.request.deleteCarRequest() { [weak self] deleteCarResponse in
                 print("DELETED CAR: \(deleteCarResponse.ok ?? false) ID: \(deleteCarResponse.id ?? 0), \(deleteCarResponse.description ?? "")")
-                guard let ok = deleteCarResponse.ok else { return }
-                guard ok else { return }
-                self?.separateRegNumAndShow("X000XX")
-                self?.regionTextField.placeholder = "000"
-                self?.carPicDelete()
-                self?.isCar = false
-                self?.isSubscribe = false
-                Car.car.regNum = ""
-                Car.car.region = ""
-                self?.sendAlert(title: "Данные автомобиля удалены", message: "Введите новый номер")
+                if deleteCarResponse.ok == true {
+                    self?.char1TextField.text = nil
+                    self?.char2TextField.text = nil
+                    self?.char3TextField.text = nil
+                    self?.char4TextField.text = nil
+                    self?.char5TextField.text = nil
+                    self?.char6TextField.text = nil
+                    self?.regionTextField.text = nil
+                    self?.separateRegNumAndShow("X000XX")
+                    self?.regionTextField.placeholder = "000"
+                    self?.carPicDelete()
+                    self?.isCar = false
+                    self?.isSubscribe = false
+                    Car.car.regNum = ""
+                    Car.car.region = ""
+                    self?.sendAlert(title: "Данные автомобиля удалены", message: "Введите новый номер")
+                } else {
+                    self?.sendAlert(title: "Не удалось удалить автомобиль", message: "Возможно отсутствует интернет-соединение")
+                }
             }
         })
         alert.addAction(actionNo)

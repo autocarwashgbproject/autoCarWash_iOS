@@ -26,7 +26,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     let service = Service()
     let request = AlamofireRequests()
     var userTelNum = ""
-    var isSubscription: Bool!
+    var isSubscription = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,7 +58,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         oldImage = userPicImageView.image ?? #imageLiteral(resourceName: "circle_user")
         
         request.getCarDataRequest() { [weak self] carResponse in
-            self?.isSubscription = carResponse.is_subscribe
+            self?.isSubscription = carResponse.is_subscribe ?? false
         }
     }
     
@@ -118,8 +118,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
                                           "birthday": birthDayUNIX]
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
             print("EDIT USER DATA: Name: \(userResponse.name ?? "No name") \(userResponse.patronymic ?? "No patronymic") \(userResponse.surname ?? "No surname"), Email: \(userResponse.email ?? "No email"), Birthday: \(userResponse.birthday ?? 0)")
-            guard let ok = userResponse.ok else { return }
-            if ok {
+            if userResponse.ok == true {
                 User.user.fullName = "\(userResponse.name ?? "") \(userResponse.patronymic ?? "") \(userResponse.surname ?? "")"
                 User.user.shortName = "\(userResponse.name ?? "") \(userResponse.surname ?? "")"
                 User.user.birthday = self!.birthdayTextField.text ?? ""
@@ -137,7 +136,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     @IBAction func logOut(_ sender: Any) {
         request.logoutRequest() { [weak self] logoutResponse in
             print("LOGOUT: ID: \(logoutResponse.id), Message: \(logoutResponse.description)")
-            guard logoutResponse.ok else { return }
+            guard logoutResponse.ok else { self?.sendAlert(title: "Не удалось выйти из аккаунта", message: "Возможно отсутствует интернет-соединение"); return }
             self?.service.deleteDataFromRealm()
             self?.performSegue(withIdentifier: "logOutSegue", sender: self)
         }
@@ -155,10 +154,10 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         let actionNo = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         let actionYes = UIAlertAction(title: "Да", style: .default, handler: { actionYes in
             self.service.deleteDataFromRealm()
-            self.request.deleteUserRequest() { deleteResponse in
-                guard deleteResponse.ok else { return }
+            self.request.deleteUserRequest() { [weak self] deleteResponse in
                 print("USER DELETED: \(deleteResponse.id), \(deleteResponse.description)")
-                self.performSegue(withIdentifier: "logOutSegue", sender: self)
+                guard deleteResponse.ok else { self?.sendAlert(title: "Не удалось удалить аккаунт", message: "Возможно отсутствует интернет-соединение"); return }
+                self?.performSegue(withIdentifier: "logOutSegue", sender: self)
             }
         })
         alert.addAction(actionNo)

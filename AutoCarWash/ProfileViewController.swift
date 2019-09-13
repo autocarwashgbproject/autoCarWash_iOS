@@ -64,10 +64,11 @@ class ProfileViewController: UIViewController {
         carPicImageView.image = service.loadImageFromDiskWith(fileName: "carPic")
     }
     
-//    Перехад в профиль юзера
+//    Перехoд в профиль юзера
     @objc func goToUserProfile(recognizer: UITapGestureRecognizer) {
         performSegue(withIdentifier: userProfileSegueID, sender: self)
     }
+    
 //    Переход в профиль авто
     @objc func goToCarProfile(recognizer: UITapGestureRecognizer) {
         performSegue(withIdentifier: carProfileSegueID, sender: self)

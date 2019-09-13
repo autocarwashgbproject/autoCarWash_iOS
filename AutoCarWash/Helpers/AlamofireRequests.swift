@@ -137,11 +137,21 @@ class AlamofireRequests {
         }
     }
     
-//    Запрос истории помывок
-    func getWashHistory(completion: @escaping ([WashResponse]) -> Void) {
+    func getWashHistory(completion: @escaping ([HistoryResponse]) -> Void) {
         let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
         let url = "http://185.17.121.228/api/v1/washing/\(Session.session.userID)/"
-        Alamofire.request(url, method: .get, headers: headers).responseObject {(response: DataResponse<HistoryResponse>) in
+        Alamofire.request(url, method: .get, headers: headers).responseData { response in
+            guard let data = response.result.value else { return }
+            let washResponse: HistoryResponse = try! JSONDecoder().decode(HistoryResponse.self, from: data)
+            completion([washResponse])
+        }
+    }
+    
+//    Запрос истории помывок
+    func getWashHistory1(completion: @escaping ([WashResponse1]) -> Void) {
+        let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
+        let url = "http://185.17.121.228/api/v1/washing/\(Session.session.userID)/"
+        Alamofire.request(url, method: .get, headers: headers).responseObject {(response: DataResponse<HistoryResponse1>) in
             guard let historyResponse = response.result.value else { return }
             let history = historyResponse.washing
             completion(history)

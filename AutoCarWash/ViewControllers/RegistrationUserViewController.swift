@@ -34,6 +34,7 @@ class RegistrationUserViewController: UIViewController {
         
         userTelNum = userDefaults.string(forKey: "telNum")!
         userTelNumSp = userDefaults.string(forKey: "telNumSpaces")!
+        User.user.telNumber = userTelNumSp
         telNumLabel.text = userTelNumSp
         
 //        Распознавание тапа по вьюшке "я согласем с условиями"
@@ -62,12 +63,11 @@ class RegistrationUserViewController: UIViewController {
                                           "phone": userTelNum,
                                           "email": email,
                                           "is_birthday": false,
-                                          "birthday": 0]
+                                          "birthday": 0 ]
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
-            guard let ok = userResponse.ok else { return }
             print("REGISTRATION USER: \(userResponse.ok ?? false) ID: \(userResponse.id ?? 0), Name: \(userResponse.name ?? "No name") \(userResponse.patronymic ?? "") \(userResponse.surname ?? ""), Telephone: \(userResponse.phone ?? 0) Error: \(userResponse.error_code ?? 0) \(userResponse.description ?? "") \(userResponse.detail ?? "")")
-            guard ok else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка при сохранении данных"); return }
-             self?.performSegue(withIdentifier: self!.regCarSegueID, sender: self)
+            guard userResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка при сохранении данных. Возможно отсутствует соединение с интернетом. Пожалуйста, попробуйте позднее"); return }
+            self?.performSegue(withIdentifier: self!.regCarSegueID, sender: self)
         }
     }
     

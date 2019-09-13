@@ -50,8 +50,7 @@ class PaymentViewController: UIViewController {
         
         request.getCarDataRequest() { [weak self] carResponse in
             print("GET CAR: ID: \(carResponse.id ?? 0), Regnum: \(carResponse.reg_num ?? ""), Error: \(carResponse.error_code ?? 0), \(carResponse.description ?? ""), \(carResponse.detail ?? "")")
-            guard let ok = carResponse.ok else { return }
-            guard ok else { return }
+            guard carResponse.ok == true else { self?.sendAlert(title: "Не удаётся связаться с сервером", message: "Возможно, отсутствует интернет-соединение"); return }
             if carResponse.is_subscribe! {
                 self?.isSubscribe = true
                 self?.checkDataLabel.text = "Абонемент оплачен"
@@ -82,7 +81,6 @@ class PaymentViewController: UIViewController {
     
 //    Переход к оплате абонемента с передачей нужных параметров
     @IBAction func goToPayment(_ sender: Any) {
-        guard carNumLabel.text != "" else { sendAlert(title: "Укажите номер автомобиля", message: "Поле 'Гос. номер' не может быть пустым. Пожалуйста, перейдите в профиль и укажите номер автомобиля"); return }
         WebViewURL.webViewURL.url = "https://kassa.yandex.ru"
         performSegue(withIdentifier: paySegueID, sender: self)
     }

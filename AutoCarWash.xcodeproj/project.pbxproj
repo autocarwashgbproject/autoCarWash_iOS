@@ -31,7 +31,6 @@
 		D6B282C322FE769500A8C930 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282C222FE769500A8C930 /* ViewControllerExtension.swift */; };
 		D6B282C52302639B00A8C930 /* RegistrationCarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B282C42302639B00A8C930 /* RegistrationCarViewController.swift */; };
 		D6B3BA022302EF6C0084B4F5 /* AlamofireRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B3BA012302EF6C0084B4F5 /* AlamofireRequests.swift */; };
-		D6B3BA04230437AB0084B4F5 /* CarNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B3BA03230437AB0084B4F5 /* CarNumberView.swift */; };
 		D6B7005322FBEC06008A25C9 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7005222FBEC06008A25C9 /* HistoryCell.swift */; };
 		D6B7005522FBF12C008A25C9 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7005422FBF12C008A25C9 /* Event.swift */; };
 		D6B7005722FC00A8008A25C9 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B7005622FC00A8008A25C9 /* AvatarView.swift */; };
@@ -71,7 +70,6 @@
 		D6B282C222FE769500A8C930 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		D6B282C42302639B00A8C930 /* RegistrationCarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCarViewController.swift; sourceTree = "<group>"; };
 		D6B3BA012302EF6C0084B4F5 /* AlamofireRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireRequests.swift; sourceTree = "<group>"; };
-		D6B3BA03230437AB0084B4F5 /* CarNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarNumberView.swift; sourceTree = "<group>"; };
 		D6B7005222FBEC06008A25C9 /* HistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
 		D6B7005422FBF12C008A25C9 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		D6B7005622FC00A8008A25C9 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
@@ -177,7 +175,6 @@
 				D6B282C222FE769500A8C930 /* ViewControllerExtension.swift */,
 				D695C20D22FAB38C00D81A23 /* UITextFieldExtension.swift */,
 				D6B7005622FC00A8008A25C9 /* AvatarView.swift */,
-				D6B3BA03230437AB0084B4F5 /* CarNumberView.swift */,
 				D642D69322F94D96005D4F4D /* ProfileView.swift */,
 			);
 			path = Helpers;
@@ -337,7 +334,6 @@
 				D695C20E22FAB38C00D81A23 /* UITextFieldExtension.swift in Sources */,
 				D6B282C52302639B00A8C930 /* RegistrationCarViewController.swift in Sources */,
 				D6B282BF22FD5FC900A8C930 /* TabBarViewController.swift in Sources */,
-				D6B3BA04230437AB0084B4F5 /* CarNumberView.swift in Sources */,
 				D67E2CF0232222EC00F04534 /* User.swift in Sources */,
 				D6B7005B22FC0B71008A25C9 /* PaymentViewController.swift in Sources */,
 				D642D69422F94D96005D4F4D /* ProfileView.swift in Sources */,

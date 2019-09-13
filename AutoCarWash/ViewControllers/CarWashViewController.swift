@@ -84,8 +84,7 @@ class CarWashViewController: UIViewController {
                 return
             }
             print("GET USER: \(userResponse.ok ?? false) ID: \(userResponse.id ?? 0), Name: \(userResponse.name ?? "") \(userResponse.patronymic ?? "") \(userResponse.surname ?? "") Error: \(userResponse.error_code ?? 0) \(userResponse.description ?? "") \(userResponse.detail ?? "")")
-            guard let ok = userResponse.ok else { return }
-            guard ok else { self?.sendAlert(title: "Не удаётся загрузить данные с сервера", message: "Возможно, отсутствует соединение с Интернетом или соединениe слишком слабое"); return }
+            guard userResponse.ok == true else { self?.sendAlert(title: "Не удаётся загрузить данные с сервера", message: "Возможно, отсутствует соединение с Интернетом или соединениe слишком слабое"); return }
             if userResponse.cars_id != nil {
                 Session.session.carIDs = userResponse.cars_id!
                 Session.session.carID = userResponse.cars_id![0]
@@ -93,7 +92,7 @@ class CarWashViewController: UIViewController {
             }
             User.user.fullName = "\(userResponse.name ?? "") \(userResponse.patronymic ?? "") \(userResponse.surname ?? "")"
             User.user.shortName = "\(userResponse.name ?? "") \(userResponse.surname ?? "")"
-            let phoneNumber = "\(userResponse.phone ?? 0000000000)"
+            let phoneNumber = "\(userResponse.phone ?? 0)"
             User.user.telNumber = "+7-\(self!.service.createTelNumString(phoneNumber))"
             User.user.email = userResponse.email ?? ""
             self?.userNameLabel.text = User.user.fullName
@@ -110,22 +109,21 @@ class CarWashViewController: UIViewController {
     func loadCarAndShow() {
         reguest.getCarDataRequest() { [weak self] carResponse in
             print("GET CAR: \(carResponse.ok ?? false) ID: \(carResponse.id ?? 0) Regnum: \(carResponse.reg_num ?? "")")
-            guard let regNum = carResponse.reg_num else { return }
-            if regNum == "" {
-                self?.carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-                self?.regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
-                self?.carNumLabel.text = "x000xx"
-                self?.regionLabel.text = "000"
-            } else {
-                Car.car.regNum = self!.service.createRegNumSpaces(regNum: regNum)
-                Car.car.region = self!.service.createRegion(regNum: regNum)
+            
+            if carResponse.ok == true {
+                Car.car.regNum = self!.service.createRegNumSpaces(regNum: carResponse.reg_num!)
+                Car.car.region = self!.service.createRegion(regNum: carResponse.reg_num!)
                 self?.carNumLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
                 self?.regionLabel.textColor = #colorLiteral(red: 0.2605174184, green: 0.2605243921, blue: 0.260520637, alpha: 1)
                 self?.carNumLabel.text = Car.car.regNum
                 self?.regionLabel.text = Car.car.region
+            } else {
+                self?.carNumLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+                self?.regionLabel.textColor = #colorLiteral(red: 0.6642242074, green: 0.6642400622, blue: 0.6642315388, alpha: 1)
+                self?.carNumLabel.text = "x000xx"
+                self?.regionLabel.text = "000"
             }
-            guard let isSubscribe = carResponse.is_subscribe else { return }
-            if isSubscribe {
+            if carResponse.is_subscribe == true {
                 self?.payButton.isHidden = true
                 self?.subscribeStatusLabel.isHidden = false
                 let endDate = self!.service.getDateFromUNIXTime(date: carResponse.subscription_date_validation!)

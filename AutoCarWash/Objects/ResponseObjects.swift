@@ -77,10 +77,29 @@ class CarResponse: Codable {
     
 }
 
-class HistoryResponse: Mappable {
+class HistoryResponse: Codable {
+    
+    var ok: Bool
+    var washing: [WashResponse]
+    
+}
+
+class WashResponse: Codable {
+    
+    var id: Int
+    var washing: String
+    var is_active: Bool
+    var timestamp: Int
+    var user: Int
+    var car: Int
+    var wash: Int
+    
+}
+
+class HistoryResponse1: Mappable {
     
     var ok = false
-    var washing = [WashResponse]()
+    var washing = [WashResponse1]()
     
     required convenience init?(map: Map) {
         self.init()
@@ -92,7 +111,7 @@ class HistoryResponse: Mappable {
     }
 }
 
-class WashResponse: Mappable {
+class WashResponse1: Mappable {
     
     var id = 0
     var washing = ""

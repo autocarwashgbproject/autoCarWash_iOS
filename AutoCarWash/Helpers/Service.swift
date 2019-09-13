@@ -117,7 +117,7 @@ class Service {
         
         let fileName = imageName
         let fileURL = documentsDirectory.appendingPathComponent(fileName)
-        guard let data = image.jpegData(compressionQuality: 0.1) else { return }
+        guard let data = image.jpegData(compressionQuality: 0.3) else { return }
         
         //Checks if file exists, removes it if so.
         if FileManager.default.fileExists(atPath: fileURL.path) {

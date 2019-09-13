@@ -18,15 +18,15 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-////        Загрузка пользователя с сервера и отображение данных
-//        request.getUserDataRequest() { [weak self] user in
-//            self?.userNameLabel.text = "\(user.firstName) \(user.patronymic) \(user.surname)"
-//            self?.userTelNumLabel.text = "+7-\(self!.service.createTelNumString(user.telNum))"
-//        }
         
         userNameLabel.text = User.user.shortName
         userTelNumLabel.text = User.user.telNumber
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard segue.identifier == "paymentSegue" else { return }
+        guard Car.car.region != "" else { sendAlert(title: "Вам нужен автомобиль", message: "Пожалуйста, укажите номер автомобиля для оплаты абонемента"); return }
     }
     
     @IBAction func supportButtonPressed(_ sender: UIButton) {

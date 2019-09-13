@@ -62,7 +62,6 @@ class LoginViewController: UIViewController {
 //    Нажатие на кнопку "Далее", отправка на сервер телефона и проверочного кода
     @IBAction func login(_ sender: Any) {
         guard code != 0 else { return }
-//        request.clientAuthRequestJSON(telNum: phoneNumber, code: code)
         request.clientAuthRequest(telNum: phoneNumber, code: code) { [weak self] authResponse in
             guard authResponse.ok  else {
                 self?.sendAlert(title: "Не удалось авторизоваться.", message: "Если код указан верно, значит проблема на нашей стороне. А значит, очень скоро мы всё починим!");
@@ -115,7 +114,7 @@ class LoginViewController: UIViewController {
 //    Выбор сегвея для перехода, если данные пользователя есть на сервере - идём на главную, иначе - на регистрацию
     func loginORregistr() {
         request.getUserDataRequest() { [weak self] userResponse in
-            print("GET USER REQUEST: \(userResponse.ok ?? false) ID: \(String(describing: userResponse.id)), Name: \(String(describing: userResponse.name)) \(String(describing: userResponse.patronymic)) \(String(describing: userResponse.surname)), Cars: \(String(describing: userResponse.cars_id)), Error: \(userResponse.error_code ?? 0), \(userResponse.description ?? "No error"), \(userResponse.description ?? "")")
+            print("GET USER REQUEST: \(userResponse.ok ?? false) ID: \(String(describing: userResponse.id)), Name: \(String(describing: userResponse.name)) \(String(describing: userResponse.patronymic)) \(String(describing: userResponse.surname)), Cars: \(String(describing: userResponse.cars_id)), Error: \(userResponse.error_code ?? 0) \(userResponse.description ?? "") \(userResponse.description ?? "")")
             if userResponse.name != nil {
                 self?.performSegue(withIdentifier: self!.loginSegueID, sender: self)
             } else {
