@@ -92,7 +92,7 @@ class CarWashViewController: UIViewController {
             }
             User.user.fullName = "\(userResponse.name ?? "") \(userResponse.patronymic ?? "") \(userResponse.surname ?? "")"
             User.user.shortName = "\(userResponse.name ?? "") \(userResponse.surname ?? "")"
-            let phoneNumber = "\(userResponse.phone ?? 0)"
+            let phoneNumber = userResponse.phone ?? ""
             User.user.telNumber = "+7-\(self!.service.createTelNumString(phoneNumber))"
             User.user.email = userResponse.email ?? ""
             self?.userNameLabel.text = User.user.fullName

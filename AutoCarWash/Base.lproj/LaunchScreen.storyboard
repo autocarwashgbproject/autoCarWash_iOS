@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="карвош_Монтажная область 1" translatesAutoresizingMaskIntoConstraints="NO" id="aTR-vQ-LPD">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_screen" translatesAutoresizingMaskIntoConstraints="NO" id="aTR-vQ-LPD">
                                 <rect key="frame" x="0.0" y="161" width="414" height="414"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="aTR-vQ-LPD" secondAttribute="height" multiplier="1:1" id="785-Ew-5Fh"/>
@@ -41,6 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="карвош_Монтажная область 1" width="187.5" height="217"/>
+        <image name="launch_screen" width="125" height="144.66667175292969"/>
     </resources>
 </document>

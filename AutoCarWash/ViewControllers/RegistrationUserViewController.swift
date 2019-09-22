@@ -65,7 +65,7 @@ class RegistrationUserViewController: UIViewController {
                                           "is_birthday": false,
                                           "birthday": 0 ]
         request.clientSetDataRequest(parameters: userParameters) { [weak self] userResponse in
-            print("REGISTRATION USER: \(userResponse.ok ?? false) ID: \(userResponse.id ?? 0), Name: \(userResponse.name ?? "No name") \(userResponse.patronymic ?? "") \(userResponse.surname ?? ""), Telephone: \(userResponse.phone ?? 0) Error: \(userResponse.error_code ?? 0) \(userResponse.description ?? "") \(userResponse.detail ?? "")")
+            print("REGISTRATION USER: \(userResponse.ok ?? false) ID: \(userResponse.id ?? 0), Name: \(userResponse.name ?? "No name") \(userResponse.patronymic ?? "") \(userResponse.surname ?? ""), Telephone: \(userResponse.phone ?? "") Error: \(userResponse.error_code ?? 0) \(userResponse.description ?? "") \(userResponse.detail ?? "")")
             guard userResponse.ok == true else { self?.sendAlert(title: "Что-то пошло не так", message: "Произошла ошибка при сохранении данных. Возможно отсутствует соединение с интернетом. Пожалуйста, попробуйте позднее"); return }
             self?.performSegue(withIdentifier: self!.regCarSegueID, sender: self)
         }

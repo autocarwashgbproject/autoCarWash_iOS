@@ -50,12 +50,12 @@ class LoginViewController: UIViewController {
         }
         request.getSMS(telNum: phoneNumber){ [weak self] smsResponse in
             print("GET SMS REQUEST: \(smsResponse.ok), Code: \(smsResponse.sms_for_tests), Phone: \(smsResponse.phone), Error: \(smsResponse.error_code ?? 0), Description: \(smsResponse.description ?? "No error"), Detail: \(smsResponse.detail ?? "No detail")")
-            guard smsResponse.ok else {
+            guard smsResponse.ok == true else {
                 self?.sendAlert(title: "Не удалось отправить код", message: "Если номер телефона указан верно, значит проблема на нашей стороне. А значит, очень скоро мы всё починим!");
                 return }
             self?.sendAlert(title: "Проверочный код", message: "\(smsResponse.sms_for_tests)")
             self?.codeTextField.text = "\(smsResponse.sms_for_tests)"
-            self?.code = smsResponse.sms_for_tests
+            self?.code = smsResponse.sms_for_tests!
         }
     }
     
@@ -63,13 +63,13 @@ class LoginViewController: UIViewController {
     @IBAction func login(_ sender: Any) {
         guard code != 0 else { return }
         request.clientAuthRequest(telNum: phoneNumber, code: code) { [weak self] authResponse in
-            guard authResponse.ok  else {
+            guard authResponse.ok == true  else {
                 self?.sendAlert(title: "Не удалось авторизоваться.", message: "Если код указан верно, значит проблема на нашей стороне. А значит, очень скоро мы всё починим!");
                 return
             }
             let sessionInfo = SessionInfo()
-            sessionInfo.userID = authResponse.id
-            sessionInfo.token = authResponse.token
+            sessionInfo.userID = authResponse.id!
+            sessionInfo.token = authResponse.token!
             if authResponse.cars_id != nil {
                 if !authResponse.cars_id!.isEmpty {
                     Session.session.carIDs = authResponse.cars_id!
@@ -114,7 +114,7 @@ class LoginViewController: UIViewController {
 //    Выбор сегвея для перехода, если данные пользователя есть на сервере - идём на главную, иначе - на регистрацию
     func loginORregistr() {
         request.getUserDataRequest() { [weak self] userResponse in
-            print("GET USER REQUEST: \(userResponse.ok ?? false) ID: \(String(describing: userResponse.id)), Name: \(String(describing: userResponse.name)) \(String(describing: userResponse.patronymic)) \(String(describing: userResponse.surname)), Cars: \(String(describing: userResponse.cars_id)), Error: \(userResponse.error_code ?? 0) \(userResponse.description ?? "") \(userResponse.description ?? "")")
+            print("GET USER REQUEST: \(userResponse.ok ?? false) ID: \(String(describing: userResponse.id)), Name: \(String(describing: userResponse.name)) \(String(describing: userResponse.patronymic)) \(String(describing: userResponse.surname)), Cars: \( userResponse.cars_id ?? [0]), Error: \(userResponse.error_code ?? 0) \(userResponse.description ?? "") \(userResponse.description ?? "")")
             if userResponse.name != nil {
                 self?.performSegue(withIdentifier: self!.loginSegueID, sender: self)
             } else {

@@ -36,7 +36,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
         userPicPicker.delegate = self
         
         request.getUserDataRequest() { [weak self] userResponse in
-            self?.userTelNum = "\(userResponse.phone ?? 0)"
+            self?.userTelNum = userResponse.phone ?? ""
             self?.nameTextField.text = userResponse.name
             self?.surnameTextField.text = userResponse.surname
             self?.patronymicTextField.text = userResponse.patronymic
@@ -136,7 +136,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
     @IBAction func logOut(_ sender: Any) {
         request.logoutRequest() { [weak self] logoutResponse in
             print("LOGOUT: ID: \(logoutResponse.id), Message: \(logoutResponse.description)")
-            guard logoutResponse.ok else { self?.sendAlert(title: "Не удалось выйти из аккаунта", message: "Возможно отсутствует интернет-соединение"); return }
+            guard logoutResponse.ok == true else { self?.sendAlert(title: "Не удалось выйти из аккаунта", message: "Возможно отсутствует интернет-соединение"); return }
             self?.service.deleteDataFromRealm()
             self?.performSegue(withIdentifier: "logOutSegue", sender: self)
         }
@@ -156,7 +156,7 @@ class EditUserProfileViewController: UIViewController, UIImagePickerControllerDe
             self.service.deleteDataFromRealm()
             self.request.deleteUserRequest() { [weak self] deleteResponse in
                 print("USER DELETED: \(deleteResponse.id), \(deleteResponse.description)")
-                guard deleteResponse.ok else { self?.sendAlert(title: "Не удалось удалить аккаунт", message: "Возможно отсутствует интернет-соединение"); return }
+                guard deleteResponse.ok == true else { self?.sendAlert(title: "Не удалось удалить аккаунт", message: "Возможно отсутствует интернет-соединение"); return }
                 self?.performSegue(withIdentifier: "logOutSegue", sender: self)
             }
         })

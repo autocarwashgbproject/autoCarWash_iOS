@@ -25,6 +25,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     let request = AlamofireRequests()
     var isCar = false
     var isSubscribe = false
+    var carNum = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +86,10 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
                     sendAlert(title: "Готово", message: "Фото автомобиля обновлено") };
                 return
         }
-        guard !isSubscribe else { sendAlert(title: "Невозможно изменить номер автомобиля", message: "У Вас есть оплаченный абонемент на пользование автомойкой для автомобиля c номером \(Car.car.regNum) \(Car.car.region) RUS. Пока подписка активна, номер автомобиля измeнить нельзя"); return}
+        guard !isSubscribe else { sendAlert(title: "Невозможно изменить номер автомобиля", message: "У Вас есть оплаченный абонемент на пользование автомойкой для автомобиля c номером \(Car.car.regNum) \(Car.car.region) RUS. Пока подписка активна, номер автомобиля измeнить нельзя");
+            cleanTextFields();
+            separateRegNumAndShow(carNum);
+            return }
         let carNum = "\(char1TextField.text!.uppercased())\(char2TextField.text!)\(char3TextField.text!)\(char4TextField.text!)\(char5TextField.text!.uppercased())\(char6TextField.text!.uppercased())\(regionTextField.text!)"
         if isCar {
             request.carSetDataRequest(regNum: carNum) { [weak self] carResponse in
@@ -155,22 +159,32 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
     
 //    Отрисовка существующего номера машины в плэйсхолдерах тестовых полей
     func setPlaceholders() {
-        var carNum = ""
         request.getCarDataRequest() { [weak self] carResponse in
             if carResponse.ok == true {
                 self?.isCar = true
                 self?.isSubscribe = carResponse.is_subscribe!
-                carNum = carResponse.reg_num!
-                self?.separateRegNumAndShow(carNum)
-                self?.regionTextField.placeholder = self?.service.createRegion(regNum: carNum)
+                self?.carNum = carResponse.reg_num!
+                self?.separateRegNumAndShow(self!.carNum)
+                self?.regionTextField.placeholder = self?.service.createRegion(regNum: self!.carNum)
             } else {
                 self?.isCar = false
                 self?.isSubscribe = false
-                carNum = "X000XX"
-                self?.separateRegNumAndShow(carNum)
+                self?.carNum = "X000XX"
+                self?.separateRegNumAndShow(self!.carNum)
                 self?.regionTextField.placeholder = "000"
             }
         }
+    }
+    
+//    Обнуление текста текстфилдов
+    func cleanTextFields() {
+        char1TextField.text = nil
+        char2TextField.text = nil
+        char3TextField.text = nil
+        char4TextField.text = nil
+        char5TextField.text = nil
+        char6TextField.text = nil
+        regionTextField.text = nil
     }
     
 //    Разделение и отображение номера
@@ -192,13 +206,7 @@ class EditCarProfileViewController: UIViewController, UIImagePickerControllerDel
             self.request.deleteCarRequest() { [weak self] deleteCarResponse in
                 print("DELETED CAR: \(deleteCarResponse.ok ?? false) ID: \(deleteCarResponse.id ?? 0), \(deleteCarResponse.description ?? "")")
                 if deleteCarResponse.ok == true {
-                    self?.char1TextField.text = nil
-                    self?.char2TextField.text = nil
-                    self?.char3TextField.text = nil
-                    self?.char4TextField.text = nil
-                    self?.char5TextField.text = nil
-                    self?.char6TextField.text = nil
-                    self?.regionTextField.text = nil
+                    self?.cleanTextFields()
                     self?.separateRegNumAndShow("X000XX")
                     self?.regionTextField.placeholder = "000"
                     self?.carPicDelete()

@@ -2051,7 +2051,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YTu-Ly-E6Y">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="610"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="upper_logo" translatesAutoresizingMaskIntoConstraints="NO" id="fPv-wS-PDd">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fPv-wS-PDd">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
                                         <constraints>
                                             <constraint firstAttribute="height" id="G8J-Ph-p7t"/>
@@ -2151,19 +2151,19 @@
                                             <constraint firstAttribute="height" constant="10" id="Tif-tB-9aF"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Rectangle 3" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-8i-gbU">
-                                        <rect key="frame" x="20" y="375.5" width="20" height="20"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Rectangle 3" translatesAutoresizingMaskIntoConstraints="NO" id="IPX-8i-gbU">
+                                        <rect key="frame" x="20" y="375.5" width="15" height="15"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="20" id="VuV-TD-MFC"/>
-                                            <constraint firstAttribute="height" constant="20" id="XhL-bE-ds6"/>
+                                            <constraint firstAttribute="width" constant="15" id="VuV-TD-MFC"/>
+                                            <constraint firstAttribute="height" constant="15" id="XhL-bE-ds6"/>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="Bhp-L2-DXr">
-                                        <rect key="frame" x="50" y="371.5" width="315" height="28"/>
+                                        <rect key="frame" x="45" y="368.5" width="320" height="29"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="HyT-39-4iw"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <state key="normal" title="Я согласен(-на) с условиями пользования*">
                                             <color key="titleColor" red="0.57045853140000002" green="0.57047235969999999" blue="0.57046490910000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
@@ -2524,14 +2524,13 @@
         <image name="placeholder" width="10" height="10"/>
         <image name="star" width="26" height="26"/>
         <image name="support" width="15" height="15"/>
-        <image name="upper_logo" width="178.5" height="31"/>
         <image name="user" width="25" height="25.5"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="NLA-ap-yYd"/>
         <segue reference="KTf-KA-xzx"/>
         <segue reference="tg4-RC-Jhe"/>
-        <segue reference="bNZ-en-r6X"/>
+        <segue reference="IYI-SN-8Dv"/>
         <segue reference="EXc-yW-eOe"/>
         <segue reference="OLO-0b-Wqy"/>
     </inferredMetricsTieBreakers>

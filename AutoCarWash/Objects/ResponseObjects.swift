@@ -14,9 +14,9 @@ import ObjectMapper
 
 class GetSMSResponse: Codable {
     
-    var ok: Bool
-    var phone: Int
-    var sms_for_tests: Int
+    var ok: Bool?
+    var phone: String?
+    var sms_for_tests: Int?
     var error_code: Int?
     var description: String?
     var detail: String?
@@ -25,11 +25,11 @@ class GetSMSResponse: Codable {
 
 class ClientAuthResponse: Codable {
     
-    var ok: Bool
-    var token: String
-    var id: Int
-    var is_registered: Bool
-    var phone: Int
+    var ok: Bool?
+    var token: String?
+    var id: Int?
+    var is_registered: Bool?
+    var phone: String?
     var cars_id: [Int]?
     var error_code: Int?
     var description: String?
@@ -44,7 +44,7 @@ class UserResponse: Codable {
     var name: String?
     var surname: String?
     var patronymic: String?
-    var phone: Int?
+    var phone: String?
     var email: String?
     var is_birthday: Bool?
     var birthday: Int?
@@ -57,9 +57,9 @@ class UserResponse: Codable {
 
 class LogoutDeleteResponse: Codable {
     
-    var ok: Bool
-    var id: Int
-    var description: String
+    var ok: Bool?
+    var id: Int?
+    var description: String?
     
 }
 
@@ -79,20 +79,20 @@ class CarResponse: Codable {
 
 class HistoryResponse: Codable {
     
-    var ok: Bool
+    var ok: Bool?
     var washing: [WashResponse]
     
 }
 
 class WashResponse: Codable {
     
-    var id: Int
-    var washing: String
-    var is_active: Bool
-    var timestamp: Int
-    var user: Int
-    var car: Int
-    var wash: Int
+    var id: Int?
+    var washing: String?
+    var is_active: Bool?
+    var timestamp: Int?
+    var user: Int?
+    var car: Int?
+    var wash: Int?
     
 }
 
