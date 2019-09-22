@@ -43,7 +43,8 @@ class AlamofireRequests {
         let url = "\(serverUrl)clients/\(Session.session.userID)/"
         Alamofire.request(url, method: .get, headers: headers).responseData { response in
             guard let data = response.value else { return }
-            let userResponse: UserResponse = try! JSONDecoder().decode(UserResponse.self, from: data)
+            let userResp: UserResponse? = try? JSONDecoder().decode(UserResponse.self, from: data)
+            guard let userResponse = userResp else { print("No user"); return }
             completion(userResponse)
         }
     }
@@ -86,7 +87,7 @@ class AlamofireRequests {
     func carRegistrationRequest(regNum: String, completion: @escaping (CarResponse) -> Void) {
         let headers: HTTPHeaders = ["Authorization": "Token \(Session.session.token)"]
         let url = "\(serverUrl)cars/"
-        let carParameters: Parameters = ["reg_num": "\(regNum)"]
+        let carParameters: Parameters = ["reg_num": regNum]
         Alamofire.request(url, method: .post, parameters: carParameters, encoding: JSONEncoding.default, headers: headers).responseData { response in
             guard let data = response.value else { return }
             let carResponse: CarResponse = try! JSONDecoder().decode(CarResponse.self, from: data)

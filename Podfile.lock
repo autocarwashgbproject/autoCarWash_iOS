@@ -1,21 +1,21 @@
 PODS:
-  - Alamofire (4.8.2)
-  - AlamofireObjectMapper (5.2.0):
+  - Alamofire (4.9.0)
+  - AlamofireObjectMapper (5.2.1):
     - Alamofire (~> 4.7)
     - ObjectMapper (~> 3.4)
-  - IQKeyboardManagerSwift (6.4.1)
+  - IQKeyboardManagerSwift (6.4.2)
   - ObjectMapper (3.5.1)
-  - Realm (3.17.3):
-    - Realm/Headers (= 3.17.3)
-  - Realm/Headers (3.17.3)
-  - RealmSwift (3.17.3):
-    - Realm (= 3.17.3)
+  - Realm (3.18.0):
+    - Realm/Headers (= 3.18.0)
+  - Realm/Headers (3.18.0)
+  - RealmSwift (3.18.0):
+    - Realm (= 3.18.0)
 
 DEPENDENCIES:
   - Alamofire
   - AlamofireObjectMapper (~> 5.2)
   - IQKeyboardManagerSwift
-  - RealmSwift
+  - RealmSwift (~> 3.18.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -27,13 +27,13 @@ SPEC REPOS:
     - RealmSwift
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  AlamofireObjectMapper: 92b6ce2423a9d159e686f6a1d514a009bf903ddc
-  IQKeyboardManagerSwift: d2df660d0b8d64a15cb2537c9ff303213fa515b2
+  Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
+  AlamofireObjectMapper: 1989f690e982b71921b9253f53a4f33a9bc00d88
+  IQKeyboardManagerSwift: 79a3ec200dfb41cb66a89b8575417b5378107c5d
   ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
-  Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
-  RealmSwift: b7fdc2d18616621c31df5c7a398a45a2163f8eb0
+  Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
+  RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
 
-PODFILE CHECKSUM: 3350ff25a2618d13508b4345862e9f779245bed3
+PODFILE CHECKSUM: 0f1a3f05c950c3d1fdbaa3b343a6bae1605a9604
 
 COCOAPODS: 1.6.1

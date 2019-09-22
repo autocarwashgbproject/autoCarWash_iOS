@@ -11,7 +11,7 @@ pod 'Alamofire'
 
 pod 'AlamofireObjectMapper', '~> 5.2'
 
-pod 'RealmSwift'
+pod 'RealmSwift', '~> 3.18.0'
 
 pod 'IQKeyboardManagerSwift'
 

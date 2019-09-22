@@ -49,12 +49,12 @@ class LoginViewController: UIViewController {
             return
         }
         request.getSMS(telNum: phoneNumber){ [weak self] smsResponse in
-            print("GET SMS REQUEST: \(smsResponse.ok), Code: \(smsResponse.sms_for_tests), Phone: \(smsResponse.phone), Error: \(smsResponse.error_code ?? 0), Description: \(smsResponse.description ?? "No error"), Detail: \(smsResponse.detail ?? "No detail")")
+            print("GET SMS REQUEST: \(smsResponse.ok ?? false), Code: \(smsResponse.sms_for_tests ?? 0), Phone: \(smsResponse.phone ?? ""), Error: \(smsResponse.error_code ?? 0), Description: \(smsResponse.description ?? "No error"), Detail: \(smsResponse.detail ?? "No detail")")
             guard smsResponse.ok == true else {
                 self?.sendAlert(title: "Не удалось отправить код", message: "Если номер телефона указан верно, значит проблема на нашей стороне. А значит, очень скоро мы всё починим!");
                 return }
-            self?.sendAlert(title: "Проверочный код", message: "\(smsResponse.sms_for_tests)")
-            self?.codeTextField.text = "\(smsResponse.sms_for_tests)"
+            self?.sendAlert(title: "Проверочный код", message: "\(smsResponse.sms_for_tests!)")
+            self?.codeTextField.text = "\(smsResponse.sms_for_tests!)"
             self?.code = smsResponse.sms_for_tests!
         }
     }
@@ -80,7 +80,7 @@ class LoginViewController: UIViewController {
             Session.session.token = sessionInfo.token
             Session.session.userID = sessionInfo.userID
             Session.session.carID = sessionInfo.carID
-            print("USER AUTH REQUEST: \(authResponse.ok), Token: \(authResponse.token), UserID: \(authResponse.id), CarIDs: \(authResponse.cars_id ?? [0]), IsRegistered: \(authResponse.is_registered), Telephone: \(authResponse.phone), Error: \(authResponse.error_code ?? 0), \(authResponse.description ?? "No error"), \(authResponse.detail ?? "")")
+            print("USER AUTH REQUEST: \(authResponse.ok ?? false), Token: \(authResponse.token ?? "No token"), UserID: \(authResponse.id ?? 0), CarIDs: \(authResponse.cars_id ?? [0]), IsRegistered: \(authResponse.is_registered ?? false), Telephone: \(authResponse.phone ?? ""), Error: \(authResponse.error_code ?? 0), \(authResponse.description ?? "No error"), \(authResponse.detail ?? "")")
             self!.loginORregistr()
         }
     }
